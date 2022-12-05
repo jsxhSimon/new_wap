@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-gzmj-wsdy" version="1.0.0"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <name>operainstall</name>
+
+    <preference name="APPKEY"/>
+    <preference name="SCHEME"/>
+
+    <!-- android -->
+    <platform name="android">
+
+        <js-module name="operainstall" src="www/cordova-plugin-gzmj-wsdy.js">
+            <clobbers target="operainstall" />
+        </js-module>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="OperaInstallPlugin">
+                <param name="android-package" value="com.operainstall.cordova.OperaInstallPlugin"/>
+				<param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data
+                android:name="com.operainstall.APP_KEY"
+                android:value="$APPKEY"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:name='MainActivity']">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="$SCHEME" />
+            </intent-filter>
+        </config-file>
+
+        <edit-config file="AndroidManifest.xml" target="/manifest/application/activity[@android:name='MainActivity']" mode="merge">
+            <activity android:launchMode="singleTask"/>
+        </edit-config>
+
+        <source-file src="src/android/OperaInstallPlugin.java" target-dir="src/com/operainstall/cordova" />
+        <lib-file src="src/android/lib/OperaInstall_v2.6.2.jar" target-dir="libs" />
+
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+
+        <js-module name="operainstall" src="www/cordova-plugin-gzmj-wsdy.js">
+            <clobbers target="operainstall" />
+        </js-module>
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="OperaInstallPlugin">
+                <param name="ios-package" value="CDVOperaInstall"/>
+                <param name="onload" value="true" />
+            </feature>
+            <preference name="com.operainstall.APP_KEY" value="$APPKEY"/>
+        </config-file>
+
+        <!-- Plugin source code -->
+        <header-file src="src/ios/CDVOperaInstall.h" />
+        <source-file src="src/ios/CDVOperaInstall.m" />
+	    <source-file src="src/ios/AppDelegate+OperaInstallSDK.m" />
+        <header-file src="src/ios/CDVOperaInstallStorage.h" />
+        <source-file src="src/ios/CDVOperaInstallStorage.m" />
+        <header-file src="src/ios/libs/OperaInstallSDK.h" />
+		<header-file src="src/ios/libs/OperainstallData.h" />
+        <source-file src="src/ios/libs/libOperaInstallSDK.a" framework="true" />
+
+    </platform>
+</plugin>

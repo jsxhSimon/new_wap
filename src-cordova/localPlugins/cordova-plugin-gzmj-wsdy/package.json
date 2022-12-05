@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-gzmj-wsdy",
+  "version": "1.0.2",
+  "cordova": {
+    "id": "cordova-plugin-gzmj-wsdy",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "一键拉起",
+    "免填邀请码"
+  ],
+
+  "author": "gzmj",
+  "license": "",
+  "description": "operainstall的cordova插件"
+}

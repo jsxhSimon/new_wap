@@ -1,0 +1,56 @@
+{
+  "_from": "github:Salesfloor/cordova-silent-mode",
+  "_id": "cordova-silent-mode-plugin@0.9.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-silent-mode-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "github:Salesfloor/cordova-silent-mode",
+    "rawSpec": "github:Salesfloor/cordova-silent-mode",
+    "saveSpec": "github:Salesfloor/cordova-silent-mode",
+    "fetchSpec": null,
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "github:Salesfloor/cordova-silent-mode#6b1e914b8835da7d1988067505d503ff56b65ce9",
+  "_spec": "github:Salesfloor/cordova-silent-mode",
+  "_where": "/Users/HuKing/dockers/Mirrors/jenkins/projects/wsdy-coappBak/src-cordova",
+  "author": {
+    "name": "Salesfloor"
+  },
+  "bugs": {
+    "url": "https://github.com/Salesfloor/cordova-silent-mode/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "com.salesfloor.silentmodeplugin",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Check if iOS device is in silent mode.",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.6.0"
+    }
+  ],
+  "homepage": "https://github.com/Salesfloor/cordova-silent-mode#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-silent-mode-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Salesfloor/cordova-silent-mode.git"
+  },
+  "version": "0.9.0"
+}

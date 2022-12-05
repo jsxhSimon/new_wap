@@ -1,0 +1,94 @@
+{
+  "_args": [
+    [
+      "github:SDYNG/cordova-plugin-splashscreen",
+      "/Users/HuKing/dockers/Mirrors/jenkins/projects/wsdy-coappBak/src-cordova"
+    ]
+  ],
+  "_development": true,
+  "_from": "github:SDYNG/cordova-plugin-splashscreen",
+  "_id": "cordova-plugin-splashscreen@github:SDYNG/cordova-plugin-splashscreen#05a814c2a1796fe329f728a23c54e49c694e260c",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-plugin-splashscreen",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "github:SDYNG/cordova-plugin-splashscreen",
+    "rawSpec": "github:SDYNG/cordova-plugin-splashscreen",
+    "saveSpec": "github:SDYNG/cordova-plugin-splashscreen",
+    "fetchSpec": null,
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "github:SDYNG/cordova-plugin-splashscreen#05a814c2a1796fe329f728a23c54e49c694e260c",
+  "_spec": "github:SDYNG/cordova-plugin-splashscreen",
+  "_where": "/Users/HuKing/dockers/Mirrors/jenkins/projects/wsdy-coappBak/src-cordova",
+  "author": {
+    "name": "Apache Software Foundation"
+  },
+  "bugs": {
+    "url": "https://github.com/SDYNG/cordova-plugin-splashscreen/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-splashscreen",
+    "platforms": [
+      "android",
+      "amazon-fireos",
+      "ubuntu",
+      "ios",
+      "blackberry10",
+      "wp8",
+      "windows8",
+      "windows",
+      "tizen"
+    ]
+  },
+  "description": "Cordova Splashscreen Plugin",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "2.0.0": {
+        "cordova-android": ">=3.6.0"
+      },
+      "4.0.0": {
+        "cordova-android": ">=3.6.0",
+        "cordova-windows": ">=4.4.0"
+      },
+      "5.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "homepage": "https://github.com/SDYNG/cordova-plugin-splashscreen#readme",
+  "keywords": [
+    "cordova",
+    "splashscreen",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-amazon-fireos",
+    "cordova-ubuntu",
+    "cordova-ios",
+    "cordova-blackberry10",
+    "cordova-wp8",
+    "cordova-windows8",
+    "cordova-windows",
+    "cordova-tizen"
+  ],
+  "license": "Apache-2.0",
+  "name": "cordova-plugin-splashscreen",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SDYNG/cordova-plugin-splashscreen.git"
+  },
+  "scripts": {
+    "jshint": "node node_modules/jshint/bin/jshint www && node node_modules/jshint/bin/jshint src && node node_modules/jshint/bin/jshint tests",
+    "test": "npm run jshint"
+  },
+  "types": "./types/index.d.ts",
+  "version": "4.0.4-dev"
+}

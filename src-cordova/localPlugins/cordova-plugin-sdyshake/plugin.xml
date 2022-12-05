@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://phonegap.com/ns/plugins/1.0"
+    id="cordova-plugin-sdyshake"
+    version="1.0.0">
+    <engines>
+        <engine name="cordova" version=">=3.3.0" />
+    </engines>
+    
+    <name>testPlugin</name>
+    <description>ios轻微震动</description>
+    
+    <js-module src="www/sdyShake.js" name="testModel">
+        <clobbers target="testModel" />
+    </js-module>
+    
+    
+    
+    <platform name="ios">
+        <source-file src="src/ios/ShakePlugin.m" />
+        <header-file src="src/ios/ShakePlugin.h" />
+        
+        <config-file target="config.xml" parent="/widget">
+            
+            <feature name="ShakeActionPlugin">
+                <param name="ios-package" value="ShakePlugin" />
+            </feature>
+        </config-file>
+    </platform>
+</plugin>

@@ -1,0 +1,13 @@
+body {
+  // 字体颜色
+  --t1: #323232;
+  --theme-color: #23A8FF;
+  --theme-text-color: #23A8FF;
+  --body-bg: #F1F2F8;
+  --footer-bg: #fff;
+  --footer-text-color: #ADB2C8;
+  --footer-border-radius: 16px 16px 0 0;
+}
+.q-page, .q-page-container, .pro-layout, .help-center-item-box {
+  background-color: var(--body-bg)
+}

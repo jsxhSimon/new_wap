@@ -1,0 +1,42 @@
+{
+  "android": {
+    "debug": {
+      "keystore": "./my-release-key.keystore",
+      "storePassword": "12345678",
+      "alias": "alias_name",
+      "password" : "12345678",
+      "keystoreType": ""
+    },
+    "release": {
+      "keystore": "./my-release-key.keystore",
+      "storePassword": "12345678",
+      "alias": "alias_name",
+      "password" : "12345678",
+      "keystoreType": ""
+    }
+  }
+ /* "ios": {
+    "debug": {
+      "codeSignIdentity": "iPhone Developer",
+      "developmentTeam": "K7JUBU7VAU",
+      "packageType": "development",
+      "automaticProvisioning": true,
+      "buildFlag": [
+        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+      ]
+    },
+    "release": {
+      "codeSignIdentity": "iPhone Developer",
+      "developmentTeam": "K7JUBU7VAU",
+      "packageType": "ad-hoc",
+      "automaticProvisioning": true,
+      "buildFlag": [
+        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+      ]
+    }
+  }*/
+}

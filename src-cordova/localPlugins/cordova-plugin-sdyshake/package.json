@@ -1,0 +1,17 @@
+{
+  "name": "cordova-plugin-sdyshake",
+  "version": "1.0.0",
+  "description": "sdy-shake",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "cordova": {
+    "id": "cordova-plugin-sdyshake",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
+}

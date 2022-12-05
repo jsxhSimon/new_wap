@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bognew.wsdy" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>博冠体育</name>
+    <description>博冠体育</description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <hook src="scripts/appAfterPlatformAdd.js" type="after_platform_add" />
+    <hook src="scripts/appAfterPrepare.js" type="after_prepare" />
+    <hook src="scripts/beforeBuild.js" type="after_prepare" />
+    <hook src="scripts/appChangeLoading.js" type="after_prepare" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="InterceptRemoteRequests" value="all" />
+    <platform name="android">
+        <preference name="StatusBarOverlaysWebView" value="false" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" android:requestLegacyExternalStorage="true"/>
+        </edit-config>
+        <config-file parent="/manifest" target="AndroidManifest.xml" xmlns:android="http://schemas.android.com/apk/res/android">
+            <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+        </config-file>
+        <preference name="CodePushDeploymentKey" value="G3PImVdEfcVhc9E082lqmoGajtTQm3tzP3mb5" />
+        <allow-intent href="market:*" />
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+        <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
+        <icon density="xxxhdpi" src="res/android/icon-192-xxxhdpi.png" />
+        <!-- <preference name="SplashScreenVideoPath" value="openAnimate.mp4" /> -->
+        <!-- <preference name="SplashScreenVideoShowOnlyOnce" value="false" /> -->
+        <!-- <preference name="AutoHideSplashScreen" value="false" /> -->
+        <preference name="SplashScreenDelay" value="4000" />
+        <preference name="ShowSplashScreenSpinner" value="false" />
+        <preference name="SplashScreenVideoShowOnlyOnce" value="true" />
+        <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
+        <splash density="port-xxhdpi" src="res/screen/android/screen-xxhdpi-portrait.png" />
+        <splash density="port-xxxhdpi" src="res/screen/android/screen-xxxhdpi-portrait.png" />
+    </platform>
+    <platform name="ios">
+        <config-file target="*-Info.plist" parent="com.operainstall.APP_KEY">
+          <string>v4mcflc2</string>
+        </config-file>
+        <preference name="StatusBarOverlaysWebView" value="true" />
+        <preference name="CodePushDeploymentKey" value="SykEDjxOKO_3jwG4AaHIw4NAbRh-CtAycF3gV" />
+        <preference name="AllowInlineMediaPlayback" value="true" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <allow-navigation href="*" />
+        <allow-intent href="*" />
+        <!-- <preference name="SplashScreenVideoShowOnlyOnce" value="false" /> -->
+        <!-- <preference name="SplashScreenVideoPath" value="openAnimate.mp4" /> -->
+        <!-- <preference name="AutoHideSplashScreen" value="true" /> -->
+        <!-- <preference name="SplashScreenDelay" value="0" /> -->
+        <!-- <preference name="FadeSplashScreenDuration" value="0" /> -->
+        <preference name="WKWebViewOnly" value="true" />
+        <preference name="AllowBackForwardNavigationGestures" value="true" />
+        <preference name="InterceptRemoteRequests" value="all" />
+        <preference name="ios-package" value="CDVWKWebViewEngine" />
+        <icon height="57" src="res/ios/icon.png" width="57" />
+        <icon height="114" src="res/ios/icon-2x.png" width="114" />
+        <icon height="40" src="res/ios/icon-40.png" width="40" />
+        <icon height="80" src="res/ios/icon-40-2x.png" width="80" />
+        <icon height="50" src="res/ios/icon-50.png" width="50" />
+        <icon height="100" src="res/ios/icon-50-2x.png" width="100" />
+        <icon height="60" src="res/ios/icon-60.png" width="60" />
+        <icon height="120" src="res/ios/icon-60-2x.png" width="120" />
+        <icon height="180" src="res/ios/icon-60-3x.png" width="180" />
+        <icon height="72" src="res/ios/icon-72.png" width="72" />
+        <icon height="144" src="res/ios/icon-72-2x.png" width="144" />
+        <icon height="167" src="res/ios/icon-83.5-2x.png" width="167" />
+        <icon height="167" src="res/ios/icon-167.png" width="167" />
+        <icon height="1024" src="res/ios/icon-1024.png" width="1024" />
+        <icon height="20" src="res/ios/icon-20.png" width="20" />
+        <icon height="48" src="res/ios/icon-24@2x.png" width="48" />
+        <icon height="55" src="res/ios/icon-27.5@2x.png" width="55" />
+        <icon height="29" src="res/ios/icon-29.png" width="29" />
+        <icon height="58" src="res/ios/icon-29@2x.png" width="58" />
+        <icon height="87" src="res/ios/icon-29@3x.png" width="87" />
+        <icon height="88" src="res/ios/icon-44@2x.png" width="88" />
+        <icon height="76" src="res/ios/icon-76.png" width="76" />
+        <icon height="152" src="res/ios/icon-76@2x.png" width="152" />
+        <icon height="172" src="res/ios/icon-86@2x.png" width="172" />
+        <icon height="176" src="res/ios/icon-88@2x.png" width="176" />
+        <icon height="196" src="res/ios/icon-98@2x.png" width="196" />
+        <splash height="2732" src="res/screen/ios/Default@2x~universal~anyany.png" width="2732" />
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+            <string>需要相机访问权限</string>
+        </edit-config>
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+            <string>需要读取相册权限</string>
+        </edit-config>
+        <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+            <string>需要访问照片库以保存图片</string>
+        </edit-config>
+    </platform>
+    <allow-navigation href="about:*" />
+</widget>
