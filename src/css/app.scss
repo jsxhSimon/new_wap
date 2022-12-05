@@ -1,4 +1,6 @@
 // app global css in SCSS form
+@use "./normalize.scss";
+
 @each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28 {
   .fs-#{$size} {
     font-size: $size + px;

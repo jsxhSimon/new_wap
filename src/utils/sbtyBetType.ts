@@ -1,5 +1,5 @@
 import { i18n}  from 'boot/i18n'
-import { SbMatch } from 'src/types/sports'
+import { SbMatch } from 'src/@types/sports'
 const { t: lang } = i18n.global
 
 // 不通类型游戏对应的列表玩法集

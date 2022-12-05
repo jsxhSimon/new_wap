@@ -1,7 +1,5 @@
 <template>
-  <div id="q-app">
-    <router-view v-if="selectApi" />
-  </div>
+  <router-view v-if="selectApi" />
 </template>
 
 <script setup lang="ts">

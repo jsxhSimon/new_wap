@@ -22,6 +22,7 @@
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
     "logan-web": "^1.1.0",
+    "normalize.css": "^8.0.1",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "ua-device": "^0.1.10",

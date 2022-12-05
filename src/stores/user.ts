@@ -8,6 +8,11 @@ export const useUserStore = defineStore('user', {
     token: LocalStorage.getItem('token') ?? null,
     useFingerprintLogin: LocalStorage.getItem('useFingerprintLogin') ?? false,
   }),
+  getters: {
+    isLogin(state) {
+      return !! state.token
+    }
+  },
   actions: {
     login(params: any) {
       if (Platform.is.cordova) {

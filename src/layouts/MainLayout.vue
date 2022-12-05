@@ -3,9 +3,9 @@
     <Header v-if="!route.meta.hideHeader" />
     <Footer />
     <q-page-container>
-      <kepp-alive :include="['home', 'videoGames', 'activityList']">
+      <keep-alive :include="['home', 'videoGames', 'activityList']">
         <router-view :key="$route.fullPath" />
-      </kepp-alive>
+      </keep-alive>
     </q-page-container>
   </q-layout>
 </template>

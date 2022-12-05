@@ -105,6 +105,7 @@ module.exports = configure(function (/* ctx */) {
             pages: path.resolve(__dirname, `./src/pages/${APP_TEMPLATE}`),
             images: path.resolve(__dirname, `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`),
             site_images: path.resolve(__dirname, `./src/assets/images/${SITE}`),
+            site_theme_images: path.resolve(__dirname, `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}/sites/${SITE}`),
             routes: path.resolve(__dirname, `./src/router/${SITE}`)
           }
         }

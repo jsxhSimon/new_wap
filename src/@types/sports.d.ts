@@ -88,3 +88,9 @@ interface SbMarket {
     },
   }[]
 }
+// 原生体育 tab 对象
+interface IGameType {
+  lable: string;
+  depotCode: string;
+  type: number;
+}

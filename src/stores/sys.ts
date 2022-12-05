@@ -13,6 +13,7 @@ interface SysState {
   reqQueue: string[];
   hasPrefixUrl: boolean;
   SToken: string;
+  isShowDownloadBar: boolean;
 }
 
 const { DEFAULT_STOKEN } = process.env
@@ -23,6 +24,7 @@ export const useSysStore = defineStore('sys', {
     reqQueue: [],
     hasPrefixUrl: false,
     SToken: LocalStorage.getItem('SToken') ?? JSON.parse(DEFAULT_STOKEN as string),
+    isShowDownloadBar: !Platform.is.cordova && LocalStorage.getItem('showDownloadbar') !== new Date().toLocaleDateString()
   }),
   actions: {
     getMobileAreaCodes() {
@@ -33,6 +35,9 @@ export const useSysStore = defineStore('sys', {
           })
         })
     },
-    
+    closeDownloadBar() {
+      this.$patch(state => state.isShowDownloadBar = false)
+      LocalStorage.set('showDownloadbar', new Date().toLocaleDateString())
+    }
   }
 });
