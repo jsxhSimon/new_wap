@@ -32,6 +32,7 @@ interface IMainGame {
   isTry: number;
   gameName: string;
   titleTag: string;
+  orientation: number;
 }
 
 interface ICategory {

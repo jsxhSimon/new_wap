@@ -3,6 +3,7 @@ import { date, Dialog, SessionStorage } from 'quasar';
 import DialogPrimary from 'pages/common/DialogPrimary.vue';
 import { i18n } from 'boot/i18n';
 const { t: lang } = i18n.global;
+import { useSysStore } from 'src/stores/sys'
 
 export const enterGameErrorDialog = (msg: string, time: number) => {
   let count = time || 10;
@@ -71,4 +72,53 @@ export const lengthMap = {
   84: 10,
 };
 
+export const checkURL = (URL: string) => {
+  const str = URL
+  // 判断URL地址的正则表达式为:http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?
+  // 下面的代码中应用了转义字符"\"输出一个字符"/"
+  // eslint-disable-next-line
+  const Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/
+  const objExp = new RegExp(Expression)
+  if (objExp.test(str)) {
+    return true
+  }
+  return false
+}
+
+/* 异步打开新窗口 */
+export const openWindowAsync = (req: any, curSite: string) => {
+  // const newWindow = window.open()
+  // newWindow.document.write(loadingHTML)
+  if (curSite === 'bog2') {
+    curSite = 'bog'
+  }
+  if (curSite === 'ybo') {
+    curSite = 'yboNew'
+  }
+  let openUrl = `https://download.injiepor.com/jumploading/${curSite}.html`
+  // 加载动画
+  if (curSite === 'hbx') {
+    openUrl = `https://download.fvinbet.com/jumploading/${curSite}.html`
+  }
+  const newWindow: Window = window.open(openUrl) as Window
+  req(
+    (url: string, callback: () => void) => {
+      const sysStore = useSysStore()
+      newWindow.location.replace(url)
+      const loop = window.setInterval(() => {
+        if (newWindow.closed) {
+          window.clearInterval(loop)
+          if (callback && typeof (callback) === 'function' && !sysStore.reqQueue.includes('sys/transit')) {
+            callback()
+          }
+        }
+      }, 1000)
+    },
+    () => {
+      newWindow.close()
+    },
+  )
+}
+
 export { getDomain } from './getDomain';
+export { openAppBrowser, switchOrientation } from './appBrowser'

@@ -36,7 +36,7 @@
         >
           <div class="game-logo" :class="game.depotCode"></div>
           <span class="game-name">{{
-            game.depotCode === 'FBOB' ? envAppTitle : game.depotName
+            game.depotCode === 'FBOB' ? envStore.envAppTitle : game.depotName
           }}</span>
         </div>
       </div>
@@ -49,8 +49,10 @@ import { ref, computed } from 'vue';
 import { Popup as VanPopup } from 'vant';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useSysStore } from 'src/stores/sys';
+import { useEnvStore } from 'src/stores/env'
 
 const sysStore = useSysStore();
+const envStore = useEnvStore();
 const show = ref(false);
 const activeGame = ref<Partial<IMainList>>({});
 const hasDownloadBar = ref(false);
@@ -69,4 +71,8 @@ const setActiveGame = (game: IMainList) => {
     show.value = true;
   }
 };
+
+const handleGameClick = (game: IMainGame) => {
+  sysStore.handleGameClick(game)
+}
 </script>

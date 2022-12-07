@@ -6,6 +6,7 @@ interface IUser {
   userInfo: Partial<IUserInfo>;
   token: string;
   useFingerprintLogin: boolean;
+  signMode: string;
 }
 
 export const useUserStore = defineStore('user', {
@@ -13,6 +14,7 @@ export const useUserStore = defineStore('user', {
     userInfo: LocalStorage.getItem('userInfo') ?? {},
     token: LocalStorage.getItem('token') ?? '',
     useFingerprintLogin: LocalStorage.getItem('useFingerprintLogin') ?? false,
+    signMode: '',
   }),
   getters: {
     isLogin(state) {

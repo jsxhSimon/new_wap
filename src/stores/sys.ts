@@ -11,12 +11,20 @@ import {
   apiStoken,
   apiGameLogin,
 } from 'src/http';
-import { getDomain } from 'src/utils';
+import {
+  getDomain,
+  checkURL,
+  openAppBrowser,
+  openWindowAsync,
+  switchOrientation,
+} from 'src/utils';
 import { useEnvStore } from './env';
-import { deportLocalDataFactory } from 'game_data';
+import { usePayStore } from './pay'
 import { useUserStore } from './user';
+import { deportLocalDataFactory } from 'game_data';
 import { i18n } from 'boot/i18n';
 import DialogPrimary from 'pages/common/DialogPrimary.vue';
+import { useRouter } from 'vue-router'
 
 const { t: lang } = i18n.global;
 interface SysState {
@@ -175,6 +183,8 @@ export const useSysStore = defineStore('sys', {
     },
     enterGame(game: IMainGame) {
       const userStore = useUserStore();
+      const envStore = useEnvStore();
+      const payStore = usePayStore();
       const { isTry, availableWh } = game;
       const isLogin = userStore.isLogin;
       const isAutoTransfer = userStore.userInfo.freeWalletSwitch !== 0;
@@ -197,18 +207,86 @@ export const useSysStore = defineStore('sys', {
 
       const req = () => {
         this.$patch(state => state.enterGameLoading = true)
-        apiGameLogin(game.id, !userStore.isLogin)
+        return apiGameLogin(game.id, !userStore.isLogin)
           .then(({ data: {msg, tryPlayFlag} }) => {
             if (userStore.isLogin && isTry && !tryPlayFlag) {
               Notify.create(lang('试玩线路维护中'))
               return Promise.reject()
             }
-            if (msg.includes('http') === -1) {
+            if (msg.indexOf('http') === -1) {
               Notify.create(lang('该场馆正在维护，请先娱乐其他场馆游戏'))
               return Promise.reject()
             }
-            if ()
+            // 博冠 欧博手动转账不执行余额回收相关操作
+            if (userStore.isLogin && (!['bog2', 'hbx'].includes(envStore.appSite) || isAutoTransfer)) {
+              payStore.getBalance()
+              if (!Platform.is.cordova) {
+                openDialog()
+              }
+            }
+            return Promise.resolve(msg)
+          }).finally(() => {
+            this.$patch(state => state.enterGameLoading = false)
           })
+      }
+
+      if (userStore.isLogin || isTry) {
+        if (Platform.is.cordova) {
+          const cb = () => {
+            req()
+              .then((url) => {
+                if (!checkURL(url)) {
+                  Notify.create(`${userStore.isLogin ? 'transit' : 'tryPlayGame'}${lang('返回的不是游戏链接')}: ${url}`)
+                  return
+                }
+                const title = game.gameName || game.depotName
+                const orientation = switchOrientation(game.orientation);
+                (document.querySelector('html') as any).style.background = 'transparent';
+                (document.querySelector('body') as any).style.background = 'transparent';
+                const isFullScreen = (game.catId === 6 || game.catName === '棋牌') ? '1' : '0';
+                openAppBrowser(
+                  url,
+                  title,
+                  orientation, 
+                  () => {
+                    // 博冠 欧博手动转账不执行余额回收相关操作
+                    (!['bog2', 'ob8'].includes(envStore.appSite) || isAutoTransfer) && this.recoverBalanceAction();
+                    (document.querySelector('html') as any).style.background = '';
+                    (document.querySelector('body') as any).style.background = '';
+                  }
+                ),
+                undefined,
+                isFullScreen
+              })
+          }
+          if (this.recoveringBalanceStatus) {
+            this.$patch(state => {
+              state.enterGameLoading = true
+              state.waitOpenGameList = [cb, () => this.$patch(state => state.enterGameLoading = false)]
+            })
+          } else {
+            cb()
+          }
+        } else {
+          openWindowAsync((resolve: (url: string, callback: () => void) => void, reject: () => void) => {
+            const cb = () => {
+              req()
+                .then((url) => {
+                  resolve(url, () => (!['bog2', 'ob8'].includes(envStore.appSite) || isAutoTransfer) && this.recoverBalanceAction())
+                })
+                .catch(reject)
+            }
+            if (this.recoveringBalanceStatus) {
+              this.$patch(state => state.waitOpenGameList = state.waitOpenGameList.concat([cb]))
+            } else {
+              cb()
+            }
+          }, envStore.appSite)
+        }
+      } else {
+        userStore.$patch(state => state.signMode = 'signIn')
+        const router = useRouter()
+        router.push('/login')
       }
     },
     recoverBalanceAction() {
