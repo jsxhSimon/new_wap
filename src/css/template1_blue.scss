@@ -1,6 +1,7 @@
 body {
   // 字体颜色
   --t1: #323232;
+  --t2: #6A7391;
   --theme-color: #23A8FF;
   --theme-text-color: #23A8FF;
   --download-bar-close-color: #fff;
@@ -12,6 +13,9 @@ body {
   --footer-bg: #fff;
   --footer-text-color: #ADB2C8;
   --footer-border-radius: 16px 16px 0 0;
+  --side-bar-bg: #fff;
+  --border-color: #F8F8F8;
+  --header-bg: #fff;
 }
 .q-page, .q-page-container, .pro-layout, .help-center-item-box {
   background-color: var(--body-bg)

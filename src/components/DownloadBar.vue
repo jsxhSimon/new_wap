@@ -6,7 +6,7 @@
     </p>
     <div class="download-bar-logo"></div>
     <div class="download-text">{{$t('真人娱乐、体育投注、电子游艺等尽在一手掌握!')}}</div>
-    <p class="dld" @click="downloadAPP">立即下载</p>
+    <p class="dld" @click="downloadAPP">{{ $t('立即下载') }}</p>
   </div>
 </template>
 
@@ -53,13 +53,11 @@ const close = () => {
     position: absolute;
     width: 106px;
     height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 22px;
+    text-align: center;
     background: var(--download-bar-btn-bg);
     border-radius: 10px;
     color: var(--t1);
-    position: absolute;
     right: 14px;
     bottom: 12px;
   }
@@ -73,6 +71,7 @@ const close = () => {
     right: 0;
     top: 0;
     color: var(--download-bar-close-color);
+    letter-spacing: 0.3px;
   }
 }
 </style>

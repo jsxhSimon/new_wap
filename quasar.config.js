@@ -8,10 +8,9 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-
 const { configure } = require('quasar/wrappers');
 const path = require('path');
-const { appConfigs, normalizeConfigs } = require('./configs')
+const { appConfigs, normalizeConfigs } = require('./configs');
 let {
   APP_ENV,
   APP_SITE,
@@ -21,12 +20,12 @@ let {
   APP_CODE,
   APP_LANGUAGE,
   SITE,
-} = appConfigs
+} = appConfigs;
 
-console.log('hello world')
-console.log(`./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`)
-console.log(APP_SITE)
-console.log(appConfigs)
+console.log('hello world');
+console.log(`./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`);
+console.log(APP_SITE);
+console.log(appConfigs);
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -36,7 +35,7 @@ module.exports = configure(function (/* ctx */) {
       // exclude = [],
       // rawOptions = {},
       warnings: true,
-      errors: true
+      errors: true,
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -45,17 +44,13 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: [
-      'i18n',
-      'axios',
-      'loganlog',
-    ],
+    boot: ['i18n', 'axios', 'loganlog'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: [
       'app.scss',
       `${APP_TEMPLATE}.scss`,
-      `${APP_TEMPLATE}_${APP_THEME}.scss`
+      `${APP_TEMPLATE}_${APP_THEME}.scss`,
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -76,7 +71,7 @@ module.exports = configure(function (/* ctx */) {
     build: {
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        node: 'node16'
+        node: 'node16',
       },
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
@@ -96,38 +91,51 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
       extendViteConf(viteConf) {
-        console.log(viteConf.resolve.alias)
+        console.log(viteConf.resolve.alias);
         viteConf.resolve = {
           alias: {
             ...viteConf.resolve.alias,
             src: path.resolve(__dirname, './src'),
             components: path.resolve(__dirname, './src/components'),
             pages: path.resolve(__dirname, `./src/pages/${APP_TEMPLATE}`),
-            images: path.resolve(__dirname, `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`),
+            images: path.resolve(
+              __dirname,
+              `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`
+            ),
             site_images: path.resolve(__dirname, `./src/assets/images/${SITE}`),
-            site_theme_images: path.resolve(__dirname, `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}/sites/${SITE}`),
-            routes: path.resolve(__dirname, `./src/router/${SITE}`)
-          }
-        }
+            site_theme_images: path.resolve(
+              __dirname,
+              `./src/assets/images/${APP_TEMPLATE}/${APP_THEME}/sites/${SITE}`
+            ),
+            game_data: path.resolve(
+              __dirname,
+              `./src/assets/gameLogos_${SITE}.ts`
+            ),
+            routes: path.resolve(__dirname, `./src/router/${SITE}`),
+          },
+        };
       },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        ['@intlify/vite-plugin-vue-i18n', {
-          // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-          // compositionOnly: false,
+        [
+          '@intlify/vite-plugin-vue-i18n',
+          {
+            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+            // compositionOnly: false,
 
-          // you need to set i18n resource including paths !
-          include: path.resolve(__dirname, './src/i18n/**')
-        }]
-      ]
+            // you need to set i18n resource including paths !
+            include: path.resolve(__dirname, './src/i18n/**'),
+          },
+        ],
+      ],
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
       // host: '192.168.86.4',
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -144,7 +152,14 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Dialog',
+        'Notify',
+        'Loading',
+        'BottomSheet',
+        'LocalStorage',
+        'SessionStorage',
+      ],
     },
 
     // animations: 'all', // --- includes all animations
@@ -181,8 +196,8 @@ module.exports = configure(function (/* ctx */) {
       // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
-        'render' // keep this as last one
-      ]
+        'render', // keep this as last one
+      ],
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
@@ -206,7 +221,7 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true
+      hideSplashscreen: true,
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
@@ -220,13 +235,11 @@ module.exports = configure(function (/* ctx */) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
         // OS X / Mac App Store
         // appBundleId: '',
         // appCategoryType: '',
         // osxSign: '',
         // protocol: 'myapp://path',
-
         // Windows only
         // win32metadata: { ... }
       },
@@ -234,18 +247,16 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'new_wap'
-      }
+        appId: 'new_wap',
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
     bex: {
-      contentScripts: [
-        'my-content-script'
-      ],
+      contentScripts: ['my-content-script'],
 
       // extendBexScriptsConf (esbuildConf) {}
       // extendBexManifestJson (json) {}
-    }
-  }
+    },
+  };
 });
