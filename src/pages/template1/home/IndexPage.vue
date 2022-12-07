@@ -5,6 +5,7 @@
       active
       :todos="todos"
       :meta="meta"
+      :class="hello world"
     ></example-component>
   </q-page>
 </template>
