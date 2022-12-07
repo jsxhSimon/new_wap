@@ -10,6 +10,7 @@ import {
   apiCatDepotList,
   apiStoken,
   apiGameLogin,
+  apiIndexNoticeAndAdv,
 } from 'src/http';
 import {
   getDomain,
@@ -247,7 +248,7 @@ export const useSysStore = defineStore('sys', {
                 openAppBrowser(
                   url,
                   title,
-                  orientation, 
+                  orientation,
                   () => {
                     // 博冠 欧博手动转账不执行余额回收相关操作
                     (!['bog2', 'ob8'].includes(envStore.appSite) || isAutoTransfer) && this.recoverBalanceAction();
@@ -295,6 +296,21 @@ export const useSysStore = defineStore('sys', {
     },
     recoverBalanceNoticeShow() {
       window.transferBackDialog?.hide()
+    },
+    indexNoticeAndAdv(isSport?: boolean) {
+      return apiIndexNoticeAndAdv(
+        {
+          pageNo: 1,
+          pageSize: 100,
+          advType: isSport ? 4 : 1,
+          evebNum: 1,
+        }
+      )
+        .then(({data: { page, popUpList = [], noticeList }}) => ({
+          swiperList: page.filter((item: any) => item.clientShow > 0),
+          popUpList: popUpList.filter((item: any) => item.clientShow > 0),
+          noticeList: noticeList.list,
+        }))
     },
   },
 });

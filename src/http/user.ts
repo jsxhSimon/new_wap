@@ -8,3 +8,7 @@ export const apiCheckVfyRegisterAndLogin = (params: { loginName: string }) => {
 export const apiLogin = (params: any) => {
   return axios.post('user/login', params)
 }
+
+export const apiMessageInfo = (params: Partial<IMessageInfoParams>) => {
+  return axios.get('user/messageInfo', {params})
+}

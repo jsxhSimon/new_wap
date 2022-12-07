@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { LocalStorage, Notify, Platform } from 'quasar';
-import { apiCheckVfyRegisterAndLogin, apiLogin } from 'src/http/user';
+import { apiCheckVfyRegisterAndLogin, apiLogin, apiMessageInfo } from 'src/http/user';
 
 interface IUser {
   userInfo: Partial<IUserInfo>;
@@ -39,6 +39,13 @@ export const useUserStore = defineStore('user', {
           state.userInfo = data.userInfo;
         });
       });
+    },
+    // 我的管家信息
+    getButlerMessageList(params: Partial<IMessageInfoParams>) {
+      return apiMessageInfo({
+        pageSize: 30,
+        ...params,
+      }).then(({ data }) => data.data)
     },
   },
 });

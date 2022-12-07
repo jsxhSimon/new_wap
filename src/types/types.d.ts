@@ -39,3 +39,14 @@ interface ICategory {
   id: number;
   catName: string;
 }
+
+interface INotice {
+  id: number;
+  createTime: string;
+  noticeTitle: string;
+  /** 公告管理的弹窗 */
+  noticeContent: string;
+  mbPath: string;
+  showType: string;
+  title: string;
+}

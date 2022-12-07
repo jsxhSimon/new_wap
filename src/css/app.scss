@@ -1,15 +1,29 @@
 // app global css in SCSS form
 @use "./normalize.scss";
 @use "swiper/scss";
+@use "vant/lib/index.css";
+@use "vue3-marquee/dist/style.css";
 
 @each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28 {
   .fs-#{$size} {
     font-size: $size + px;
   }
 }
-@each $i in 4, 14 {
+@each $i in 4, 14, 15, 16 {
   .mlr-#{$i} {
-    margin: 0 $i + px; 
+    margin: 0 $i + px;
+  }
+  .mt-#{$i} {
+    margin-top: $i + px;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i + px;
+  }
+  .ml-#{$i} {
+    margin-left: $i + px;
+  }
+  .mr-#{$i} {
+    margin-right: $i + px;
   }
 }
 .flex {

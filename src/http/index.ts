@@ -85,3 +85,8 @@ export const apiGameLogin = (gameId: number, isTry?: boolean) => {
     params: { gameId },
   });
 };
+
+// 获取banner图 消息数据
+export const apiIndexNoticeAndAdv = (params: IIndexNoticeAndAdvParams) => {
+  return axios.get('sys/indexNoticeAndAdv', {params})
+}

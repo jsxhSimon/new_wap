@@ -22,11 +22,6 @@ let {
   SITE,
 } = appConfigs;
 
-console.log('hello world');
-console.log(`./src/assets/images/${APP_TEMPLATE}/${APP_THEME}`);
-console.log(APP_SITE);
-console.log(appConfigs);
-
 module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
@@ -44,7 +39,12 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'axios', 'loganlog'],
+    boot: [
+      'i18n',
+      'axios',
+      'loganlog',
+      'quasar-setup',
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: [

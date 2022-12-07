@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="balance-header-box">
     <SideMenu :sideShow="sideShow" @close="sideShow = false" />
     <div class="balance-header">
       <swiper
