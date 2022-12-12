@@ -1,13 +1,31 @@
 interface IFormModel {
   loginName: string;
   password: string;
-  captchaVerification: string;
+  captchaVerification?: string;
   smsCaptcha?: string;
+  mobile?: string;
+  mobileCaptcha?: string;
+  mobileAreaCode?: string;
+  loginType?: number;
+  loginPwd?: string;
+  registerMethod?: number;
+  reLoginPwd?: string;
+  mobileCaptchareg?: string;
+  registerDevice?: string;
+  mainDomain?: string;
+  code?: string;
+  token?: string;
 }
 
 interface IUserInfo {
+  loginName: string;
+  password: string;
   username: string;
   freeWalletSwitch: number;
+}
+
+interface IUserNicknameInfo {
+  nickName: string;
 }
 
 interface IMainList {
@@ -49,4 +67,30 @@ interface INotice {
   mbPath: string;
   showType: string;
   title: string;
+}
+
+interface IAreaCode {
+  id: number;
+    countryName: string;
+    englishName: string;
+    countryCode: string;
+    mobileAreaCode: string;
+}
+
+interface IWin {
+  gameName: string;
+  username: string;
+  betAmount: number;
+  odds: number;
+  time: string;
+  winAmount: number;
+}
+
+interface IStation {
+  configCodeMb: string;
+  configSkype: string;
+  configTelegram: string;
+  titleSkype: string;
+  titleTelegram: string;
+  usdtBuyUrl: string;
 }

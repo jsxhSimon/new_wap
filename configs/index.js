@@ -50,8 +50,6 @@ const normalizeConfigs = (configs) => {
   return newConfig
 }
 
-console.log(process.env.APP_SITE || APP_SITE)
-
 module.exports = {
   normalizeConfigs,
   appConfigs: {

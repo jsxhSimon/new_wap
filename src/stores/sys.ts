@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { LocalStorage, Notify, Platform, Dialog } from 'quasar';
+import { LocalStorage, Notify, Platform, Dialog, SessionStorage } from 'quasar';
 import {
   apimobileAreaCodes,
   apiCatList,
@@ -11,6 +11,7 @@ import {
   apiStoken,
   apiGameLogin,
   apiIndexNoticeAndAdv,
+  apiQueryStationSet,
 } from 'src/http';
 import {
   getDomain,
@@ -25,17 +26,12 @@ import { useUserStore } from './user';
 import { deportLocalDataFactory } from 'game_data';
 import { i18n } from 'boot/i18n';
 import DialogPrimary from 'pages/common/DialogPrimary.vue';
-import { useRouter } from 'vue-router'
+import { Router } from 'src/router'
+import { apiWinList } from 'src/http/user';
 
 const { t: lang } = i18n.global;
 interface SysState {
-  areaCodes: {
-    id: number;
-    countryName: string;
-    englishName: string;
-    countryCode: string;
-    mobileAreaCode: string;
-  }[];
+  areaCodes: IAreaCode[];
   reqQueue: string[];
   hasPrefixUrl: boolean;
   SToken: string;
@@ -46,12 +42,16 @@ interface SysState {
   enterGameLoading: boolean;
   waitOpenGameList: (() => void)[];
   recoveringBalanceStatus: boolean;
+  winList: IWin[];
+  mobileAreaCode: string;
+  stationSetting: Partial<IStation>;
 }
 
 const { DEFAULT_STOKEN } = process.env;
 
 export const useSysStore = defineStore('sys', {
   state: (): SysState => ({
+    mobileAreaCode: '86',
     areaCodes: [],
     reqQueue: [],
     hasPrefixUrl: false,
@@ -67,9 +67,9 @@ export const useSysStore = defineStore('sys', {
     enterGameLoading: false,
      // 等待回转余额完成后打开三方游戏的 function 列表
     waitOpenGameList: [],
-     // 请求中api列表
-    reqQueue: [],
     recoveringBalanceStatus: false,
+    winList: [],
+    stationSetting: SessionStorage.getItem('stationSetting') ?? {},
   }),
   actions: {
     getMobileAreaCodes() {
@@ -187,7 +187,6 @@ export const useSysStore = defineStore('sys', {
       const envStore = useEnvStore();
       const payStore = usePayStore();
       const { isTry, availableWh } = game;
-      const isLogin = userStore.isLogin;
       const isAutoTransfer = userStore.userInfo.freeWalletSwitch !== 0;
       if (availableWh === 2) {
         Notify.create(lang('该场馆正在维护，请先娱乐其他场馆游戏'));
@@ -196,11 +195,13 @@ export const useSysStore = defineStore('sys', {
 
       const openDialog = () => {
         window.transferBackDialog = Dialog.create({
-          okLabel: lang('一键转回'),
+          componentProps: {
+            okLabel: lang('一键转回'),
+            message: lang('您的余额已转入x，是否结束游戏并一键转回至中心钱包？', [game.titleTag || game.depotName || game.gameName]),
+            title: lang('转账提示'),
+            contentClass: 'dialog-primary-content--pre-line',
+          },
           component: DialogPrimary,
-          message: lang('您的余额已转入x，是否结束游戏并一键转回至中心钱包？', [game.titleTag || game.depotName || game.gameName]),
-          title: lang('转账提示'),
-          contentClass: 'dialog-primary-content--pre-line',
         }).onOk(() => {
           this.recoverBalanceAction()
         })
@@ -275,7 +276,10 @@ export const useSysStore = defineStore('sys', {
                 .then((url) => {
                   resolve(url, () => (!['bog2', 'ob8'].includes(envStore.appSite) || isAutoTransfer) && this.recoverBalanceAction())
                 })
-                .catch(reject)
+                .catch(e => {
+                  console.log(e)
+                  reject()
+                })
             }
             if (this.recoveringBalanceStatus) {
               this.$patch(state => state.waitOpenGameList = state.waitOpenGameList.concat([cb]))
@@ -286,8 +290,7 @@ export const useSysStore = defineStore('sys', {
         }
       } else {
         userStore.$patch(state => state.signMode = 'signIn')
-        const router = useRouter()
-        router.push('/login')
+        Router.push('/login')
       }
     },
     recoverBalanceAction() {
@@ -311,6 +314,37 @@ export const useSysStore = defineStore('sys', {
           popUpList: popUpList.filter((item: any) => item.clientShow > 0),
           noticeList: noticeList.list,
         }))
+    },
+    getWinList() {
+      return apiWinList().then(({data}) => {
+        this.$patch(state => state.winList = data.page)
+        return data.page
+      })
+    },
+    hanldeAdClick(params: any) {
+      const { picTarget, actId, activityId, outStation } = params
+      if (picTarget) {
+        if (Platform.is.cordova && Platform.is.ios) {
+          (cordova as any).InAppBrowser.open(outStation, '_system', {})
+        } else {
+          window.open(outStation)
+        }
+      } else if (actId) {
+        Router.push({
+          path: '/activity',
+          query: {
+            activityId: activityId || undefined,
+            activityCatId: actId || undefined,
+          }
+        })
+      }
+    },
+    queryStationSet() {
+      return apiQueryStationSet().then(({data}) => {
+        this.$patch(state => state.stationSetting = data)
+        SessionStorage.set('stationSetting', data)
+        return data
+      })
     },
   },
 });

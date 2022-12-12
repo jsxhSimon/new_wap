@@ -17,19 +17,11 @@ const envStore = useEnvStore();
 const selectApi = ref('');
 
 watch(
-  () => envStore.envAppTitle,
+  () => envStore.envConfig,
   (val) => {
-    if (val) document.getElementsByTagName('title')[0].innerText = val;
-  },
-  {
-    immediate: true,
-  }
-);
-
-watch(
-  () => envStore.envConfig.APP_LANGUAGE,
-  (val) => {
-    if (val) locale.value = val;
+    if (envStore.envAppTitle) document.getElementsByTagName('title')[0].innerText = envStore.envAppTitle;
+    if (envStore.envConfig.APP_LANGUAGE) locale.value = envStore.envConfig.APP_LANGUAGE
+    if (envStore.envMobileAreaCode) sysStore.$patch(state => state.mobileAreaCode = envStore.envMobileAreaCode)
   },
   {
     immediate: true,
@@ -42,6 +34,10 @@ onBeforeMount(() => {
     envStore.getEnvConfig();
   });
 });
+
+const onScroll = (e: any) => {
+  e.preventDefault();
+}
 
 const getSelectApiUrl = (callback: () => void) => {
   selectLine().then((res) => {

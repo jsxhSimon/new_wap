@@ -50,6 +50,7 @@ import { Popup as VanPopup } from 'vant';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useSysStore } from 'src/stores/sys';
 import { useEnvStore } from 'src/stores/env'
+import useMainGame from 'src/hooks/useMainGame'
 
 const sysStore = useSysStore();
 const envStore = useEnvStore();
@@ -57,6 +58,7 @@ const show = ref(false);
 const activeGame = ref<Partial<IMainList>>({});
 const hasDownloadBar = ref(false);
 const timer: any = null;
+const { handleGameClick } = useMainGame()
 const list = computed(() => {
   return sysStore.mainGameList.filter((item) => item.depots?.length);
 });
@@ -72,9 +74,9 @@ const setActiveGame = (game: IMainList) => {
   }
 };
 
-const handleGameClick = (game: IMainGame) => {
-  sysStore.handleGameClick(game)
-}
+defineExpose({
+  show
+})
 </script>
 
 <style lang="scss">
@@ -139,7 +141,7 @@ const handleGameClick = (game: IMainGame) => {
 }
 .header-game {
   font-size: 16px;
-  background: var(--header-bg);
+  background: var(--bg1);
   padding-left: 14px;
   padding-top: 5px;
   position: relative;

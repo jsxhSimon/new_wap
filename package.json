@@ -27,13 +27,14 @@
     "quasar": "^2.6.0",
     "safe-area-insets": "^1.4.1",
     "swiper": "^8.4.5",
+    "tim-js-sdk": "^2.19.1",
     "ua-device": "^0.1.10",
     "vant": "^4.0.2",
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.0",
+    "vue-seamless-scroll": "^1.1.23",
     "vue3-marquee": "^3.1.2",
-    "vue3-seamless-scroll": "^2.0.1",
     "vuelidate": "^0.7.4"
   },
   "devDependencies": {

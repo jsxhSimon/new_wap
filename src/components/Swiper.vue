@@ -10,6 +10,7 @@
         stopOnLastSlide: false,
         disableOnInteraction: false,
       }"
+      :space-between="15"
     >
       <swiper-slide
         v-for="item in swiperList"
@@ -18,6 +19,7 @@
         <van-image
           fit="cover"
           :src="item.picMbPath"
+          @click="handleClick(item)"
         >
           <template v-slot:loading>
             <div class="default-banner">
@@ -42,6 +44,7 @@ import { Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Image as VanImage } from 'vant'
 import Announcement from './Announcement.vue';
+import { useSysStore } from 'src/stores/sys'
 
 interface Props {
   swiperListEnable?: boolean;
@@ -55,14 +58,24 @@ const props = withDefaults(defineProps<Props>(), {
   noticeListEnable: true,
 })
 
+const sysStore = useSysStore()
 const homeSwiper = ref<any>(null)
 const filterNoticeList = computed(() => {
   return props.noticeList.filter(item => item.showType !== '1')
 })
+
+const handleClick = (item: any) => {
+  sysStore.hanldeAdClick(item)
+}
 </script>
 
 <style lang="scss">
 .home-swiper {
+  .van-image {
+    img {
+      border-radius: 10px;
+    }
+  }
   .swiper {
     width: 347px;
     .van-image {

@@ -30,3 +30,11 @@ $warning   : #F2C037;
   background-size: $size;
   background-image: url('' + $utl);
 }
+
+@mixin overflow($direction: y) {
+  overflow-#{$direction}: auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -2,7 +2,13 @@ body {
   // 字体颜色
   --t1: #323232;
   --t2: #6A7391;
+  --t3: #E8EBED; // 一般用于无效描述文字
+  --t4: #CACDDB;
+  --t5: #fff;
+  --t6: rgba(50, 50, 50, .5);
   --lg: linear-gradient(90deg, #33D6FC 0%, #127DFE 100%);
+  --lg2: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
+  --bg1: #fff;
   --theme-color: #23A8FF;
   --theme-text-color: #23A8FF;
   --download-bar-close-color: #fff;
@@ -17,6 +23,15 @@ body {
   --side-bar-bg: #fff;
   --border-color: #F8F8F8;
   --header-bg: #fff;
+  --login-input-bg: rgba(255, 255, 255, .4);
+  --login-input-height: 38px;
+  --partner-line-left-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.169526) 0%, rgba(249, 249, 249, 0.722738) 100%);
+  --partner-line-right-bg: linear-gradient(90deg, rgba(249, 249, 249, 0.722738) 0%, rgba(255, 255, 255, 0.169526) 100%);
+  --form-submit-btn-bg: linear-gradient(180deg, #33D6FC 0%, #127DFE 98.1%);
+  --select-bg: #fff;
+  --verify-box-bg: #fff;
+  --verify-bar-bg: #DBF2FF;
+  --dialog-bg: #F3F5F9;
 }
 .q-page, .q-page-container, .pro-layout, .help-center-item-box {
   background-color: var(--body-bg)

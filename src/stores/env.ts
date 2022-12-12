@@ -20,6 +20,8 @@ interface IEnvConfig {
   DEFAULT_DOMAIN: string;
   DEFAULT_STOKEN: string;
   APP_ENV: string;
+  APP_HAS_OPENINSTALL: boolean;
+  APP_MOBILE_AREA_CODE: string;
 }
 
 export const useEnvStore = defineStore('env', {
@@ -73,6 +75,13 @@ export const useEnvStore = defineStore('env', {
         state.envConfig.DEFAULT_STOKEN ??
         JSON.parse(process.env.DEFAULT_STOKEN || '""')
       );
+    },
+    envHasOpeninstall(state) {
+      return state.envConfig.APP_HAS_SPORTS ??
+      JSON.parse(process.env.APP_HAS_SPORTS || '""')
+    },
+    envMobileAreaCode(state) {
+      return state.envConfig.APP_MOBILE_AREA_CODE ?? JSON.parse(process.env.DEFAULT_STOKEN || '"86"')
     },
   },
   actions: {

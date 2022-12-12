@@ -15,4 +15,48 @@ body {
       z-index: -1;
     }
   }
+  .sdy-checkbox {
+    display: flex;
+    align-items: center;
+    .sdy-checkbox-icon {
+      width: 10px;
+      height: 10px;
+      box-sizing: border-box;
+      border: 1px solid var(--t1);
+      margin-right: 5px;
+      border-radius: 50%;
+    }
+    &.checked {
+      .sdy-checkbox-icon {
+        background: var(--t1);
+      }
+    }
+  }
+  .userinfo-login,
+  .userinfo-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 22px;
+    height: 42px;
+    min-height: 42px;
+    background: var(--form-submit-btn-bg);
+    font-size: 18px;
+    padding-top: 0;
+    box-sizing: border-box;
+    &.disabled {
+      opacity: .3!important;
+    }
+  }
+  .sdy-select {
+    width: 52px;
+    height: 22px;
+    line-height: 22px;
+    background: var(--select-bg);
+    font-size: 13px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    text-align: center;
+  }
 }

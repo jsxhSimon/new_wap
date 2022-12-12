@@ -1,5 +1,6 @@
 <template>
   <q-dialog
+    class="ad"
     ref="dialog"
     :persistent="persistent"
     @hide="onDialogHide"
@@ -128,18 +129,22 @@ const handleValueChange = (val: boolean) => {
     :deep(.q-dialog__backdrop) {
       background: rgba(0, 0, 0, 0.7);
     }
+    .text-subtitle1 {
+      font-size: 14px;
+    }
   }
   .dialog-primary-content {
     width: 300px;
     padding-bottom: 10px;
     border-radius: 5px;
-    background: var(--dialog);
+    background: var(--dialog-bg);
 
     .dialog-primary-header {
       position: relative;
-      height: 35px;
-      background: var(--dialog-header);
-      color: #FFFFFF;
+      height: 40px;
+      background: var(--bg1);
+      color: var(--t1);
+      font-size: 14px;
     }
 
     .dialog-primary-content-title {
@@ -152,7 +157,7 @@ const handleValueChange = (val: boolean) => {
     & :deep(.q-icon) {
       font-size: 18px;
       // color: #FFFFFF;
-      color: #929699;
+      color: var(--t4);
     }
 
     .dialog-primary-main {
@@ -181,19 +186,21 @@ const handleValueChange = (val: boolean) => {
         border: 1px solid #A09699;
         border-radius: 5px;
         outline: none;
-        background: #fff;
-        color: #919699;
+        color: var(--t2);
         font-size: 12px;
         margin: 0 auto;
 
         &.dialog-primary-button__confirm {
           border: 0;
           // background: #FBA002;
-          background: linear-gradient(180deg, #D0C3A6 0%, #D4C8A9 8%, #C4B593 100%);
+          background: var(--lg2);
           // color: #fff;
-          color: #3A3A3A;
+          color: var(--t5);
         }
       }
+    }
+    .q-separator--horizontal {
+      display: none;
     }
   }
 

@@ -8,11 +8,9 @@
     lazy-rules
     no-error-icon
     :maxlength="getMaxlength"
-    @blur="blurCheckData"
-    @clear="changeCheckData"
     class="sign-dialog-field field-shadow"
   >
-    <template v-for="(val, key) in $slots" v-slot:[key]>
+    <template v-for="(_, key) in $slots" v-slot:[key]>
       <slot :name="key"></slot>
     </template>
   </q-input>
@@ -28,7 +26,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emits = defineEmits(['update:modelValue', 'checkBlurEvent', 'clearUserError'])
+const emits = defineEmits(['update:modelValue'])
+const inputRef = ref<any>(null)
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -37,15 +36,12 @@ const inputValue = computed({
 const getMaxlength = computed(() => {
   return props.maxlength ?? 1000000
 })
-const blurCheckData = () => {
-  if (props.blurCheck) {
-    emits('checkBlurEvent', )
-  }
+
+const validate = () => {
+  inputRef.value?.validate()
 }
 
-const changeCheckData = () => {
-  if (props.blurCheck) {
-    emits('clearUserError')
-  }
-}
+defineExpose({
+  validate
+})
 </script>

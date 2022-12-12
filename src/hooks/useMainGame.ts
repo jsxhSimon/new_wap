@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 
 const { t: lang } = i18n.global
 
-export const useMainGame = () => {
+const useMainGame = () => {
   const sysStore = useSysStore()
   const router = useRouter()
   const handleGameClick = (game: IMainGame) => {
@@ -23,6 +23,11 @@ export const useMainGame = () => {
           router.push('/sports')
         }
       } else sysStore.enterGame(game)
-    } else 
+    } else Notify.create(lang('游戏数据加载中，请稍后再试'))
+  }
+  return {
+    handleGameClick
   }
 }
+
+export default useMainGame

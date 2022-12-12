@@ -4,26 +4,42 @@
 @use "vant/lib/index.css";
 @use "vue3-marquee/dist/style.css";
 
-@each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28 {
-  .fs-#{$size} {
-    font-size: $size + px;
-  }
+html, body {
+  height: 100%;
 }
-@each $i in 4, 14, 15, 16 {
-  .mlr-#{$i} {
-    margin: 0 $i + px;
+body {
+  overflow: hidden;
+}
+
+#q-app {
+  height: 100%;
+  @include overflow();
+  @each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28 {
+    .fs-#{$size} {
+      font-size: $size + px;
+    }
   }
-  .mt-#{$i} {
-    margin-top: $i + px;
+  @each $weight in 400 500 600 700 {
+    .fw-#{$weight} {
+      font-weight: $weight;
+    }
   }
-  .mb-#{$i} {
-    margin-bottom: $i + px;
-  }
-  .ml-#{$i} {
-    margin-left: $i + px;
-  }
-  .mr-#{$i} {
-    margin-right: $i + px;
+  @each $i in 4, 10, 14, 15, 16, 20 {
+    .mlr-#{$i} {
+      margin: 0 $i + px;
+    }
+    .mt-#{$i} {
+      margin-top: $i + px;
+    }
+    .mb-#{$i} {
+      margin-bottom: $i + px;
+    }
+    .ml-#{$i} {
+      margin-left: $i + px;
+    }
+    .mr-#{$i} {
+      margin-right: $i + px;
+    }
   }
 }
 .flex {
@@ -40,4 +56,31 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+}
+
+body {
+  .mobileCaptcha {
+    position: relative;
+    .qrCodeBtn {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      height: var(--login-input-height);
+      line-height: var(--login-input-height);
+      background: none!important;
+      padding: 0;
+      &.btn-disabled {
+        pointer-events: none;
+        opacity: .5;
+      }
+      &::before {
+        display: none;
+      }
+      .block {
+        color: var(--theme-text-color);
+        line-height: var(--login-input-height);
+        font-size: 13px;
+      }
+    }
+  }
 }

@@ -79,14 +79,39 @@ export const apiCatDepotList = (catId: number) => {
     .then(({ data }) => data.catDepots);
 };
 
-// 游戏登陆
+// 游戏登录
 export const apiGameLogin = (gameId: number, isTry?: boolean) => {
   return axios.get(!isTry ? 'sys/transit' : 'sys/tryPlayGame', {
     params: { gameId },
   });
 };
 
+// 获取用户 nickname 信息
+export const apiNicknameInfoForSptv = () => {
+  return axios.get('splive/app/user/getUser')
+}
+
 // 获取banner图 消息数据
 export const apiIndexNoticeAndAdv = (params: IIndexNoticeAndAdvParams) => {
   return axios.get('sys/indexNoticeAndAdv', {params})
+}
+
+// 检测手机号是否注册
+export const apiCheckIsMobileRegistered = (params: any) => {
+  return axios.get('user/chkMobile', {params})
+}
+
+// 发送手机验证码
+export const apiSendCaptcha = (params: { fetchUrl: string, formModel: Partial<IFormModel> }) => {
+  return axios.post(`user/${params.fetchUrl}`, params.formModel)
+}
+
+// 回收余额
+export const apiRecoverBalance = () => {
+  return axios.get('pay/recoverBalance')
+}
+
+// 获取站点配置
+export const apiQueryStationSet = () => {
+  return axios.get('sys/queryStationSet')
 }

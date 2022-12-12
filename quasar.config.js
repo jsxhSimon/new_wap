@@ -44,6 +44,7 @@ module.exports = configure(function (/* ctx */) {
       'axios',
       'loganlog',
       'quasar-setup',
+      'tim',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

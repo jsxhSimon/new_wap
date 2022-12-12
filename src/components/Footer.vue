@@ -63,7 +63,7 @@ const footerTabs = computed(() => {
       iconCls: 'icon-mine',
     },
   ]
-  if (envStore.envHasSports) {
+  if (!envStore.envHasSports) {
     arr.splice(2, 1, {
       path: '/activity',
       label: lang('优惠 '),

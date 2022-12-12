@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { SessionStorage } from 'quasar'
-import { apiCheckBalance } from 'src/http'
+import { apiCheckBalance, apiRecoverBalance } from 'src/http'
 
 export const usePayStore = defineStore('pay', {
   state: () => ({
@@ -14,6 +14,9 @@ export const usePayStore = defineStore('pay', {
         .then(({ data }) => {
           this.$patch(state => state.balance = data.balance)
         })
+    },
+    recoverBalance() {
+      return apiRecoverBalance()
     },
   }
 })

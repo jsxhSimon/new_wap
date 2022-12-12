@@ -1,5 +1,5 @@
 export { rules } from './rules';
-import { date, Dialog, SessionStorage } from 'quasar';
+import { Dialog, SessionStorage } from 'quasar';
 import DialogPrimary from 'pages/common/DialogPrimary.vue';
 import { i18n } from 'boot/i18n';
 const { t: lang } = i18n.global;
@@ -120,5 +120,27 @@ export const openWindowAsync = (req: any, curSite: string) => {
   )
 }
 
+export function cloneDeep(obj: Record<string | number | symbol, any>) {
+  const isArr = Array.isArray(obj)
+  try {
+    if (isArr || typeof obj === 'object') {
+      const cloneObj: any = isArr ? [] : {}
+      Object.keys(obj).forEach((key) => {
+        // console.log('key:', key)
+        if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
+          cloneObj[key] = cloneDeep(obj[key])
+        } else {
+          cloneObj[key] = obj[key]
+        }
+      })
+      return cloneObj
+    }
+  } catch (error) {
+    // console.log('error11:', error)
+  }
+  return obj
+}
+
 export { getDomain } from './getDomain';
 export { openAppBrowser, switchOrientation } from './appBrowser'
+export { getAssetsFile } from './getAssetsFile'

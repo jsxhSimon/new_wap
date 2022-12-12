@@ -3,6 +3,8 @@ declare global {
     testModel: any;
     operainstall: any;
     transferBackDialog: any;
+    tim: any;
+    TIM: any;
   }
 }
 export {};

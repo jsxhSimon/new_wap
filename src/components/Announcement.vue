@@ -4,7 +4,7 @@
 
     <template v-if="noticeList && !emptyNoticeList">
       <div class="marquee-box">
-        <Vue3Marquee>
+        <Vue3Marquee :duration="speed">
           <span @click.stop="showAlert(item)" v-for="(item, index) in noticeList" :key="index" :data-textval="item.noticeContent" :data-indexval="index">{{ `${item.noticeTitle}:${item.noticeContent}` }}</span>
         </Vue3Marquee>
       </div>
@@ -14,10 +14,10 @@
     <!-- <span class="iconlingdang iconfont iconling"></span>这里是系统发送公告的地方，想发什就发什么吧... -->
     <q-dialog v-model="adAlert">
       <q-card class="asAlert">
-        <q-card-section class="row items-center q-pb-none">
+        <q-card-section class="row items-center q-pb-none asAlert-header">
           <div class="text-header">{{ $t('公告消息') }}</div>
           <q-space/>
-          <q-btn icon="close" flat round dense v-close-popup/>
+          <q-btn class="close-btn" icon="close" flat round dense v-close-popup/>
         </q-card-section>
         <div class="ctt">
           <img class="_img" v-if="img" :src="img">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { Vue3Marquee } from 'vue3-marquee'
 
 interface Props {
@@ -49,6 +49,12 @@ const classOption = reactive({
   step: 0.6,
   hoverStop: false,
 })
+
+const speed = computed(() => {
+  const len = props.noticeList.reduce((a, b) => a + b.noticeTitle.length + b.noticeContent.length + 1, 0)
+  return len / 1000 * 180
+})
+
 
 const showAlert = (notice: INotice) => {
   adAlert.value = true
@@ -68,7 +74,7 @@ const showAlert = (notice: INotice) => {
   overflow: hidden;
   height: 20px;
   line-height: 20px;
-  background: var(--header-bg);
+  background: var(--bg1);
   font-size: 10px;
   .marquee-icon {
     display: block;
@@ -89,6 +95,55 @@ const showAlert = (notice: INotice) => {
     margin-left: 5px;
     span {
       margin-right: 20px;
+    }
+  }
+}
+.q-dialog {
+  .q-dialog__inner {
+    .asAlert {
+      width: 315px;
+      border-radius: 8px;
+      font-size: 14px;
+      &-header {
+        padding: 0;
+        height: 40px;
+        text-align: center;
+      }
+      .text-header {
+        width: 100%;
+      }
+      .close-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-height: 40px;
+        color: var(--t4);
+      }
+      .ctt {
+        background: var(--dialog-bg);
+        padding: 20px 14px;
+        max-height: 281px;
+        @include overflow();
+        word-break: break-all;
+        color: var(--t2);
+        h5 {
+          margin: 0 0 8px 0;
+          text-align: center;
+          color: var(--t1);
+          font-size: 14px;
+          line-height: 1.3;
+        }
+        .asAlertBtn {
+          width: fit-content;
+          height: 24px;
+          line-height: 24px;
+          border-radius: 6px;
+          background: var(--lg2);
+          color: var(--t5);
+          padding: 0 20px;
+          margin: 20px auto 0;
+        }
+      }
     }
   }
 }

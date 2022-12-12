@@ -55,10 +55,10 @@ export default ({ store, router }) => {
         if (panding.length) {
           config.cancelToken = new CancelToken(c => c('回收余额被重复调用'))
         } else {
-          store.commit('sys/setReqQueue', sysStore.reqQueue.concat(['pay/recoverBalance']))
+          sysStore.$patch(state => state.reqQueue = sysStore.reqQueue.concat(['pay/recoverBalance']))
         }
       } else if (url.endsWith('sys/transit')) {
-        store.commit('sys/setReqQueue', sysStore.reqQueue.concat(['sys/transit']))
+        sysStore.$patch(state => state.reqQueue = sysStore.reqQueue.concat(['sys/transit']))
       }
     }
   }
@@ -70,7 +70,7 @@ export default ({ store, router }) => {
       const index = arr.indexOf(temp)
       if (index !== -1) {
         arr.splice(index, 1)
-        store.commit('sys/setReqQueue', arr)
+        sysStore.$patch(state => state.reqQueue = arr)
       }
     }
   }
@@ -176,10 +176,10 @@ export default ({ store, router }) => {
               Notify.create(lang('登录超时，请重新登录'))
             }
             if (useFingerprintLogin) {
-              store.commit('user/setSignMode', 'fingerprintLogin')
+              userStore.$patch(state => state.signMode = 'fingerprintLogin')
             } else {
-              store.dispatch('user/clearUserInfo')
-              store.commit('user/setSignMode', 'signIn')
+              userStore.clearUserInfo()
+              userStore.$patch(state => state.signMode = 'signIn')
             }
           })
 

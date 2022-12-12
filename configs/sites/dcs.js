@@ -8,6 +8,7 @@ module.exports = {
   APP_ICON: 'mb2.png',
   APP_CODE: 'dcs',
   APP_HAS_SPORT: false,
+  APP_HAS_OPENINSTALL: true,
   APP_API_URL: ['https://adminapitestbk.99yipintao.com', 'https://adminapitest.51renqijie.com', 'https://adminapitestbk.51renqijie.com'],
   APP_DOWNLOAD_LDY: 'https://www.lsdy1001.com/', // 落地页 集成openinstall
   DEFAULT_DOMAIN: 'www.wsdyrc1.net/', // 给app用的主站点域名
