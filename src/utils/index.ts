@@ -8,12 +8,14 @@ import { useSysStore } from 'src/stores/sys'
 export const enterGameErrorDialog = (msg: string, time: number) => {
   let count = time || 10;
   const dialogQuickclick = Dialog.create({
+    componentProps: {
+      message: msg,
+      title: lang('温馨提示'),
+      contentClass: 'dialog-primary-content--pre-line',
+      okLabel: `${lang('知道了')}(${count})`,
+      persistent: true,
+    },
     component: DialogPrimary,
-    message: msg,
-    title: lang('温馨提示'),
-    contentClass: 'dialog-primary-content--pre-line',
-    okLabel: `${lang('知道了')}(${count})`,
-    persistent: true,
   }).onOk(() => {
     // eslint-disable-next-line
     countdownInterval && clearInterval(countdownInterval);
@@ -47,13 +49,7 @@ export const getDownloadUrl = () => {
 
 // 获取北京时间时间戳
 export const getTimeStamp = () => {
-  const currentDate = new Date(
-    new Date().getTime().toString() +
-      SessionStorage.getItem('timeGap') +
-      (parseInt((new Date().getTimezoneOffset() / 60).toString(), 10) + 8) *
-        3600 *
-        1000
-  );
+  const currentDate = new Date(new Date().getTime() + (SessionStorage.getItem('timeGap') as number) + (Math.floor(new Date().getTimezoneOffset() / 60) + 8) * 3600 * 1000);
   const y = currentDate.getFullYear();
   const m = currentDate.getMonth();
   const d = currentDate.getDate();

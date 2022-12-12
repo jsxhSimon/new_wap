@@ -61,7 +61,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   scrollFixed: false,
-  gameTypeList: [] as any,
+  gameTypeList: () => [],
   gameType: 0,
   type: 'user',
   rightButton: 'side'

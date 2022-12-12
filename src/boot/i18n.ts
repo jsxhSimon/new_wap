@@ -22,7 +22,7 @@ declare module 'vue-i18n' {
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
 export const i18n = createI18n({
-  locale: 'en-US',
+  locale: 'zh',
   legacy: false,
   messages,
 });

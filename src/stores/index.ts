@@ -1,6 +1,12 @@
 import { store } from 'quasar/wrappers'
 import { createPinia } from 'pinia'
 import { Router } from 'vue-router';
+export { useUserStore } from './user'
+export { useSysStore } from './sys'
+export { usePayStore } from './pay'
+export { useTimStore } from './tim'
+export { useEnvStore } from './env'
+export { useTaskStore } from './task'
 
 /*
  * When adding new properties to stores, you should also

@@ -5,7 +5,7 @@ const { APP_TIM_SDK_APP_ID } = process.env
 
 // 初始化 SDK 实例
 const tim = TIM.create({
-  SDKAppID: APP_TIM_SDK_APP_ID,
+  SDKAppID: JSON.parse(APP_TIM_SDK_APP_ID as string),
 })
 
 tim.setLogLevel(1)

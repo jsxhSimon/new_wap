@@ -1,3 +1,4 @@
+import { axios } from 'boot/axios'
 import { defineStore } from 'pinia';
 import { LocalStorage, Notify, Platform } from 'quasar';
 import { apiCheckIsMobileRegistered, apiNicknameInfoForSptv } from 'src/http';
@@ -12,6 +13,7 @@ interface IUser {
   useFingerprintLogin: boolean;
   signMode: string;
   equipmentId: string;
+  messageUnreadCount: number;
 }
 
 export const useUserStore = defineStore('user', {
@@ -22,6 +24,7 @@ export const useUserStore = defineStore('user', {
     useFingerprintLogin: LocalStorage.getItem('useFingerprintLogin') ?? false,
     signMode: '',
     equipmentId: LocalStorage.getItem('eq_uuid') ?? '',
+    messageUnreadCount: 0,
   }),
   getters: {
     isLogin(state) {
@@ -135,6 +138,23 @@ export const useUserStore = defineStore('user', {
     },
     resetPasswordWithMobile(params: Partial<IFormModel>) {
       return apiResetPasswordWithMoble(params).then(({data}) => data.token)
+    },
+    getMessageUnread(params: Partial<{msgType: number}>) { // 查询会员是否有未读消息
+      const msgType = params.msgType || 0
+      return axios
+        .get('user/messageUnread', {
+          params: {
+            msgType: 0,
+            ...params,
+          },
+        })
+        .then(({ data }) => {
+          if (msgType === 0) {
+            // 设置用户未读消息
+            this.$patch(state => state.messageUnreadCount = data.count)
+          }
+          return { count: data.count, hasUnread: data.data }
+        }) // 几条未读消息  是否有未读消息
     },
   },
 });

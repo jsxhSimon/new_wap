@@ -9,6 +9,7 @@ html, body {
 }
 body {
   overflow: hidden;
+  background: var(--body-bg);
 }
 
 #q-app {
@@ -40,6 +41,9 @@ body {
     .mr-#{$i} {
       margin-right: $i + px;
     }
+    .plr-#{$i} {
+      padding: 0 $i + px;
+    }
   }
 }
 .flex {
@@ -56,6 +60,16 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+}
+.sdy-btn {
+  padding: 0 22px;
+  height: 26px;
+  line-height: 26px;
+  background: var(--lg2);
+  border-radius: 13px;
+  text-align: center;
+  color: var(--t5);
+  font-size: 13px;
 }
 
 body {

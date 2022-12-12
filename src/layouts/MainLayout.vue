@@ -1,6 +1,5 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="pro-layout" :data-footer="$route.meta.footerVisible">
-    <Header v-if="!route.meta.hideHeader" />
     <Footer />
     <q-page-container>
       <keep-alive :include="['home', 'videoGames', 'activityList']">
@@ -12,7 +11,6 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import Header from 'components/Header.vue'
 import Footer from 'components/Footer.vue'
 
 const route = useRoute()

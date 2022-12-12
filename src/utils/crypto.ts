@@ -1,7 +1,7 @@
-import CryptoJs from 'crypto-js'
+import CryptoJS from 'crypto-js'
 
-const key = CryptoJs.enc.Utf8.parse('1234123412ABCDEF')
-const iv = CryptoJs.enc.Utf8.parse('ABCDEF1234123412') // 十六位十六进制数作为密钥偏移量
+const key = CryptoJS.enc.Utf8.parse('1234123412ABCDEF')
+const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412') // 十六位十六进制数作为密钥偏移量
 
 // 解密方法
 function Decrypt(word: string) {

@@ -44,7 +44,8 @@ export default ({ store, router }) => {
       // eslint-disable-next-line no-empty
     } else {
       const micsecond = getTimeStamp()
-      config.headers.sptvstoken = crypto.Encrypt(APP_DEFAULT_SPTVTOKEN + micsecond)
+      console.log(micsecond)
+      config.headers.sptvstoken = crypto.Encrypt(JSON.parse(APP_DEFAULT_SPTVTOKEN) + micsecond)
     }
     if (url.endsWith('pay/recoverBalance') || url.endsWith('sys/transit')) {
       if (sysStore.reqQueue.length && sysStore.reqQueue.includes('pay/recoverBalance') && sysStore.reqQueue.includes('sys/transit')) {
@@ -82,7 +83,7 @@ export default ({ store, router }) => {
       if (!Platform.is.cordova) {
         domain && (config.headers.domain = window.location.host)
       }
-      if (APP_LANGUAGE) config.headers.language = APP_LANGUAGE
+      if (APP_LANGUAGE) config.headers.language = JSON.parse(APP_LANGUAGE)
       SToken && (config.headers.SToken = SToken)
       token && (config.headers.token = token)
       return config

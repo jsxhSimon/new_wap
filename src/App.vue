@@ -6,6 +6,7 @@
 import { ref, onMounted, onBeforeMount, watch } from 'vue';
 import { useSysStore } from 'src/stores/sys';
 import { useEnvStore } from 'src/stores/env';
+import { useTimStore } from 'src/stores/tim'
 import { selectLine } from 'boot/selectLine';
 import { LocalStorage, Platform, Notify } from 'quasar';
 import { axios } from 'boot/axios';
@@ -14,11 +15,13 @@ import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
 const sysStore = useSysStore();
 const envStore = useEnvStore();
+const timStore = useTimStore();
 const selectApi = ref('');
 
 watch(
   () => envStore.envConfig,
   (val) => {
+    console.log('language: ', locale)
     if (envStore.envAppTitle) document.getElementsByTagName('title')[0].innerText = envStore.envAppTitle;
     if (envStore.envConfig.APP_LANGUAGE) locale.value = envStore.envConfig.APP_LANGUAGE
     if (envStore.envMobileAreaCode) sysStore.$patch(state => state.mobileAreaCode = envStore.envMobileAreaCode)
@@ -33,6 +36,7 @@ onBeforeMount(() => {
     sysStore.queryStationSet();
     sysStore.getMobileAreaCodes();
     envStore.getEnvConfig();
+    timStore.timInit()
   });
 });
 

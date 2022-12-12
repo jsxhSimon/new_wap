@@ -86,8 +86,6 @@ export const useEnvStore = defineStore('env', {
   },
   actions: {
     getEnvConfig() {
-      console.log(process.env.SITE);
-      console.log(process.env.APP_CODE);
       const query = qs.stringify({
         filters: {
           APP_SITE: JSON.parse(process.env.SITE as string),

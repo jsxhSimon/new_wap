@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { axios } from 'boot/axios'
 import { SessionStorage } from 'quasar'
 import { apiCheckBalance, apiRecoverBalance } from 'src/http'
 
@@ -17,6 +18,10 @@ export const usePayStore = defineStore('pay', {
     },
     recoverBalance() {
       return apiRecoverBalance()
+    },
+    getVipInfo() { // 获取VIP 信息
+      return axios
+        .get('sdyactivity/vipInfo?=1')
     },
   }
 })

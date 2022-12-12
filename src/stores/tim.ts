@@ -22,6 +22,8 @@ interface IMessage {
   name: string;
   src: string;
   text: string;
+  fromAccount: string;
+  random: string;
 }
 
 interface ITimStore {
@@ -154,8 +156,8 @@ export const useTimStore = defineStore('tim', {
         state.groupModel.messageList = []
       })
     },
-    pushMessageList() {
-      const setMessageList = (data) => {
+    pushMessageList(payload: any) {
+      const setMessageList = (data: any) => {
         if (data.payload) {
           const payloadText = crypto.Decrypt(data.payload.data)
           const bool = payloadText.includes('deleteBool')
@@ -167,21 +169,34 @@ export const useTimStore = defineStore('tim', {
               if (msgBool) {
                 const index = curMessageList.findIndex((item: IMessage) => (item.msgSeq ? item.msgSeq === msgSeq : item.sequence === msgSeq))
                 curMessageList.splice(index, 1)
-                state.groupModel.messageList = curMessageList
+                this.$patch(state => state.groupModel.messageList = curMessageList)
               } else {
-                const arr = []
-                curMessageList.forEach((item) => {
+                const arr: IMessage[] = []
+                curMessageList.forEach((item: IMessage) => {
                   if (item.fromAccount !== fromAccount && item.from !== fromAccount) {
                     arr.push(item)
                   }
                 })
-                state.groupModel.messageList = arr
+                this.$patch(state => state.groupModel.messageList = arr)
               }
               return
             }
           }
         }
+        this.$patch(state => state.groupModel.messageList = [...state.groupModel.messageList, data])
       }
+      const list = this.groupModel.messageList.map(_ => +_.random)
+      const payloads = (Array.isArray(payload) ? payload : [payload]).filter(_ => !list.includes(+_.random))
+      payloads.forEach(item => setMessageList(item))
+    },
+    timInit() {
+      this.getSdkAppId()
+        .then((data) => {
+          window.tim = window.TIM.create({
+            SDKAppID: data,
+          })
+          window.tim.setLogLevel(1)
+        })
     },
   },
 })

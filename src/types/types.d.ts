@@ -18,10 +18,23 @@ interface IFormModel {
 }
 
 interface IUserInfo {
+  gender: string;
+  available: number;
+  balance: number;
+  birthday: string;
+  email: string;
   loginName: string;
+  levelName: string;
+  mbrLevel: number;
+  mobile: string;
+  nickName: string;
+  realName: string;
+  registerTime: string;
   password: string;
   username: string;
+  /** !=0 为自动转账 */
   freeWalletSwitch: number;
+  userId: number;
 }
 
 interface IUserNicknameInfo {
