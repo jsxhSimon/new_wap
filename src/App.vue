@@ -30,14 +30,11 @@ watch(
 
 onBeforeMount(() => {
   getSelectApiUrl(() => {
+    sysStore.queryStationSet();
     sysStore.getMobileAreaCodes();
     envStore.getEnvConfig();
   });
 });
-
-const onScroll = (e: any) => {
-  e.preventDefault();
-}
 
 const getSelectApiUrl = (callback: () => void) => {
   selectLine().then((res) => {

@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { axios } from 'boot/axios'
+import { cloneDeep } from 'src/utils/index'
+import crypto from 'src/utils/crypto'
 import { useUserStore } from './user'
 
 /**
@@ -151,6 +153,35 @@ export const useTimStore = defineStore('tim', {
         state.groupModel.onlineNum = 0
         state.groupModel.messageList = []
       })
+    },
+    pushMessageList() {
+      const setMessageList = (data) => {
+        if (data.payload) {
+          const payloadText = crypto.Decrypt(data.payload.data)
+          const bool = payloadText.includes('deleteBool')
+          const curMessageList = cloneDeep(this.groupModel.messageList)
+          if (bool) {
+            const { deleteBool, msgSeq, fromAccount } = JSON.parse(payloadText)
+            const msgBool = !!msgSeq
+            if (deleteBool) {
+              if (msgBool) {
+                const index = curMessageList.findIndex((item: IMessage) => (item.msgSeq ? item.msgSeq === msgSeq : item.sequence === msgSeq))
+                curMessageList.splice(index, 1)
+                state.groupModel.messageList = curMessageList
+              } else {
+                const arr = []
+                curMessageList.forEach((item) => {
+                  if (item.fromAccount !== fromAccount && item.from !== fromAccount) {
+                    arr.push(item)
+                  }
+                })
+                state.groupModel.messageList = arr
+              }
+              return
+            }
+          }
+        }
+      }
     },
   },
 })
