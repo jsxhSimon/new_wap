@@ -21,3 +21,9 @@ import { useUserStore } from 'src/stores'
 
 const userStore = useUserStore()
 </script>
+
+<style lang="scss">
+.setting-page {
+  
+}
+</style>
