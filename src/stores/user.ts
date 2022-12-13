@@ -15,6 +15,7 @@ interface IUser {
   signMode: string;
   equipmentId: string;
   messageUnreadCount: number;
+  isLiveInPay: boolean;
 }
 
 export const useUserStore = defineStore('user', {
@@ -26,6 +27,7 @@ export const useUserStore = defineStore('user', {
     signMode: '',
     equipmentId: LocalStorage.getItem('eq_uuid') ?? '',
     messageUnreadCount: 0,
+    isLiveInPay: false,
   }),
   getters: {
     isLogin(state) {
@@ -151,7 +153,7 @@ export const useUserStore = defineStore('user', {
     resetPasswordWithMobile(params: Partial<IFormModel>) {
       return apiResetPasswordWithMoble(params).then(({data}) => data.token)
     },
-    getMessageUnread(params: Partial<{msgType: number}>) { // 查询会员是否有未读消息
+    getMessageUnread(params: Partial<{msgType: number}> = {}) { // 查询会员是否有未读消息
       const msgType = params.msgType || 0
       return axios
         .get('user/messageUnread', {
@@ -167,6 +169,9 @@ export const useUserStore = defineStore('user', {
           }
           return { count: data.count, hasUnread: data.data }
         }) // 几条未读消息  是否有未读消息
+    },
+    aiRecommendSeven() {
+      return axios.get('user/aiRecommendSeven').then(({ data }) => data.data)
     },
   },
 });

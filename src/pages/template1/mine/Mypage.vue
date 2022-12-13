@@ -53,6 +53,7 @@
       </div>
     </q-pull-to-refresh>
     <CheckIn :isOut="true" :signDays="signDays" :isAvailable="isAvailable" :signBonusId="signBonusId" :bonuseAmount="bonuseAmount" @resolveSignInfo="resolveSignInfo" />
+    <GameRemcomed />
     <MySettinglist />
     <div class="login-out mt-15" @click="logout">{{ $t('退出') }}</div>
   </div>
@@ -69,6 +70,7 @@ import headerFemaleImg from 'images/common/headerFemale.png'
 import headerMaleImg from 'images/common/headerMale.png'
 import CheckIn from 'src/components/CheckIn.vue'
 import MySettinglist from './MySettinglist.vue'
+import GameRemcomed from 'src/components/GameRemcomed.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -89,6 +91,7 @@ let timer = 0
 
 onBeforeMount(() => {
   payStore.getBalance()
+  userStore.getMessageUnread()
 })
 
 onMounted(() => {

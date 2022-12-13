@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="pro-layout" :data-footer="$route.meta.footerVisible">
-    <Footer />
+    <MainHeader v-if="!route.meta.hideHeader" />
+    <Footer v-if="footerVisible" />
     <q-page-container>
       <keep-alive :include="['home', 'videoGames', 'activityList']">
         <router-view :key="$route.fullPath" />
@@ -10,9 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import MainHeader from 'src/components/MainHeader.vue';
 import Footer from 'components/Footer.vue'
+import router from 'src/router';
 
 const route = useRoute()
 
@@ -22,5 +25,9 @@ watch(
     document.querySelector('#q-app')!.scrollTop = 0
   }
 )
+
+const footerVisible = computed(() => {
+  return route.meta.footerVisible
+})
 
 </script>

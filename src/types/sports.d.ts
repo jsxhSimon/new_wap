@@ -10,7 +10,7 @@ interface SbMatch {
   sportType: number;
   sportName: string;
   leagueId: number;
-  /** 联赛首字母 */ 
+  /** 联赛首字母 */
   leagueInitials: string;
   leagueName: string;
   leagueSort: number;
@@ -97,6 +97,7 @@ interface IGameType {
 
 
 interface FBMatch {
+  groupKey?: string;
   id: number;
   bt: number;
   fid: number;
@@ -225,4 +226,39 @@ interface XMMatch {
   tid: string;
   tn: string;
   tnjc: string;
+}
+
+interface IFBMenu1 {
+  count: number;
+  menuLevel: number;
+  name: string;
+  menu2: IFBMenu2[];
+}
+
+interface IFBMenu2 {
+  count: number;
+  menuLevel: number;
+  parentId: number;
+  sportId: number;
+  sportName: string;
+}
+
+interface XmMenu {
+  count: number;
+  menuId: number;
+  menuType: number;
+  menuName: string;
+  grade: number;
+  field1: string;
+  subList: XmSubMenu[];
+}
+
+interface XmSubMenu {
+  count: number;
+  field1: string;
+  grade: number;
+  menuId: number;
+  menuName: string;
+  menuType: number;
+  parentId: number;
 }

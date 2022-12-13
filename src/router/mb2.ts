@@ -29,9 +29,18 @@ const routes: RouteRecordRaw[] = [
         path: '/minePage',
         meta: {
           title: '我的',
-          footerVisible: true
+          footerVisible: true,
+          showKf: true,
         },
         component: () => import('pages/mine/Mypage.vue')
+      },
+      {
+        path: 'mine/setting',
+        meta: {
+          title: '个人资料',
+          showKf: true,
+        },
+        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/Setting.vue'),
       },
     ],
   },

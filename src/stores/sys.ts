@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { axios } from 'boot/axios'
 import { LocalStorage, Notify, Platform, Dialog, SessionStorage } from 'quasar';
 import {
   apimobileAreaCodes,
@@ -343,6 +344,23 @@ export const useSysStore = defineStore('sys', {
         SessionStorage.set('stationSetting', data)
         return data
       })
+    },
+    getAiGameList(params: any) {
+      if (+params.gameType === 1) {
+        if (params.type === 'FB体育') {
+          return params.getList({ type: params.parentId, sportId: params.sportId })
+        }
+        return params.mth({ ...params.i1, menuName: '足球' }).then((res: any) => {
+          const fres = res.slice(0, 1)
+          if (fres.length > 0) {
+            fres.sport = 1
+          }
+          return fres
+        })
+      }
+      // eslint-disable-next-line object-curly-newline
+      const url = ({ 12: 'gameLotteryList', 3: 'getGameByTrunmanShowCategory', 5: 'gameList', 6: 'gameChessList' } as any)[params.catId] // , 12: 'gameLotteryList'
+      return axios.get(`/sys/${url}`, { params: { depotId: params.depotId, pageSize: 4, pageNo: 1 } }).then(({ data }) => (data.page ? data.page.list : data.games.list))
     },
   },
 });

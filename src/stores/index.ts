@@ -7,6 +7,8 @@ export { usePayStore } from './pay'
 export { useTimStore } from './tim'
 export { useEnvStore } from './env'
 export { useTaskStore } from './task'
+export { useFbtyStore } from './fbty'
+export { useXmStore } from './xm'
 
 /*
  * When adding new properties to stores, you should also

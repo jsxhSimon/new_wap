@@ -107,3 +107,9 @@ interface IStation {
   titleTelegram: string;
   usdtBuyUrl: string;
 }
+
+interface IAIData {
+  depotId: number;
+  gameType: number;
+  totalBet: number;
+}
