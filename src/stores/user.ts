@@ -5,6 +5,7 @@ import { apiCheckIsMobileRegistered, apiNicknameInfoForSptv } from 'src/http';
 import { apiCheckVfyRegisterAndLogin, apiGenerateRegInfo, apiLogin, apiMessageInfo, apiRegister, apiRegistSetting, apiResetPasswordValidCode, apiResetPasswordWithMoble } from 'src/http/user';
 import { Router } from 'src/router'
 import { useEnvStore } from './env'
+import { useLoading } from 'src/utils'
 
 interface IUser {
   userInfo: Partial<IUserInfo>;
@@ -57,6 +58,17 @@ export const useUserStore = defineStore('user', {
           loginLocked: false,
         };
       });
+    },
+    logout() {
+      const closeLoading = useLoading()
+      return axios
+        .post('user/loginOut')
+        .then(() => {
+          this.clearUserInfo()
+          LocalStorage.set('__friend', 1) // 初始化好友推荐图标
+          Router.push('/')
+        })
+        .finally(() => closeLoading())
     },
     register(params: Partial<IFormModel>) {
       if (Platform.is.cordova) {

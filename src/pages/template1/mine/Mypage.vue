@@ -2,7 +2,7 @@
   <div class="mine-page">
     <q-pull-to-refresh @refresh="refresh">
       <Header :title="$t('我的')" :has-kf="true" />
-      <div class="account-info mt-10">
+      <div class="account-info mt-10 mb-15">
         <div class="flex align-center mb-10 plr-16">
           <div class="left">
             <q-img class="avatar"
@@ -53,6 +53,8 @@
       </div>
     </q-pull-to-refresh>
     <CheckIn :isOut="true" :signDays="signDays" :isAvailable="isAvailable" :signBonusId="signBonusId" :bonuseAmount="bonuseAmount" @resolveSignInfo="resolveSignInfo" />
+    <MySettinglist />
+    <div class="login-out mt-15" @click="logout">{{ $t('退出') }}</div>
   </div>
 </template>
 
@@ -61,10 +63,12 @@ import { ref, onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Progress as VanProgress } from 'vant'
 import { useUserStore, useEnvStore, usePayStore } from 'src/stores'
+import { cloneDeep } from 'src/utils'
 import Header from 'components/Header.vue'
 import headerFemaleImg from 'images/common/headerFemale.png'
 import headerMaleImg from 'images/common/headerMale.png'
 import CheckIn from 'src/components/CheckIn.vue'
+import MySettinglist from './MySettinglist.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -74,7 +78,7 @@ const percentVal = ref(0)
 const upgradeDeposit = ref(0)
 const upgradeValidbet = ref(0)
 const loading = ref(false)
-const getVipInfoData = ref()
+const getVipInfoData = ref<any>(null)
 const activityLevelList = ref([])
 const signDays = ref([])
 const isAvailable = ref(false)
@@ -168,12 +172,52 @@ const handleLoading = () => {
     .finally(() => a = 1)
 }
 
-const resolveSignInfo
+const resolveSignInfo = (x: any) => {
+  // 签到总天数
+  const tmpSignDays = cloneDeep(x.taskConfigs[0].rewardDto.filesDtos[0].dayDtoList)
+  // 我的签到数据
+  const mysignInfo = x.taskConfigs[0].rewardDto.taskBonuses
+  mysignInfo.sort((a: any, b: any) => {
+    const val = new Date(a.time) > new Date(b.time) ? 1 : -1
+    return val
+  })
+  // 今天是否已签到
+  if (mysignInfo && mysignInfo.length > 0) {
+    const lastSignInfo = mysignInfo[mysignInfo.length - 1]
+    isAvailable.value = !isToday(lastSignInfo.time)
+    bonuseAmount.value = lastSignInfo.bonusAmount
+  } else {
+    isAvailable.value = true // 没有签到记录 今天可以签到
+  }
+
+  const ruleRowsLength = tmpSignDays.length
+  for (let i = 0; i < mysignInfo.length; i++) {
+    if (i + 1 > ruleRowsLength) break
+    tmpSignDays[i].signStatus = true
+    tmpSignDays[i].bonusAmount = mysignInfo[i].bonusAmount
+  }
+  signDays.value = tmpSignDays
+  // 点击签到按钮的要领取的id
+  signBonusId.value = x.taskConfigs[0].id
+}
+
+const isToday = (str: string) => {
+  const d = new Date(str.replace(/-/g, '/'))
+  const todaysDate = new Date()
+  if (d.setHours(0, 0, 0, 0) === todaysDate.setHours(0, 0, 0, 0)) {
+    return true
+  }
+  return false
+}
+
+const logout = () => {
+  userStore.logout()
+}
 </script>
 
 <style lang="scss">
 .mine-page {
-  padding: calc(env(safe-area-inset-top) + 44px) 14px calc(env(safe-area-inset-bottom) + 100px);
+  padding: calc(env(safe-area-inset-top) + 44px) 14px 0;
   .account-info {
     border-radius: 10px;
     background: var(--bg1);
@@ -235,6 +279,17 @@ const resolveSignInfo
       color: var(--t2);
       font-size: 12px;
     }
+  }
+  .login-out {
+    width: 347px;
+    height: 40px;
+    line-height: 40px;
+    background: var(--bg1);
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    text-align: center;
+    color: var(--t2);
+    font-size: 14px;
   }
 }
 </style>

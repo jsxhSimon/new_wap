@@ -7,8 +7,7 @@ import { enterGameErrorDialog, getTimeStamp } from 'src/utils/index'
 import sbErrorMap from 'src/utils/sbErrorMap'
 import fbErrorMap from 'src/utils/fbErrorMap'
 import { i18n } from 'boot/i18n'
-import { useSysStore } from 'src/stores/sys'
-import { useUserStore } from 'src/stores/user'
+import { useSysStore, useUserStore } from 'src/stores'
 
 const { t: lang } = i18n.global
 
@@ -173,7 +172,7 @@ export default ({ store, router }) => {
         router
           .push('/')
           .finally(() => {
-            if (store.getters['user/isLogin']) {
+            if (userStore.isLogin) {
               Notify.create(lang('登录超时，请重新登录'))
             }
             if (useFingerprintLogin) {

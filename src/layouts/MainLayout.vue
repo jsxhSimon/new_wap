@@ -10,9 +10,17 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Footer from 'components/Footer.vue'
 
 const route = useRoute()
+
+watch(
+  () => route.fullPath,
+  () => {
+    document.querySelector('#q-app')!.scrollTop = 0
+  }
+)
 
 </script>

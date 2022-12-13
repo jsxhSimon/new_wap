@@ -5,12 +5,16 @@ body {
   --t3: #E8EBED; // 一般用于无效描述文字
   --t4: #CACDDB;
   --t5: #fff;
-  --t6: #5E6683;
   --t6: rgba(50, 50, 50, .5);
+  --t7: #8897B8;
+  --t8: #5E6683;
   --lg: linear-gradient(90deg, #33D6FC 0%, #127DFE 100%);
   --lg2: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
   --bg1: #fff;
   --bg2: #F6F9FF;
+  --bg3: #DFECFF;
+  --btn-disabled-bg: #DDE0E7;
+  --check-in-line-bg: #D7EDFF;
   --theme-color: #23A8FF;
   --theme-text-color: #23A8FF;
   --download-bar-close-color: #fff;
@@ -34,6 +38,7 @@ body {
   --verify-box-bg: #fff;
   --verify-bar-bg: #DBF2FF;
   --dialog-bg: #F3F5F9;
+  --box-shadow: 0px 0px 4px #D7D9E8;
 }
 .q-page, .q-page-container, .pro-layout, .help-center-item-box {
   background-color: var(--body-bg)

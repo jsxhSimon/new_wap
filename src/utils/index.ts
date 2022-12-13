@@ -137,6 +137,52 @@ export function cloneDeep(obj: Record<string | number | symbol, any>) {
   return obj
 }
 
+/**
+ * 对列表分组
+ * @param array
+ * @param f
+ * @param key
+ * @returns {{key: *, list: *}[]}
+ */
+ export const groupBy = (array: any[], f: any, key: string) => {
+  const groups: any = {}
+  array.forEach((o) => {
+    const group = f(o)
+    groups[group] = groups[group] || []
+    groups[group].push(o)
+  })
+  return Object.keys(groups).map(group => ({
+    [key]: group,
+    list: groups[group],
+  }))
+}
+
+/**
+ * 对列表分组 按照指定key
+ * @param array
+ * @param getKeys => { name: *, groupKey: *}
+ * @returns {{name: *, list: *, groupKey: *}[]}
+ */
+ export const groupByKey = (array: any[], getKeys: any) => {
+  const groups: any = {}
+  array.forEach((o) => {
+    const { groupKey, name, leagueId } = getKeys(o)
+    if (groups[groupKey]) {
+      groups[groupKey] = { list: [...groups[groupKey].list, o], name }
+    } else {
+      groups[groupKey] = { list: [o], name }
+    }
+    if (leagueId !== undefined) groups[groupKey] = { ...groups[groupKey], leagueId }
+  })
+  return Object.keys(groups).map(key => ({
+    name: groups[key].name,
+    list: groups[key].list,
+    leagueId: groups[key].leagueId,
+    groupKey: key,
+  }))
+}
+
 export { getDomain } from './getDomain';
 export { openAppBrowser, switchOrientation } from './appBrowser'
 export { getAssetsFile } from './getAssetsFile'
+export { useLoading } from './useLoading'

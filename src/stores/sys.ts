@@ -20,9 +20,7 @@ import {
   openWindowAsync,
   switchOrientation,
 } from 'src/utils';
-import { useEnvStore } from './env';
-import { usePayStore } from './pay'
-import { useUserStore } from './user';
+import { useEnvStore, usePayStore, useUserStore } from 'src/stores'
 import { deportLocalDataFactory } from 'game_data';
 import { i18n } from 'boot/i18n';
 import DialogPrimary from 'pages/common/DialogPrimary.vue';
