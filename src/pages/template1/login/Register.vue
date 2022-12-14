@@ -55,12 +55,12 @@
         :type="item.type"
         :placeholder="item.placeholder"
         :rules="rules[item.field]"
-        :maxlength="(lengthMap as any)[sysStore.mobileAreaCode] || 60"
+        :maxlength="sysStore.mobileMaxLen"
       >
         <template v-slot:prepend>
           <span :class="'iconfont ' + item.icon"></span>
           <div class="sdy-select mr-10" :class="{active: selectActive}" @click="selectActive = !selectActive">
-            <div class="label">{{activeCode ? '+'+activeCode.mobileAreaCode : $t('区号')}}</div>
+            <div class="label">{{sysStore.activeCode ? '+'+sysStore.activeCode.mobileAreaCode : $t('区号')}}</div>
           </div>
           <AreaCodePopup :show="selectActive" @change="areaCodeChange" @close="selectActive = false" />
         </template>
@@ -75,7 +75,7 @@
             <van-icon :name="formModel.captchaVerification ? 'passed' : 'circle'" /> {{ formModel.captchaVerification ? $t('安全验证成功') : $t('点击进行安全验证')}}
           </div>
         </div>
-    
+
       </div>
 
       <div class="mobileCaptcha" v-else-if="item.field === 'mobileCaptchareg'">
@@ -191,10 +191,6 @@ const verifyRef = ref<any>(null)
 const mbVerifyRef = ref<any>(null)
 const isLoading = ref(false)
 
-const activeCode = computed(() => {
-  return sysStore.areaCodes.find(item => item.mobileAreaCode === sysStore.mobileAreaCode)
-})
-
 const disabledMobileCaptcha = computed(() => {
   return !rules.value.mobile?.every((rule: (v: string) => boolean) => rule(formModel.mobile ?? '') === true)
 })
@@ -207,7 +203,7 @@ const rules = computed(() => {
       (val: string) => !!val || lang('请输入确认密码'),
       (val: string) => val === formModel.loginPwd || lang('确认密码与密码不匹配')
     ],
-    mobile: activeCode.value ? ((rl.allMobile as any)[activeCode.value.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
+    mobile: sysStore.activeCode ? ((rl.allMobile as any)[sysStore.activeCode.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
     mobileCaptchareg: [
       () => !!mobileVerityCode.value || lang('请先完成滑块验证'),
       () => isMobileCaptchaSent.value || lang('请先获取验证码'),
@@ -224,7 +220,7 @@ const rules = computed(() => {
         ...(staticRules as any)[field] || []
       ]
     } else if (field === 'mobile') {
-      prev[field] = activeCode.value ? ((rl.allMobile as any)[activeCode.value.countryCode] || rl.allMobile.all)() : rl.allMobile.all()
+      prev[field] = sysStore.activeCode ? ((rl.allMobile as any)[sysStore.activeCode.countryCode] || rl.allMobile.all)() : rl.allMobile.all()
     } else {
       prev[field] = [
         (val: string) => (
@@ -439,7 +435,6 @@ const sendMobileCaptcha = () => {
 }
 
 const getRegisterSetting = () => {
-  console.log('login')
   userStore.getRegisterSetting()
     .then((data) => {
       registerSetting.value = data

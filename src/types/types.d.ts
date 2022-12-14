@@ -15,6 +15,21 @@ interface IFormModel {
   mainDomain?: string;
   code?: string;
   token?: string;
+  codeSign?: string;
+}
+
+interface ISettingItemFormModel {
+  captcha: string;
+  lastPwd: string;
+  pwd: string;
+  mobile: string;
+  realName: string;
+  gender: string;
+  email: string;
+  birthday: string;
+  confirmPwd: string;
+  codeSign: string;
+  code: string;
 }
 
 interface IUserInfo {

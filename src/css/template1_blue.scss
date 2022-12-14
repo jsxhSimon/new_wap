@@ -13,6 +13,8 @@ body {
   --bg1: #fff;
   --bg2: #F6F9FF;
   --bg3: #DFECFF;
+  --bg4: #F3F8FE;
+  --input-bg: #F3F5F9;
   --btn-disabled-bg: #DDE0E7;
   --check-in-line-bg: #D7EDFF;
   --theme-color: #23A8FF;
@@ -39,6 +41,7 @@ body {
   --verify-bar-bg: #DBF2FF;
   --dialog-bg: #F3F5F9;
   --box-shadow: 0px 0px 4px #D7D9E8;
+  --select-bg: #F3F7FF;
 }
 .q-page, .q-page-container, .pro-layout, .help-center-item-box {
   background-color: var(--body-bg)

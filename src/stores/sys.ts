@@ -20,6 +20,7 @@ import {
   openAppBrowser,
   openWindowAsync,
   switchOrientation,
+  lengthMap,
 } from 'src/utils';
 import { useEnvStore, usePayStore, useUserStore } from 'src/stores'
 import { deportLocalDataFactory } from 'game_data';
@@ -70,6 +71,14 @@ export const useSysStore = defineStore('sys', {
     winList: [],
     stationSetting: SessionStorage.getItem('stationSetting') ?? {},
   }),
+  getters: {
+    activeCode(state) {
+      return state.areaCodes.find(item => item.mobileAreaCode === state.mobileAreaCode)
+    },
+    mobileMaxLen(state) {
+      return lengthMap[state.mobileAreaCode] || 60
+    },
+  },
   actions: {
     getMobileAreaCodes() {
       apimobileAreaCodes().then(({ data }) => {

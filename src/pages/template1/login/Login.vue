@@ -19,7 +19,7 @@
       <template v-if="isLoginByCaptcha">
         <DialogFormInput
           v-model.trim="formModel.mobile"
-          :maxlength="(lengthMap as any)[sysStore.mobileAreaCode] || 60"
+          :maxlength="sysStore.mobileMaxLen"
           :rules="rules.mobile"
           :placeholder="$t('手机号')"
           @focus="focusForFixInput"
@@ -27,7 +27,7 @@
           <template v-slot:prepend>
             <span class="iconfont icon-mobile-phone"></span>
             <div class="sdy-select mr-10" :class="{active: selectActive}" @click="selectActive = !selectActive">
-              <div class="label">{{activeCode ? '+'+activeCode.mobileAreaCode : $t('区号')}}</div>
+              <div class="label">{{sysStore.activeCode ? '+'+sysStore.activeCode.mobileAreaCode : $t('区号')}}</div>
             </div>
           </template>
         </DialogFormInput>
@@ -105,7 +105,7 @@
 
         <div class="extra-fill">
           <div class="sdy-checkbox" @click="rememberPass = !rememberPass" :class="{checked: rememberPass}">
-            <i class="sdy-checkbox-icon"></i>
+            <i class="iconfont mr-4" :class="rememberPass ? 'icon-xuanze1' : 'icon-xuanze'"></i>
             <span class="label">{{ $t('记住密码') }}</span>
           </div>
           <!-- <q-checkbox v-model="rememberPass" label="记住密码" /> -->
@@ -148,7 +148,7 @@
       ref="verityRef"
     />
     <Verify
-      v-else    
+      v-else
       @success="mobileSuccess"
       mode="pop"
       captchaType="blockPuzzle"
@@ -204,10 +204,6 @@ const formModel = reactive<IFormModel>({
   mobileCaptcha: '',
 })
 
-const activeCode = computed(() => {
-  return sysStore.areaCodes.find(item => item.mobileAreaCode === sysStore.mobileAreaCode)
-})
-
 const rules = computed(() => {
   if (!isLoginByCaptcha.value) {
     return {
@@ -216,7 +212,7 @@ const rules = computed(() => {
     }
   }
   return {
-    mobile: activeCode.value ? ((rl.allMobile as any)[activeCode.value.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
+    mobile: sysStore.activeCode ? ((rl.allMobile as any)[sysStore.activeCode.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
     mobileCaptcha: [
       () => !!formModel.smsCaptcha || lang('请完成滑块验证'),
       () => isMobileCaptchaSent.value || lang('请先获取验证码'),
@@ -297,7 +293,7 @@ const gotoLogin = () => {
     .finally(() => {
       isLoading.value = false
     })
-  return 
+  return
 }
 const areaCodeChange = (areaCode: string) => {
   selectActive.value = false
@@ -416,7 +412,7 @@ const toggleLoginMethod = () => {
       color: var(--t5);
     }
   }
-  
+
   .extra-fill {
     display: flex;
     align-items: center;

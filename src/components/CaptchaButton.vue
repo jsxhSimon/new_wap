@@ -81,3 +81,19 @@ const send = () => {
     })
 }
 </script>
+
+<style lang="scss">
+.qrCodeBtn {
+  .block {
+    color: var(--theme-text-color);
+    font-size: 13px;
+  }
+  &.btn-disabled {
+    pointer-events: none;
+    opacity: .5;
+  }
+  &::before {
+    display: none;
+  }
+}
+</style>

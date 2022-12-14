@@ -42,6 +42,41 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/Setting.vue'),
       },
+      {
+        path: 'mine/updateNickname',
+        meta: {
+          title: '昵称修改',
+        },
+        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/UpdateNickname.vue'),
+      },
+      {
+        path: 'vip',
+        meta: {
+          title: '我的VIP',
+          hideHeader: true,
+        },
+        component: () => import(/* webpackChunkName: "mine" */ 'pages/vip/index.vue'),
+      },
+      {
+        path: 'mine/setting/:field',
+        meta: {
+          title: ({ params }) => {
+            const mapper: Record<string, string> = {
+              realName: '真实姓名',
+              mobile: '手机号码',
+              email: '认证邮箱',
+              pwd: '更改密码',
+              gender: '性别',
+              // birth: '修改出生日期',
+              birthday: '出生日期',
+            }
+            const { field } = params
+            return mapper[field]
+          },
+          showKf: true,
+        },
+        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/SettingItem.vue'),
+      },
     ],
   },
   {

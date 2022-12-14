@@ -173,5 +173,43 @@ export const useUserStore = defineStore('user', {
     aiRecommendSeven() {
       return axios.get('user/aiRecommendSeven').then(({ data }) => data.data)
     },
+    getUpdateNicknameForSptv(nick: string) {
+      const url = encodeURI(`nick=${nick}`)
+      return axios
+        .post(`splive/app/user/updateNickName?${url}`)
+        .then(() => {
+          this.getNicknameInfoForSptv()
+        })
+    },
+    modifyUserInfoItem(field: string, formModel: Partial<ISettingItemFormModel>) {
+      const urlMapper: Record<string, string> = {
+        pwd: 'user/modPwd',
+        email: 'user/setAccMail',
+        mobile: 'user/vfyMobCode',
+        realName: 'user/modRealName',
+        gender: 'user/setGender',
+        birthday: 'user/setBirthday',
+      }
+      return axios
+        .post(urlMapper[field], formModel)
+        .then((res) => {
+          Notify.create('操作成功！')
+          this.getUserInfo()
+          if (field === 'realName') {
+            this.$patch(state => state.userInfo.realName = formModel.realName)
+          }
+          if (field === 'mobile') {
+            this.$patch(state => state.userInfo.mobile = formModel.mobile)
+          }
+          return res
+        })
+    },
+    getUserInfo() {
+      return axios
+        .get('user/getUserInfo')
+        .then(({ data }) => {
+          this.$patch(state => state.userInfo = data.userInfo)
+        })
+    },
   },
 });

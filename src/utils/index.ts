@@ -61,11 +61,11 @@ export const getTimeStamp = () => {
   return timeObj * 1000;
 };
 
-export const lengthMap = {
-  86: 11,
-  886: 8,
-  61: 9,
-  84: 10,
+export const lengthMap: Record<string, number> = {
+  '86': 11,
+  '886': 8,
+  '61': 9,
+  '84': 10,
 };
 
 export const checkURL = (URL: string) => {
@@ -180,6 +180,10 @@ export function cloneDeep(obj: Record<string | number | symbol, any>) {
     leagueId: groups[key].leagueId,
     groupKey: key,
   }))
+}
+export const alphaNum = (str: string) => {
+  const reg = /^[a-z0-9]+$/i
+  return reg.test(str)
 }
 
 export { getDomain } from './getDomain';

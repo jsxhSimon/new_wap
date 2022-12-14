@@ -474,6 +474,11 @@ const swiperChange = (swiperEl: any, type: number) => {
       span {
         flex: 1;
         text-align: center;
+        padding: 0 5px;
+        box-sizing: border-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }

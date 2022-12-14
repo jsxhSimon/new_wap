@@ -101,19 +101,162 @@
           </q-item-section>
         </q-item>
       </div>
+
+      <div class="cardList shadow-1 box-style">
+        <q-item
+          v-ripple
+          clickable
+          class="q-pr-sm"
+          to="/mine/setting/birthday"
+          :disable="!!userStore.userInfo.birthday"
+        >
+          <q-item-section>
+            <q-item-label>{{ $t('出生日期') }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <span class="no-input" v-if="!userStore.userInfo.birthday"
+                >{{ $t('添加日期，确保您已满18周岁') }}</span
+              >
+              <span class="text-caption disable" v-else>{{
+                userStore.userInfo.birthday
+                  ? userStore.userInfo.birthday
+                  : $t("添加日期，确保您已满18周岁")
+              }}</span>
+              <div
+                class="account-setting-side row justify-end"
+                v-if="!userStore.userInfo.birthday"
+              >
+                <q-icon size="sm" name="keyboard_arrow_right" />
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-item
+          v-ripple
+          clickable
+          class="q-pr-sm"
+          to="/mine/setting/mobile"
+          :disable="!!userStore.userInfo.mobile"
+        >
+          <q-item-section>
+            <q-item-label>{{ $t('手机号码') }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <div class="row items-center">
+              <span v-if="userStore.userInfo.mobile" class="disable">{{
+                mobileFilter(userStore.userInfo.mobile)
+              }}</span>
+              <span v-else class="no-input">{{ $t('绑定手机号码') }}</span>
+
+              <div
+                class="account-setting-side row justify-end"
+                v-if="!userStore.userInfo.mobile"
+              >
+                <q-icon size="sm" name="keyboard_arrow_right" />
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-item
+          v-ripple
+          clickable
+          class="q-pr-sm"
+          to="/mine/setting/email"
+          :disable="!!userStore.userInfo.email"
+        >
+          <!-- :disable="!!userInfo.email" -->
+          <q-item-section>
+            <q-item-label>{{ $t('电子邮箱') }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <span class="disable text-caption" v-if="userStore.userInfo.email">{{
+                emailFilter(userStore.userInfo.email)
+              }}</span>
+              <span class="no-input" v-else>{{ $t('绑定邮箱保护账号安全') }}</span>
+
+              <div
+                class="account-setting-side row justify-end"
+                v-if="!userStore.userInfo.email"
+              >
+                <q-icon size="sm" name="keyboard_arrow_right" />
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+      </div>
+
+      <div class="cardList shadow-1 box-style" @click="$router.push('/mine/setting/pwd')">
+        <q-item class="q-pr-sm">
+          <q-item-section>
+            <q-item-label>{{ $t('修改密码') }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <div class="account-setting-side row justify-end">
+                <q-icon size="sm" name="keyboard_arrow_right" />
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+      </div>
+
+      <div class="cardList shadow-1 box-style" v-if="isCordovaShake">
+        <q-item class="q-pr-sm">
+          <q-item-section>
+            <q-item-label>{{ $t('震动设置') }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <div class="account-setting-side row justify-end switch">
+                <van-switch
+                  v-model="vibrationVal"
+                  size="28px"
+                  @change="changeVibration"
+                />
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+      </div>
+
+      <div class="tips">
+        <span class="text-mark">{{ $t('为了您的隐私安全，信息在确认后将无法修改。需要帮助，请') }}<i class="theme-color" @click="$router.push('/customerService')">{{ $t('联系客服') }}</i></span>
+      </div>
     </q-list>
   </q-page>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import headerFemaleImg from 'images/common/headerFemale.png'
 import headerMaleImg from 'images/common/headerMale.png'
 import { useUserStore } from 'src/stores'
 import useFilter from 'src/hooks/useFilter'
+import { LocalStorage, Platform } from 'quasar'
 
-const { realNameFilter } = useFilter()
+const { realNameFilter, mobileFilter, emailFilter } = useFilter()
 
 const userStore = useUserStore()
+const vibrationVal = computed(() => {
+  return !(LocalStorage.getItem('vibrationVal') === 'off')
+})
+const isCordovaShake = computed(() => {
+  return Platform.is.cordova && Platform.is.ios && window.testModel && window.testModel.appshakemethod
+})
+
+const changeVibration = (val: boolean) => {
+  if (val) {
+    LocalStorage.set('vibrationVal', 'on')
+  } else {
+    LocalStorage.set('vibrationVal', 'off')
+  }
+}
 </script>
 
 <style lang="scss">

@@ -6,14 +6,14 @@
     @submit.prevent.stop="onSubmit"
   >
     <p class="userinfo-title fs-16 text-center fw-500 mb-20">{{$t('忘记密码')}}</p>
-    
+
     <div class="q-field__bottom row items-start q-field__bottom--animated accountError" v-if= "showAccountError">
       <div class="q-field__messages col"><div style="padding-left:43px;">账号不存在 请先注册</div></div>
     </div>
 
     <DialogFormInput
       v-model.trim="formModel.mobile"
-      :maxlength="(lengthMap as any)[sysStore.mobileAreaCode] || 60"
+      :maxlength="sysStore.mobileMaxLen"
       :rules="rules.mobile"
       :placeholder="$t('请输入手机号码')"
       @focus="focusForFixInput"
@@ -21,7 +21,7 @@
       <template v-slot:prepend>
         <span class="iconfont icon-mobile-phone"></span>
         <div class="sdy-select mr-10" :class="{active: selectActive}" @click="selectActive = !selectActive">
-          <div class="label">{{activeCode ? '+'+activeCode.mobileAreaCode : $t('区号')}}</div>
+          <div class="label">{{sysStore.activeCode ? '+'+sysStore.activeCode.mobileAreaCode : $t('区号')}}</div>
         </div>
       </template>
     </DialogFormInput>
@@ -107,13 +107,9 @@ const formModel = reactive<Partial<IFormModel>>({
   smsCaptcha: '',
 })
 
-const activeCode = computed(() => {
-  return sysStore.areaCodes.find(item => item.mobileAreaCode === sysStore.mobileAreaCode)
-})
-
 const rules = computed(() => {
   return {
-    mobile: activeCode.value ? ((rl.allMobile as any)[activeCode.value.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
+    mobile: sysStore.activeCode ? ((rl.allMobile as any)[sysStore.activeCode.countryCode] || rl.allMobile.all)() : rl.allMobile.all(),
     code: [
       () => formModel.smsCaptcha || lang('请完成滑块验证'),
       () => isMobileCaptchaSent.value || lang('请先获取验证码'),
