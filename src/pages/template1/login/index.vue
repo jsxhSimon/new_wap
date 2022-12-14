@@ -75,11 +75,12 @@ const toggleUserInfo = (type: string) => {
       bottom: 0;
       background: url('images/login/login-bg.jpg') no-repeat center top;
       background-size: cover;
-      z-index: -1;
     }
     .logo-box {
       padding-top: 60px;
       margin-bottom: 28px;
+      z-index: 1;
+      position: relative;
       img {
         display: block;
         height: 42px;
@@ -97,12 +98,16 @@ const toggleUserInfo = (type: string) => {
     .main-container {
       width: 251px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
     .partner-pic {
       margin-top: 20px;
       text-align: center;
       color: var(--t2);
       margin-bottom: 60px;
+      z-index: 1;
+      position: relative;
       .partner-title {
         display: inline-block;
         width: auto;

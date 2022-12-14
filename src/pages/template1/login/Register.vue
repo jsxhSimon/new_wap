@@ -196,14 +196,14 @@ const activeCode = computed(() => {
 })
 
 const disabledMobileCaptcha = computed(() => {
-  return !rules.value.mobile.every((rule: (v: string) => boolean) => rule(formModel.mobile ?? '') === true)
+  return !rules.value.mobile?.every((rule: (v: string) => boolean) => rule(formModel.mobile ?? '') === true)
 })
 
 const rules = computed(() => {
   const staticRules = {
     loginName: rl.registerName,
     loginPwd: rl.password,
-    reloadPwd: [
+    reLoginPwd: [
       (val: string) => !!val || lang('请输入确认密码'),
       (val: string) => val === formModel.loginPwd || lang('确认密码与密码不匹配')
     ],
@@ -231,7 +231,8 @@ const rules = computed(() => {
           required
             ? !!val || `${lang('请输入xxx', [label])}`
             : true
-        )
+        ),
+        ...((staticRules as any)[field] || []),
       ]
     }
     return prev
