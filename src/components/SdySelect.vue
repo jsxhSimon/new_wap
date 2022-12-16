@@ -15,7 +15,7 @@ import { ref, computed } from 'vue'
 interface Props {
   list: {value: any; label: string}[];
   value: any;
-  placeholder: string;
+  placeholder?: string;
 }
 const props = defineProps<Props>()
 const emits = defineEmits(['change'])
@@ -55,6 +55,7 @@ const handleChange = (opt: any) => {
       transform: translateY(100%);
       border: none;
       border-radius: 0 0 8px 8px;
+      background: var(--select-bg);
       .box {
         max-height: 120px;
         overflow-y: auto;

@@ -18,7 +18,7 @@ body {
     color: var(--theme-text-color);
   }
   @include overflow();
-  @each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28 {
+  @each $size in 8, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30 {
     .fs-#{$size} {
       font-size: $size + px;
     }
@@ -28,7 +28,7 @@ body {
       font-weight: $weight;
     }
   }
-  @each $i in 4, 10, 14, 15, 16, 20 {
+  @each $i in 4, 6, 10, 14, 15, 16, 20 {
     .mlr-#{$i} {
       margin: 0 $i + px;
     }
@@ -73,6 +73,9 @@ body {
   text-align: center;
   color: var(--t5);
   font-size: 13px;
+}
+.theme-border {
+  border: 1px solid var(--theme-color);
 }
 
 body {

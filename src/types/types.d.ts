@@ -128,3 +128,113 @@ interface IAIData {
   gameType: number;
   totalBet: number;
 }
+
+interface IBirthdayBonus {
+  accountLevel: number;
+  actLevelId: number;
+  depositAmount: number;
+  depositMin: number;
+  donateAmount: number;
+  multipleWater: number;
+  tierName: string;
+  validBet: number;
+  validbetMin: number;
+}
+
+interface IAccountVipPrivilegesData {
+  id: number;
+  buttonShow: number;
+  rules: IAccountVipRules;
+  depotCatDtoList: IDepotCatDto[];
+}
+
+interface IDepotCatDto {
+  catCode: string;
+  catId: number;
+  catName: string;
+  depotCode: string;
+  depotId: number;
+  depotName: string;
+}
+
+interface IAccountVipRules {
+  ruleScopeDtos: IRuleScopeDto[];
+  scope: number;
+}
+
+interface IRuleScopeDto {
+  accountLevel: number;
+  actLevelId: number;
+  activityRuleDtos: {
+    amountMin: number;
+    donateAmount: number;
+    donateAmountMax: number;
+    donateType: number;
+    multipleWater: number;
+  };
+  auditCats: {
+    catId: number;
+    depots: {
+      depotId: number;
+    }[];
+  }[];
+  drawNumber: number;
+  drawType: number;
+  formulaMode: number;
+  isBank: boolean;
+  isMail: boolean;
+  isMobile: boolean;
+  isName: boolean;
+  tierName: string;
+}
+
+interface IUpgradeBonusLevelDto {
+  accountLevel: number;
+  actLevelId: number;
+  donateAmount: number;
+  multipleWater: number;
+  tierName: string;
+}
+
+interface IMonthlyBonu extends IBirthdayBonus {
+  validBetType: number;
+  lastDepositMin: number;
+  lastDepositMinTimes: number;
+  lastValidBetMin: number;
+}
+
+interface IActivityLevelCatDto {
+  accountLevelId: number;
+  catName: string;
+  donateRatio: number;
+  tierName: string;
+}
+
+interface IActivityLevel {
+  accountLevel: number;
+  depositMin: number;
+  downgradeBet: number;
+  feeAvailable: number;
+  id: number;
+  promoteSign: number;
+  tierName: string;
+  validbetMin: number;
+  withDrawalQuota: number;
+  withDrawalTimes: number;
+}
+interface IVipInfoData {
+  accountLevel: number;
+  activityLevelCatDtos: IActivityLevelCatDto[];
+  activityLevelList: IActivityLevel[];
+  birthday: string;
+  birthdayBonusList: IBirthdayBonus[];
+  depositAmount: number;
+  downgradePromotion: number;
+  downgradePromotionDay: number;
+  loginName: string;
+  tierName: string;
+  validbet: number;
+  upgradeBonusLevelDtos: IUpgradeBonusLevelDto[];
+  hdgz: string;
+  hlzs: string;
+}

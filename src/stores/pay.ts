@@ -35,5 +35,9 @@ export const usePayStore = defineStore('pay', {
       return axios
         .post('user/actApply', params)
     },
+    getGameListWithoutRebate() {
+      return axios
+        .get('sys/getGameListWithoutRebate')
+    },
   }
 })

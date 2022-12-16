@@ -22,6 +22,8 @@ interface IEnvConfig {
   APP_ENV: string;
   APP_HAS_OPENINSTALL: boolean;
   APP_MOBILE_AREA_CODE: string;
+  APP_MAX_LEVEL: number;
+
 }
 
 export const useEnvStore = defineStore('env', {
@@ -37,20 +39,17 @@ export const useEnvStore = defineStore('env', {
     },
     envCurrencySymbol(state) {
       return (
-        state.envConfig.APP_CURRENCY_SYMBOL ??
-        JSON.parse(process.env.CURRENCY_SYMBOL || '""')
+        state.envConfig.APP_CURRENCY_SYMBOL ?? 'CNY'
       );
     },
     envCurrencyId(state) {
       return Number(
-        state.envConfig.APP_CURRENCY_ID ??
-          JSON.parse(process.env.APP_CURRENCY_ID || '""')
+        state.envConfig.APP_CURRENCY_ID ?? 1
       );
     },
     envHasSports(state) {
       return (
-        state.envConfig.APP_HAS_SPORTS ??
-        JSON.parse(process.env.APP_HAS_SPORTS || '""')
+        state.envConfig.APP_HAS_SPORTS ?? true
       );
     },
     envAppTitle(state) {
@@ -77,11 +76,13 @@ export const useEnvStore = defineStore('env', {
       );
     },
     envHasOpeninstall(state) {
-      return state.envConfig.APP_HAS_SPORTS ??
-      JSON.parse(process.env.APP_HAS_SPORTS || '""')
+      return state.envConfig.APP_HAS_OPENINSTALL ?? true
     },
     envMobileAreaCode(state) {
-      return state.envConfig.APP_MOBILE_AREA_CODE ?? JSON.parse(process.env.DEFAULT_STOKEN || '"86"')
+      return state.envConfig.APP_MOBILE_AREA_CODE || '86'
+    },
+    envMaxLevel(state) {
+      return state.envConfig.APP_MAX_LEVEL || 10
     },
   },
   actions: {

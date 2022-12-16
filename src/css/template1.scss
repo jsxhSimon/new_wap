@@ -48,15 +48,194 @@ body {
     &.disabled {
       opacity: .3!important;
     }
+    .sdy-select {
+      width: 52px;
+      height: 22px;
+      line-height: 22px;
+    }
   }
   .sdy-select {
-    width: 52px;
-    height: 22px;
-    line-height: 22px;
     background: var(--select-bg);
     font-size: 13px;
     box-sizing: border-box;
     border-radius: 4px;
     text-align: center;
+  }
+  .text-black {
+    color: var(--t1)!important;
+  }
+  .sdy-modal,
+  .sdy-confirm {
+    width: 223px;
+    overflow: inherit;
+    background: var(--dialog-bg);
+    .modal-header,
+    .van-dialog__header {
+      height: 42px;
+      line-height: 42px;
+      background: var(--bg1);
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+      position: relative;
+      color: var(--t1);
+      font-size: 14px;
+      padding-top: 0;
+      .sdy-icon {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -60%);
+      }
+    }
+    .modal-content,
+    .van-dialog__content {
+      padding: 20px 26px 15px;
+      font-size: 11px;
+      position: relative;
+      color: var(--t2);
+      border-radius: 0 0 10px 10px;
+      &:after {
+        content: "";
+        width: calc(100% - 52px);
+        height: 1px;
+        background: rgba(32, 32, 33, 0.08);
+        position: absolute;
+        left: 26px;
+        bottom: 0;
+      }
+      p {
+        margin: 0;
+      }
+      .t-l,
+      .flex-item {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .label {
+          white-space: nowrap;
+        }
+      }
+      > p,
+      > div {
+        margin-bottom: 5px;
+      }
+    }
+    .modal-footer,
+    .van-dialog__footer {
+      padding: 16px 0;
+      background: transparent;
+      .btn,
+      .van-button {
+        width: 90px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 12px;
+        white-space: nowrap;
+        background: var(--lg4);
+        border-radius: 2px;
+        color: var(--t5);
+        box-shadow: none;
+        &.center {
+          margin: 0 auto;
+        }
+        &:before,
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+  .sdy-form {
+    .sdy-input {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 10px;
+      color: var(--t2);
+      font-size: 14px;
+      display: flex;
+      background: var(--bg1);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      input {
+        flex: 1;
+        margin-left: 2px;
+        background: transparent;
+        outline: none;
+        border: none;
+      }
+    }
+  }
+  .sdy-modal.vip {
+    width: 315px;
+    border-radius: 8px;
+    padding-bottom: 20px;
+    .sdy-icon-close {
+      position: absolute;
+      right: 0;
+      top: -42px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--t5);
+    }
+    .van-dialog__header {
+      color: var(--t1);
+      border-radius: 10px 10px 0px 0px;
+    }
+    .van-dialog__content {
+      font-size: 14px;
+      overflow: inherit;
+      padding-bottom: 0;
+      &:after {
+        display: none;
+      }
+    }
+    .flex-item {
+      margin-bottom: 5px;
+      line-height: 20px;
+    }
+    .vip-title {
+      color: var(--theme-text-color);
+      text-align: center;
+      margin: 10px 0 5px;
+    }
+    .w-195,
+    .w-135 {
+      width: 195px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .w-135 {
+      width: 135px;
+    }
+    .van-dialog__footer {
+      display: none;
+    }
+  }
+  .sdy-modal.birthday {
+    width: 315px!important;
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      > div {
+        width: 122px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .canenl {
+        border: 1px solid 
+      }
+    }
+    .van-dialog__footer,
+    .van-dialog__content:after {
+      display: none;
+    }
   }
 }
