@@ -26,6 +26,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/home/Home.vue')
       },
       {
+        path: '/sports',
+        component: () => import(/* webpackChunkName: "sports" */ 'pages/sports/index.vue'),
+        meta: {
+          footerVisible: true,
+          hideHeader: true,
+        },
+      },
+      {
         path: '/minePage',
         meta: {
           title: '我的',
@@ -40,14 +48,14 @@ const routes: RouteRecordRaw[] = [
           title: '个人资料',
           showKf: true,
         },
-        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/Setting.vue'),
+        component: () => import(/* webpackChunkName: "mineSetting" */ 'pages/mine/Setting.vue'),
       },
       {
         path: 'mine/updateNickname',
         meta: {
           title: '昵称修改',
         },
-        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/UpdateNickname.vue'),
+        component: () => import(/* webpackChunkName: "mineUpdateNickname" */ 'pages/mine/UpdateNickname.vue'),
       },
       {
         path: 'vip',
@@ -55,7 +63,7 @@ const routes: RouteRecordRaw[] = [
           title: '我的VIP',
           // hideHeader: true,
         },
-        component: () => import(/* webpackChunkName: "mine" */ 'pages/vip/index.vue'),
+        component: () => import(/* webpackChunkName: "mineVip" */ 'pages/vip/index.vue'),
       },
       {
         path: 'vipDetails',
@@ -63,7 +71,7 @@ const routes: RouteRecordRaw[] = [
           title: 'VIP详情',
           hideHeader: true,
         },
-        component: () => import(/* webpackChunkName: "mine" */ 'pages/vip/details.vue'),
+        component: () => import(/* webpackChunkName: "mineVipDetail" */ 'pages/vip/details.vue'),
       },
       {
         path: 'mine/setting/:field',

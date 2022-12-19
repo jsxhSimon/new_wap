@@ -238,3 +238,12 @@ interface IVipInfoData {
   hdgz: string;
   hlzs: string;
 }
+
+interface ISwiperData {
+  actId: number;
+  activityId: number;
+  advType: number;
+  clientShow: number;
+  picMbPath: string;
+  picTarget: number;
+}

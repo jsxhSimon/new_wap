@@ -116,7 +116,7 @@ export const openWindowAsync = (req: any, curSite: string) => {
   )
 }
 
-export function cloneDeep(obj: Record<string | number | symbol, any>) {
+export function cloneDeep(obj: any) {
   const isArr = Array.isArray(obj)
   try {
     if (isArr || typeof obj === 'object') {

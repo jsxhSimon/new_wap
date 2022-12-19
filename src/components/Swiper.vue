@@ -48,7 +48,7 @@ import { useSysStore } from 'src/stores/sys'
 
 interface Props {
   swiperListEnable?: boolean;
-  swiperList: any[];
+  swiperList: Partial<ISwiperData>[];
   noticeList: any[];
   emptyNoticeList: boolean;
   noticeListEnable?: boolean;

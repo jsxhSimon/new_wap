@@ -70,12 +70,13 @@ const showAlert = (notice: INotice) => {
   height: 20px;
   display: flex;
   align-items: center;
-  margin: 5px auto 20px;
   overflow: hidden;
   height: 20px;
   line-height: 20px;
   background: var(--bg1);
   font-size: 10px;
+  margin-left: auto;
+  margin-right: auto;
   .marquee-icon {
     display: block;
     width: 20px;
@@ -126,6 +127,11 @@ const showAlert = (notice: INotice) => {
         @include overflow();
         word-break: break-all;
         color: var(--t2);
+        img {
+          width: 100%;
+          margin: 0 0 10px;
+          object-fit: cover;
+        }
         h5 {
           margin: 0 0 8px 0;
           text-align: center;
@@ -142,6 +148,12 @@ const showAlert = (notice: INotice) => {
           color: var(--t5);
           padding: 0 20px;
           margin: 20px auto 0;
+        }
+        .content {
+          color: var(--t2);
+          font-size: 14px;
+          line-height: 20px;
+          text-align: center;
         }
       }
     }

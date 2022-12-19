@@ -152,38 +152,46 @@ interface FBMatch {
   ty: number;
 }
 
+interface XMPlay {
+  hids: number;
+  hnm: number;
+  hpid: string;
+  hpn: string;
+  hpnb: string;
+  hpon: number;
+  hpt: number;
+  hshow: string;
+  hsw: string;
+  mid: string;
+  hl: XMMarket[];
+}
+
+interface XMPlayOpts {
+  cds: string;
+    oid: string;
+    on: string;
+    onb: string;
+    os: number;
+    ot: string;
+    otd: number;
+    ots: string;
+    ov: number;
+    prob: string;
+}
+
+interface XMMarket {
+  hid: string;
+  hmta: number;
+  hn: number;
+  hs: number;
+  hv: string;
+  ol: XMPlayOpts[];
+}
+
 interface XMMatch {
   csid: string;
   csna: string;
-  hps: {
-    hids: number;
-    hnm: number;
-    hpid: string;
-    hpn: string;
-    hpnb: string;
-    hpon: number;
-    hpt: number;
-    hshow: string;
-    hsw: string;
-    mid: string;
-    hl: {
-      hid: string;
-      hmt: number;
-      hs: number;
-      ol: {
-        cds: string;
-        oid: string;
-        on: string;
-        onb: string;
-        os: number;
-        ot: string;
-        otd: number;
-        ots: string;
-        ov: number;
-        prob: string;
-      }[];
-    }[];
-  }[];
+  hps: XMPlay[];
   leagueInitials: string;
   leagueSort: number;
   lurl: string;
@@ -250,6 +258,7 @@ interface XmMenu {
   menuName: string;
   grade: number;
   field1: string;
+  field2?: string;
   subList: XmSubMenu[];
 }
 
@@ -261,4 +270,13 @@ interface XmSubMenu {
   menuName: string;
   menuType: number;
   parentId: number;
+}
+
+interface ILeagueFollow {
+  createTime: string;
+  id: number;
+  leagueId: number;
+  leagueName: string;
+  /** matchType: 10 xm 11 sb 12 fb */
+  matchType: number;
 }

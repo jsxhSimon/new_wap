@@ -32,13 +32,32 @@ watch(
 );
 
 onBeforeMount(() => {
+  window.shakeApp = () => {
+    try {
+      if (Platform.is.cordova && Platform.is.ios && window.testModel && window.testModel.appshakemethod) {
+        const SuccessCallBack = (msg: string) => {
+          // alert('sucess-:', msg)
+        }
+        const FailCallBack = (msg: string) => {
+          // alert('fail-:', msg)
+        }
+        window.testModel.appshakemethod(SuccessCallBack, FailCallBack)
+      }
+    } catch (e) {
+      // console.log(e)
+    }
+  }
+
+});
+
+onMounted(() => {
   getSelectApiUrl(() => {
     sysStore.queryStationSet();
     sysStore.getMobileAreaCodes();
     envStore.getEnvConfig();
     timStore.timInit()
   });
-});
+})
 
 const getSelectApiUrl = (callback: () => void) => {
   selectLine().then((res) => {
