@@ -189,7 +189,7 @@ const openCustomerService = () => {
       font-size: 20px;
     }
     .msgNum {
-      background: var(--theme-color);
+      background: var(--bg5);
       color: var(--t5);
       bottom: 2.66667vw;
       z-index: 1;

@@ -222,12 +222,16 @@ interface IActivityLevel {
   withDrawalQuota: number;
   withDrawalTimes: number;
 }
+interface IMonthlyBonus {
+  ruleScopeDtoList: IMonthlyBonu[];
+}
 interface IVipInfoData {
   accountLevel: number;
   activityLevelCatDtos: IActivityLevelCatDto[];
   activityLevelList: IActivityLevel[];
   birthday: string;
   birthdayBonusList: IBirthdayBonus[];
+  monthlyBonus: IMonthlyBonus;
   depositAmount: number;
   downgradePromotion: number;
   downgradePromotionDay: number;
@@ -237,4 +241,35 @@ interface IVipInfoData {
   upgradeBonusLevelDtos: IUpgradeBonusLevelDto[];
   hdgz: string;
   hlzs: string;
+}
+
+interface ITransactionRecord {
+  accountId: number;
+  actualArrival: number;
+  auditTime: string;
+  auditUser: string;
+  companyPayId: number;
+  createTime: string;
+  createUser: string;
+  depositPostscript: string;
+  depositTypeName: string;
+  handlingCharge: number;
+  id: number;
+  isPayment: boolean;
+  isSign: number;
+  mark: number;
+  memo: string;
+  orderNo: string;
+  status: number;
+  depositAmount: number;
+  bonusAmount: number;
+  applicationTime: string;
+  catName: string;
+  depotName: string;
+  amount: number;
+  auditAddType: number;
+  drawingAmount: number;
+  tmplName: string;
+  prizetype: number;
+  prizename: string;
 }

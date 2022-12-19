@@ -61,9 +61,18 @@ const routes: RouteRecordRaw[] = [
         path: 'vipDetails',
         meta: {
           title: 'VIP详情',
-          hideHeader: true,
+          showKf: true,
         },
         component: () => import(/* webpackChunkName: "mine" */ 'pages/vip/details.vue'),
+      },
+      {
+        path: 'mine/transaction-records',
+        meta: {
+          title: '支付',
+          hideHeader: true,
+          footerVisible: true,
+        },
+        component: () => import(/* webpackChunkName: "mine" */ 'pages/mine/TransactionRecords.vue'),
       },
       {
         path: 'mine/setting/:field',

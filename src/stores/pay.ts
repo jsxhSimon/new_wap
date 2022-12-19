@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { axios } from 'boot/axios'
 import { SessionStorage } from 'quasar'
 import { apiCheckBalance, apiRecoverBalance } from 'src/http'
+import { format } from 'src/utils/tool'
+import { useLoading } from 'src/utils'
 
 export const usePayStore = defineStore('pay', {
   state: () => ({
@@ -39,5 +41,55 @@ export const usePayStore = defineStore('pay', {
       return axios
         .get('sys/getGameListWithoutRebate')
     },
+    getTransactionRecords(field: string, params: { pageNo: number }) {
+      const urlMapper: Record<string, string> = {
+        deposit: 'OnlinePay/pzPay/getFundDepositList',
+        withdraw: 'user/wdApplyList',
+        coupons: 'user/bonusAndTaskList',
+        bonus: 'OnlinePay/pzPay/getFundDepositList',
+        washcode: 'user/depotWaterDetailList',
+      }
+
+      const defaultParams: any = {
+        orderBy: '',
+        pageSize: 15,
+        startTime: '',
+        entTime: '',
+      }
+
+      if (field === 'deposit') {
+        defaultParams.mark = 0
+      }
+
+      if (field === 'bonus') {
+        defaultParams.mark = 2
+      }
+      if (['coupons', 'washcode'].includes(field)) {
+        defaultParams.startTime = `${format(new Date(), 30)} 00:00:00`
+        defaultParams.entTime = `${format(new Date())} 23:59:59`
+      }
+      const closeLoading = useLoading()
+      return axios
+        .get(urlMapper[field], {
+          params: {
+            ...defaultParams,
+            ...params,
+          },
+        })
+        .then(({ data }) => {
+          switch (field) {
+            case 'withdraw':
+              return data
+            case 'coupons':
+              return data.page
+            case 'washcode':
+              return data.data
+            default:
+              return data.res
+          }
+        }).finally(() => {
+          closeLoading()
+        })
+    }
   }
 })

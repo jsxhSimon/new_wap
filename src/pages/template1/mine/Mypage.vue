@@ -220,7 +220,7 @@ const logout = () => {
 
 <style lang="scss">
 .mine-page {
-  padding: calc(env(safe-area-inset-top) + 44px) 14px 0;
+  padding: env(safe-area-inset-top) 14px 0;
   .account-info {
     border-radius: 10px;
     background: var(--bg1);
