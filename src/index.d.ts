@@ -5,6 +5,8 @@ declare global {
     transferBackDialog: any;
     tim: any;
     TIM: any;
+    shakeApp: any;
+    gendan: boolean;
   }
 }
 export {};

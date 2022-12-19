@@ -4,6 +4,11 @@ body {
   .q-list--separator > .q-item-type + .q-item-type, .q-list--separator > .q-virtual-scroll__content > .q-item-type + .q-item-type {
     border: none;
   }
+  @each $i in 1 2 3 4 5 6 7 8 9{
+    .tc-#{$i} {
+      color: var(--t + $i)
+    }
+  }
   .download-bar {
     .bg {
       pointer-events: none;
@@ -240,5 +245,181 @@ body {
     .van-dialog__content:after {
       display: none;
     }
+  }
+  .sports-page {
+    .sticky {
+      position: sticky;
+      top: calc(env(safe-area-inset-top) + 44px);
+      width: 100%;
+      z-index: 1;
+    }
+    .sport-menu {
+      color: var(--t2);
+      font-size: 12px;
+      padding-left: 10px;
+      background: var(--bg1);
+      border-radius: 0 0 12px 12px;
+      .swiper-slide {
+        width: auto;
+        margin-right: 14px;
+        > div {
+          display: flex;
+          height: 40px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .sport-name {
+        &.act {
+          color: var(--theme-color);
+          font-weight: 600;
+        }
+      }
+    }
+    .container {
+      display: flex;
+      padding: 0 14px;
+      flex-direction: column;
+      position: relative;
+    }
+    .match-container {
+      > .title {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background: var(--bg1);
+        border-radius: 12px 12px 0 0;
+        > span {
+          flex: 1;
+          border-right: 1px solid var(--border-color3);
+          font-size: 16px;
+          &.active {
+            color: var(--t10);
+            font-weight: 600;
+          }
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+    }
+    .match-tabs {
+      background: var(--body-bg);
+      .tabs {
+        height: 42px;
+        background: var(--bg6);
+      }
+      .tab {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--t2);
+        &.active {
+          color: var(--t10);
+        }
+      }
+    .tab-cnt {
+        position: relative;
+      }
+      .count {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        transform: translate(110%, -60%);
+        font-size: 10px;
+      }
+    }
+    .utils {
+      height: 33px;
+      font-size: 10px;
+      color: var(--t2);
+      position: relative;
+      background: var(--body-bg);
+      .icon-shuangyoujiantou- {
+        transition: .2s;
+        font-size: 12px;
+      }
+      .sdy-icon-down {
+        transform: rotate(-90deg);
+      }
+      .sdy-icon-up {
+        transform: rotate(90deg);
+      }
+      .sort-buttons {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: 20px;
+        line-height: 20px;
+        font-size: 10px;
+        color: var(--t2);
+        border-radius: 6px;
+        overflow: hidden;
+        .sort-button {
+          flex: 1;
+          height: 20px;
+          width: 40px;
+          box-sizing: border-box;
+          text-align: center;
+          background: var(--lg6);
+          &.active {
+            color: var(--t5);
+            background: var(--lg);
+          }
+        }
+      }
+      .sdy-calendar {
+        position: absolute;
+        width: 100%;
+        @include overflow(x);
+        top: 32px;
+        left: 0;
+        padding-left: 14px;
+        z-index: 2;
+        white-space: nowrap;
+        padding-bottom: 10px;
+        &-item {
+          display: inline-block;
+          width: 60px;
+          height: 45px;
+          margin-right: 12px;
+        }
+        .item {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-radius: 6px;
+          background: var(--bg1);
+          &.active {
+            background: var(--lg);
+            color: var(--t5);
+          }
+        }
+      }
+    }
+  }
+  .matches-wrapper {
+    font-size: 12px;
+  }
+  .match-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .league-title {
+      align-items: center;
+    }
+  }
+  .match-item {
+    width: 327px;
+    background: var(--sport-content-bg);
+    margin: 5px auto 0;
   }
 }

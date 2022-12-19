@@ -16,6 +16,7 @@ interface IUser {
   equipmentId: string;
   messageUnreadCount: number;
   isLiveInPay: boolean;
+  showGuide: boolean;
 }
 
 export const useUserStore = defineStore('user', {
@@ -28,6 +29,7 @@ export const useUserStore = defineStore('user', {
     equipmentId: LocalStorage.getItem('eq_uuid') ?? '',
     messageUnreadCount: 0,
     isLiveInPay: false,
+    showGuide: true,
   }),
   getters: {
     isLogin(state) {

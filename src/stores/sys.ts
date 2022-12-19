@@ -323,6 +323,10 @@ export const useSysStore = defineStore('sys', {
           noticeList: noticeList.list,
         }))
     },
+    getIndexNoticeAndAdvSwitch() {
+      return axios
+        .get('sys/indexNoticeAndAdvSwitch')
+    },
     getWinList() {
       return apiWinList().then(({data}) => {
         this.$patch(state => state.winList = data.page)

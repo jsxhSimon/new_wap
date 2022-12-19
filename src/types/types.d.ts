@@ -273,3 +273,11 @@ interface ITransactionRecord {
   prizetype: number;
   prizename: string;
 }
+interface ISwiperData {
+  actId: number;
+  activityId: number;
+  advType: number;
+  clientShow: number;
+  picMbPath: string;
+  picTarget: number;
+}
