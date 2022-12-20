@@ -99,28 +99,28 @@
                             <CountDown v-else :key="`${item.mid}-${hideCount}`" :reverse="item.csid === '2'" :time="item.mst"></CountDown>
                           </span>
                         </div>
-                      </div>
-                      <div class="match-item-bx-left-bottom">
-                        <div class="team-info" @click="showFullPlay(item)">
-                          <sdy-image :src="item.mhlu && imgPrefix + item.mhlu[0]" :height="36" />
-                          <div class="team-name">{{item.mhn}}</div>
-                          <div class="score-value" v-if="item && item.msc && infoOptimization(item.msc, '全场比分')">{{infoOptimization(item.msc, '全场比分').split(':')[0]}}</div>
-                        </div>
-                        <div class="team-info" @click="showFullPlay(item)">
-                          <sdy-image :src="item.malu && imgPrefix + item.malu[0]" :height="36" />
-                          <div class="team-name">{{item.man}}</div>
-                          <div class="score-value" v-if="item && item.msc && infoOptimization(item.msc, '全场比分')">{{infoOptimization(item.msc, '全场比分').split(':')[1]}}</div>
-                        </div>
-                        <div class="collect flex">
-                          <span class="fs-12">{{item.mc > 0 ? `${item.mc}+` : 0}}</span>
-                          <div class="match-item-top-right" v-if="!xmStore.isZaoPan">
-                            <div class="jiao-qiu" v-if="item && item.msc && infoOptimization(item.msc, '角球数')">
-                              <span class="jiao-qiu-icon"></span>
-                              {{infoOptimization(item.msc, '角球数')}}
-                            </div>
-                            <div class="half-score"  v-if="item && item.msc && infoOptimization(item.msc, '半场比分', item.mmp === '0' ? formatMgtDate(item) : formatMmp(item))">
-                              <span class="half-score-ht">HT</span>
-                              {{infoOptimization(item.msc, '半场比分', item.mmp === '0' ? formatMgtDate(item) : formatMmp(item))}}
+                        <div class="match-item-bx-left-bottom">
+                          <div class="team-info" @click="showFullPlay(item)">
+                            <sdy-image :src="item.mhlu && imgPrefix + item.mhlu[0]" :height="36" />
+                            <div class="team-name">{{item.mhn}}</div>
+                            <div class="score-value" v-if="item && item.msc && infoOptimization(item.msc, '全场比分')">{{infoOptimization(item.msc, '全场比分').split(':')[0]}}</div>
+                          </div>
+                          <div class="team-info" @click="showFullPlay(item)">
+                            <sdy-image :src="item.malu && imgPrefix + item.malu[0]" :height="36" />
+                            <div class="team-name">{{item.man}}</div>
+                            <div class="score-value" v-if="item && item.msc && infoOptimization(item.msc, '全场比分')">{{infoOptimization(item.msc, '全场比分').split(':')[1]}}</div>
+                          </div>
+                          <div class="collect flex">
+                            <span class="fs-12">{{item.mc > 0 ? `${item.mc}+` : 0}}</span>
+                            <div class="match-item-top-right" v-if="!xmStore.isZaoPan">
+                              <div class="jiao-qiu" v-if="item && item.msc && infoOptimization(item.msc, '角球数')">
+                                <span class="jiao-qiu-icon"></span>
+                                {{infoOptimization(item.msc, '角球数')}}
+                              </div>
+                              <div class="half-score"  v-if="item && item.msc && infoOptimization(item.msc, '半场比分', item.mmp === '0' ? formatMgtDate(item) : formatMmp(item))">
+                                <span class="half-score-ht">HT</span>
+                                {{infoOptimization(item.msc, '半场比分', item.mmp === '0' ? formatMgtDate(item) : formatMmp(item))}}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -791,6 +791,7 @@ const showTime = (match: XMMatch) => {
   const mmp = +match.mmp
   const mst = +match.mst
   const csid = +match.csid
+  console.log(mmp, mst, csid)
   let s = [0]
   if (mst > 0) {
     switch (csid) {
