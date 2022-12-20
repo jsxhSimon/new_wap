@@ -154,6 +154,7 @@ import { MATCH_STAGE } from 'components/obty/utils/constants'
 import { groupBy, groupByKey } from 'src/utils'
 import SquareGuideModel from '../SquareGuideModel.vue'
 import SdyImage from 'components/SdyImage.vue'
+import CountDown from '../CountDown.vue';
 
 const { t: lang } = useI18n()
 
@@ -452,7 +453,7 @@ const getMs = (params: any, sync?: boolean) => {
   getSportsMenu()
   if (!activeSubMenu.value) return
   if (activeMenu.value && activeMenu.value.subList.length) {
-    params.menuName = activeMenu.value.subList.filter(item => !!item.count)[subIndex.value].menuName
+    params.menuName = activeMenu.value.subList.filter(item => !!item.count)[subIndex.value]?.menuName
   }
   xmStore.getMatches(params)
     .then(data => {
