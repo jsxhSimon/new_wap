@@ -99,10 +99,10 @@ interface INotice {
 
 interface IAreaCode {
   id: number;
-    countryName: string;
-    englishName: string;
-    countryCode: string;
-    mobileAreaCode: string;
+  countryName: string;
+  englishName: string;
+  countryCode: string;
+  mobileAreaCode: string;
 }
 
 interface IWin {

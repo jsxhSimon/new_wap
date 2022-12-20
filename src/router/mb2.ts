@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
       title: '刷新跳转',
       loginFree: false,
     },
-    component: () => import ('components/Refresh.vue'),
+    component: () => import('components/Refresh.vue'),
   },
   {
     path: '/',
@@ -56,6 +56,15 @@ const routes: RouteRecordRaw[] = [
           title: '昵称修改',
         },
         component: () => import(/* webpackChunkName: "mineUpdateNickname" */ 'pages/mine/UpdateNickname.vue'),
+      },
+      {
+        path: 'mine/helpCenter',
+        meta: {
+          title: '帮助中心',
+          showKf: true,
+          // hideHeader: true,
+        },
+        component: () => import(/* webpackChunkName: "mineVip" */ 'pages/mine/HelpCenter.vue'),
       },
       {
         path: 'vip',
