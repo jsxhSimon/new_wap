@@ -30,6 +30,7 @@
           </span>
         </div>
         <ObSports v-if="gameType === 0" :game-type="gameType" :is-hide-change="isHideChange" @change-is-hide-change="changeIsHideChange"  />
+        <SbSports v-if="gameType === 1" :game-type="gameType" :is-hide-change="isHideChange" @change-is-hide-change="changeIsHideChange"  />
       </div>
     </div>
   </q-page>
@@ -45,6 +46,7 @@ import { useSysStore, useEnvStore } from 'src/stores'
 import BalanceHeader from 'src/components/BalanceHeader.vue'
 import SwiperLocal from 'src/components/Swiper.vue'
 import ObSports from 'src/components/obty/ObSports.vue'
+import SbSports from 'src/components/sbty/SbSports.vue'
 
 const map: Record<number, string> = {
   0: 'XM',

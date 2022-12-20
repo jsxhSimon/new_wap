@@ -164,6 +164,7 @@ interface XMPlay {
   hsw: string;
   mid: string;
   hl: XMMarket[];
+  topKey: string;
 }
 
 interface XMPlayOpts {
@@ -177,11 +178,12 @@ interface XMPlayOpts {
     ots: string;
     ov: number;
     prob: string;
+    oTitle?: string;
 }
 
 interface XMMarket {
   hid: string;
-  hmta: number;
+  hmt: number;
   hn: number;
   hs: number;
   hv: string;
@@ -283,7 +285,7 @@ interface ILeagueFollow {
   matchType: number;
 }
 
-interface IXmResultData {
+interface IResultData<T> {
   csna: string;
   idList: string[];
   list: {
@@ -292,7 +294,53 @@ interface IXmResultData {
     leagueId: number;
     name: string;
     tid: string;
-    list: XMMatch[];
+    list: T[];
   }[],
   number?: number;
+}
+
+interface IXmBetChoices {
+  [attr: string]: IXmBetData;
+}
+
+interface IXmBetData {
+  hlIndex: number;
+  hpIndex: number;
+  lb: string;
+  market: XMMarket;
+  match: XMMatch;
+  oIndex: number;
+  os: number;
+  play: XMPlay;
+  playOpts: XMPlayOpts;
+  quota?: {
+    max: number;
+    min: number;
+  }
+}
+
+interface IXmBetType {
+  name: string;
+  Number: string;
+  mon: number;
+  maxMon: number;
+  minMon?: number;
+  allMon: number;
+  winMon: number;
+  id: number;
+}
+
+interface SbMenu {
+  count: number;
+  menuLevel: number;
+  name: string;
+  menuL2s: SbSubMenu[];
+}
+
+interface SbSubMenu {
+  count: number;
+  menuLevel: number;
+  parentId: number;
+  sportName: string;
+  sportType: number;
 }

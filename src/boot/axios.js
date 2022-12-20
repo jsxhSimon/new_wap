@@ -43,7 +43,6 @@ export default ({ store, router }) => {
       // eslint-disable-next-line no-empty
     } else {
       const micsecond = getTimeStamp()
-      console.log(micsecond)
       config.headers.sptvstoken = crypto.Encrypt(JSON.parse(APP_DEFAULT_SPTVTOKEN) + micsecond)
     }
     if (url.endsWith('pay/recoverBalance') || url.endsWith('sys/transit')) {
