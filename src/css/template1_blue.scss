@@ -1,63 +1,67 @@
 body {
-  // 字体颜色
-  --t1: #323232;
-  --t2: #6A7391;
-  --t3: #E8EBED; // 一般用于无效描述文字
-  --t4: #CACDDB;
-  --t5: #fff;
-  --t6: rgba(50, 50, 50, .5);
-  --t7: #8897B8;
-  --t8: #5E6683;
-  --t9: #EA4E3D;
-  --t10: #58AAF3;
-  --lg: linear-gradient(90deg, #33D6FC 0%, #127DFE 100%);
-  --lg2: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
-  --lg3: linear-gradient(180deg, #FFEA9F 0%, #D3A156 100%);
-  --lg4: linear-gradient(90deg, #61B2F9 0%, #98D7FB 100%);
-  --lg5: linear-gradient(180deg, #F1F0F0 0%, #E3E3E3 100%);
-  --lg6: linear-gradient(135deg, #F9FBFF 14.1%, #E0E9F7 85.9%);
-  --bg1: #fff;
-  --bg2: #F6F9FF;
-  --bg3: #DFECFF;
-  --bg4: #F3F8FE;
-  --bg5: #FA6400;
-  --bg6: #EFF1F9;
-  --input-bg: #F3F5F9;
-  --btn-disabled-bg: #DDE0E7;
-  --check-in-line-bg: #D7EDFF;
-  --theme-color: #23A8FF;
-  --theme-text-color: #23A8FF;
-  --download-bar-close-color: #fff;
-  --download-bar-height: 80px;
-  --download-bar-text-color: #fff;
-  --download-bar-btn-bg: linear-gradient(180deg, #FFFFFF 0%, #D3DCE6 100%);
-  --download-bar-bg: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
-  --body-bg: #F1F2F8;
-  --footer-bg: #fff;
-  --footer-text-color: #ADB2C8;
-  --footer-border-radius: 16px 16px 0 0;
-  --side-bar-bg: #fff;
-  --border-color: #F8F8F8;
-  --border-color2: #E3E8F3;
-  --border-color3: #E5E7F0;
-  --header-bg: #fff;
-  --login-input-bg: rgba(255, 255, 255, .4);
-  --login-input-height: 38px;
-  --partner-line-left-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.169526) 0%, rgba(249, 249, 249, 0.722738) 100%);
-  --partner-line-right-bg: linear-gradient(90deg, rgba(249, 249, 249, 0.722738) 0%, rgba(255, 255, 255, 0.169526) 100%);
-  --form-submit-btn-bg: linear-gradient(180deg, #33D6FC 0%, #127DFE 98.1%);
-  --select-bg: #fff;
-  --verify-box-bg: #fff;
-  --verify-bar-bg: #DBF2FF;
-  --dialog-bg: #F3F5F9;
-  --box-shadow: 0px 0px 4px #D7D9E8;
-  --select-bg: #F3F7FF;
-  --skeleton-bg: rgba(#fff, .6);
-  --skeleton-qb-bg: #fff;
-  --mask-bg: rgba(0,0,0, 0.8);
-  --sports-item-bg: #fff;
-  --sport-content-bg: #F1F2F8;
+    // 字体颜色
+    --t1: #323232;
+    --t2: #6A7391;
+    --t3: #E8EBED; // 一般用于无效描述文字
+    --t4: #CACDDB;
+    --t5: #fff;
+    --t6: rgba(50, 50, 50, .5);
+    --t7: #8897B8;
+    --t8: #5E6683;
+    --t9: #EA4E3D;
+    --t10: #58AAF3;
+    --lg: linear-gradient(90deg, #33D6FC 0%, #127DFE 100%);
+    --lg2: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
+    --lg3: linear-gradient(180deg, #FFEA9F 0%, #D3A156 100%);
+    --lg4: linear-gradient(90deg, #61B2F9 0%, #98D7FB 100%);
+    --lg5: linear-gradient(180deg, #F1F0F0 0%, #E3E3E3 100%);
+    --lg6: linear-gradient(135deg, #F9FBFF 14.1%, #E0E9F7 85.9%);
+    --bg1: #fff;
+    --bg2: #F6F9FF;
+    --bg3: #DFECFF;
+    --bg4: #F3F8FE;
+    --bg5: #FA6400;
+    --bg6: #EFF1F9;
+    --input-bg: #F3F5F9;
+    --btn-disabled-bg: #DDE0E7;
+    --check-in-line-bg: #D7EDFF;
+    --theme-color: #23A8FF;
+    --theme-text-color: #23A8FF;
+    --download-bar-close-color: #fff;
+    --download-bar-height: 80px;
+    --download-bar-text-color: #fff;
+    --download-bar-btn-bg: linear-gradient(180deg, #FFFFFF 0%, #D3DCE6 100%);
+    --download-bar-bg: linear-gradient(135deg, #35C1E1 0%, #227BE6 100%);
+    --body-bg: #F1F2F8;
+    --footer-bg: #fff;
+    --footer-text-color: #ADB2C8;
+    --footer-border-radius: 16px 16px 0 0;
+    --side-bar-bg: #fff;
+    --border-color: #F8F8F8;
+    --border-color2: #E3E8F3;
+    --border-color3: #E5E7F0;
+    --header-bg: #fff;
+    --login-input-bg: rgba(255, 255, 255, .4);
+    --login-input-height: 38px;
+    --partner-line-left-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.169526) 0%, rgba(249, 249, 249, 0.722738) 100%);
+    --partner-line-right-bg: linear-gradient(90deg, rgba(249, 249, 249, 0.722738) 0%, rgba(255, 255, 255, 0.169526) 100%);
+    --form-submit-btn-bg: linear-gradient(180deg, #33D6FC 0%, #127DFE 98.1%);
+    --select-bg: #fff;
+    --verify-box-bg: #fff;
+    --verify-bar-bg: #DBF2FF;
+    --dialog-bg: #F3F5F9;
+    --box-shadow: 0px 0px 4px #D7D9E8;
+    --select-bg: #F3F7FF;
+    --skeleton-bg: rgba(#fff, .6);
+    --skeleton-qb-bg: #fff;
+    --mask-bg: rgba(0, 0, 0, 0.8);
+    --sports-item-bg: #fff;
+    --sport-content-bg: #F1F2F8;
 }
-.q-page, .q-page-container, .pro-layout, .help-center-item-box {
-  background-color: var(--body-bg)
+
+.q-page,
+.q-page-container,
+.pro-layout,
+.help-center-item-box {
+    background-color: var(--body-bg)
 }

@@ -1,14 +1,9 @@
 <template>
   <div class="mySettingList">
-    <div
-      class="mySettingItem"
-      v-for="(item, index) in settingList"
-      :key="index"
-      @click="itemClick(item)"
-    >
+    <div class="mySettingItem" v-for="(item, index) in settingList" :key="index" @click="itemClick(item)">
       <div class="icon" :class="item.iconCls"></div>
       <div class="settingText">{{ item.text }}</div>
-     </div>
+    </div>
     <!-- <q-dialog v-model="dialogVisible">
       <Share />
     </q-dialog> -->
@@ -71,7 +66,7 @@ const settingList = reactive([
   },
 ])
 
-const itemClick = (item: {text: string; path: string; iconCls: string;}) => {
+const itemClick = (item: { text: string; path: string; iconCls: string; }) => {
   router.push(item.path)
 }
 </script>
@@ -85,6 +80,7 @@ const itemClick = (item: {text: string; path: string; iconCls: string;}) => {
   flex-wrap: wrap;
   box-shadow: var(--box-shadow);
 }
+
 .mySettingItem {
   width: 80px;
   margin-right: 40px;
@@ -92,14 +88,17 @@ const itemClick = (item: {text: string; path: string; iconCls: string;}) => {
   color: var(--t2);
   text-align: center;
   margin-bottom: 40px;
+
   &:nth-child(7),
   &:nth-child(8),
   &:nth-child(9) {
     margin-bottom: 0;
   }
+
   &:nth-child(3n) {
     margin-right: 0;
   }
+
   .icon {
     width: 48px;
     height: 48px;
@@ -109,11 +108,12 @@ const itemClick = (item: {text: string; path: string; iconCls: string;}) => {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 28px auto;
+
     @each $icon in vip record coupons activity newjobs security suggest sponsor help {
       &.#{$icon} {
         background-image: url('images/mine/vip/mine-icon-' + $icon + '.png');
       }
-    } 
+    }
   }
 }
 </style>

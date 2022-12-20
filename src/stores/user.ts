@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', {
     },
     register(params: Partial<IFormModel>) {
       if (Platform.is.cordova) {
-        params.loginType = Platform.is.ios? 2 : 3;
+        params.loginType = Platform.is.ios ? 2 : 3;
       } else {
         params.loginType = 1;
       }
@@ -106,11 +106,11 @@ export const useUserStore = defineStore('user', {
     // 获取注册规则
     getRegisterSetting() {
       return apiRegistSetting()
-        .then(({data}) => data.regSetting)
+        .then(({ data }) => data.regSetting)
     },
     generateRegisterInfo(params: Partial<IFormModel>) {
       return apiGenerateRegInfo(params)
-        .then(({data}) => data.data)
+        .then(({ data }) => data.data)
     },
     // 我的管家信息
     getButlerMessageList(params: Partial<IMessageInfoParams>) {
@@ -133,9 +133,9 @@ export const useUserStore = defineStore('user', {
           LocalStorage.set('nickNameInfo', data.data)
         })
     },
-    checkVfyRegisteAndLogin(params: {loginName: string}) {
+    checkVfyRegisteAndLogin(params: { loginName: string }) {
       return apiCheckVfyRegisterAndLogin(params)
-        .then(({data}) => {
+        .then(({ data }) => {
           console.log(data)
           return data
         })
@@ -150,12 +150,12 @@ export const useUserStore = defineStore('user', {
     },
     resetPasswordValidCode(params: Partial<IFormModel>) {
       return apiResetPasswordValidCode(params)
-        .then(({data}) => data.token)
+        .then(({ data }) => data.token)
     },
     resetPasswordWithMobile(params: Partial<IFormModel>) {
-      return apiResetPasswordWithMoble(params).then(({data}) => data.token)
+      return apiResetPasswordWithMoble(params).then(({ data }) => data.token)
     },
-    getMessageUnread(params: Partial<{msgType: number}> = {}) { // 查询会员是否有未读消息
+    getMessageUnread(params: Partial<{ msgType: number }> = {}) { // 查询会员是否有未读消息
       const msgType = params.msgType || 0
       return axios
         .get('user/messageUnread', {
@@ -212,6 +212,16 @@ export const useUserStore = defineStore('user', {
         .then(({ data }) => {
           this.$patch(state => state.userInfo = data.userInfo)
         })
+    },
+    helpCategoryList() { // 帮助中心问题列表
+      return axios
+        .get('user/helpCategoryList')
+        .then(({ data }) => data)
+    },
+    findTitleAndContent(params: { id: number; }) { // 帮助中心问题列表详情
+      return axios
+        .get('user/findTitleAndContent', { params })
+        .then(({ data }) => data)
     },
   },
 });
