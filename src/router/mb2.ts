@@ -78,6 +78,7 @@ const routes: RouteRecordRaw[] = [
         path: 'mySponsor',
         meta: {
           title: '历史赞助',
+          hideHeader: true,
         },
         component: () => import(/* webpackChunkName: "mySponsor" */ 'pages/mySponsor/index.vue'),
       },

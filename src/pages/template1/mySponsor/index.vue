@@ -1,80 +1,79 @@
 <template>
-  <q-page class="sponsor" :style="{ backgroundImage: 'url(' + imgs.bgImg + ')' }">
-    <side-header></side-header>
+  <q-page class="sponsor">
+    <div class="header-container">
+      <div class="iconfont icon-xiangzuo1"></div>
+      <div class="title">{{ teamData.titleStr }}</div>
+    </div>
+    <div class="sidebar">
+      <div :class="['sidebar-item', teamData.activeTeam === 'manlian' && 'on']" @click="changeTeam('manlian')">
+        <div class="wrapper">
+          <img src="~images/sponsor/manlian.png" alt="">
+        </div>
+      </div>
+      <div :class="['sidebar-item', teamData.activeTeam === 'liwupu' && 'on']" @click="changeTeam('liwupu')">
+        <div class="wrapper">
+          <img src="~images/sponsor/liwupu.png" alt="">
+        </div>
+      </div>
+      <div class="sidebar-item"></div>
+    </div>
     <div class="top-logo">
-      <img :src="imgs.logoImg" alt="">
+      <img src="~images/sponsor/team_logo.png" alt="" class="team-logo">
+      <span class="line"></span>
+      <img class="plat-logo" src="~images/sponsor/plat_logo.png" alt="">
     </div>
     <div class="sdy-logo">
-      <img class="sdy" :src="imgs.SDYLogoImg" alt="">
-      <img class="ml" :src="imgs.mlImg" alt="">
+      <img class="sdy" src="~images/sponsor/SDY-Logo.png" alt="">
+      <span class="line"></span>
+      <img class="ml" :src="useImgPath(`sponsor/${teamData.activeTeam === 'manlian' ? 'ml' : 'lwp'}.png`)" alt="">
     </div>
 
     <div class="sponsor-details">
-      <h3>国际米兰足球俱乐部</h3>
-      <p class="subtitle">亚洲区独家合作伙伴</p>
-      <div class="video-wrapper" style="minHeight: 196px" v-if="activeVideoTab === 'game'">
-        <img :src="imgs.videoImg" class="video-img" alt="" style="width: 340px;height:210px">
-        <video style="width: 291px; height:165px" playsinline='true' webkit-playsinline='true' x5-playsinline='true'
-          controls class="video absolute-center" src="https://video.longxiaoqz.com/video/SDY-Video-v1.mp4"
-          :poster="imgs.sai">
-        </video>
-      </div>
-
-      <div class="video-wrapper" style="minHeight: 196px" v-if="activeVideoTab === 'nian'">
-        <img :src="imgs.videoNianImg" class="video-img" alt="" style="width: 340px;height:210px">
+      <h3>{{ teamData.teamName }}</h3>
+      <p class="subtitle">
+        <span>.</span>
+        {{ $t('亚洲区独家合作伙伴') }}
+        <span>.</span>
+      </p>
+      <div class="video-wrapper" style="minHeight: 196px">
+        <img src="~images/sponsor/video.png" class="video-img" alt="" style="width: 340px;height:210px">
         <video style="padding-top:8px; width: 280px; height: 165px" playsinline='true' webkit-playsinline='true'
           x5-playsinline='true' controls class="video absolute-center"
-          src="https://video.longxiaoqz.com/video/SDY-CNY-8ver4.mp4" :poster="imgs.nian" />
+          src="https://video.51renqijie.com/video/SDY-CNY-8ver4.mp4" poster="~images/sponsor/nian.jpg" />
       </div>
-      <div class="videowrapperbanner">
-        <div :class="activeVideoTab === 'nian' ? 'videowrapper active' : 'videowrapper'" @click="videoswitch('nian')">
-          球星拜年</div>
-        <div :class="activeVideoTab === 'game' ? 'videowrapper active' : 'videowrapper'" @click="videoswitch('game')">
-          精彩赛事</div>
-      </div>
-
       <div class="text">
-        <p>国际米兰足球俱乐部（Inter Milan，简称国米），是一家位于意大利伦巴第大区米兰市的足球俱乐部，成立于1908年3月9日。球队主场为梅阿查体育场，现征战于意大利足球甲级联赛。</p>
-        <p>国际米兰是由来自“米兰板球与足球俱乐部”（即AC米兰俱乐部）的一部分会员分流出来后组建的足球俱乐部。球衣由蓝色和黑色两种主要颜色组成。因为俱乐部成立之初即向全世界所有球员敞开大门，所以称之为“国际”俱乐部。</p>
-        <p>国际米兰曾为“意甲七姐妹”之一，也与AC米兰和尤文图斯两支球队 并称为北方三强。与AC米兰这支同样来自米兰的俱乐部之间的碰撞被称为“米兰德比”，和来自都灵的尤文图斯之间的对决则称为“意大利国家德
-          比”。国际米兰是唯一一支拿过五冠王（欧冠、意甲、意大利杯、意大利超 级杯和世界俱乐部杯）的意大利联赛球队。</p>
+        <p>{{ teamData.desc }}</p>
       </div>
     </div>
 
     <div class="sponsor-sub-details">
       <div class="sdy-sub-logo">
-        <img :src="imgs.SDYLogoImg" alt="">
       </div>
       <div class="sub-text">
-        2020年，SDY体育正式签约赞助国际米兰足球俱乐部 <br>
-        成为国际米兰足球俱乐部亚洲区独家合作伙伴 <br>
-        此次战略合作的成功达成 <br>
-        是双方追逐梦想，进军国际市场具有历史意义重要的一步 <br>
-        致力于将自己打造成为具备专业服务的国际顶尖综合型体育 <br>
-        投注平台， 正如这个从硝烟中不断过关斩将的蓝黑军团 <br>
-        SDY体育势必破茧成竹 <br>
-        成为全球范围内引领顾客体验新风潮的坚石
+        {{
+            $t('SDY体育是亚洲知名的体育线上娱乐品牌，经过多年的发展，SDY体育以其专业的技术团队、多年的运营经验，深受广大体育爱好者和商业合作伙伴好评。成立至今，SDY体育凭借不断进取与开拓的品牌精神，专注于技术、产品、服务三个重要维度的升级，以其良好的行业与用户口碑，经过多年的品牌打磨，在众多同类型行业产品当中脱颖而出，最终成为行业屈指可数的领先品牌；')
+        }}
       </div>
     </div>
 
     <div class="right-title">
-      <p class="t1">SDY体育权威认证</p>
+      <p class="t1">{{ $t('SDY体育权威认证') }}</p>
       <p class="t2">CERTIFICATION</p>
       <p class="t2">AUTHORITY</p>
     </div>
 
     <div class="bottom-icon">
-      <div><img :src="imgs.gcImg" alt="">
-        <span>英国GC</span>
+      <div><img src="~images/sponsor/gc.png" alt="">
+        <span>{{ $t('英国GC') }}</span>
       </div>
-      <div><img :src="imgs.mgaImg" alt="">
-        <span>马耳他博彩牌照</span>
+      <div><img src="~images/sponsor/mga.png" alt="">
+        <span>{{ $t('马耳他博彩牌照') }}</span>
       </div>
-      <div><img :src="imgs.fscImg" alt="">
-        <span>英属维尔京群岛</span>
+      <div><img src="~images/sponsor/fsc.png" alt="">
+        <span>{{ $t('英属维尔京群岛') }}</span>
       </div>
-      <div><img :src="imgs.flbImg" alt="">
-        <span>菲律宾(PAGCOR)</span>
+      <div><img src="~images/sponsor/flb.png" alt="">
+        <span>{{ $t('菲律宾(PAGCOR)') }}</span>
       </div>
     </div>
   </q-page>
@@ -82,68 +81,31 @@
 
 <script lang="ts" setup>
 
-import { mapActions, mapGetters } from 'vuex'
-import SideHeader from './components/sideHeader.vue'
+import { i18n } from 'boot/i18n'
+import { useImgPath } from 'src/utils/useImgpath';
+import { computed, reactive, ref } from 'vue'
+const { t: lang } = i18n.global
 
-const logoImg = require('images/sponsor/logo@3x.png')
-const SDYLogoImg = require('images/sponsor/SDY-Logo.png')
-const mlImg = require('images/sponsor/ml.png')
-const gcImg = require('images/sponsor/gc.png')
-const mgaImg = require('images/sponsor/mga.png')
-const fscImg = require('images/sponsor/fsc.png')
-const flbImg = require('images/sponsor/flb.png')
-const bgImg = require('images/sponsor/bg.jpg')
-const videoImg = require('images/sponsor/video.png')
-const videoNianImg = require('images/sponsor/video_nian.png')
+const teamData = reactive({
+  titleStr: '曼城',
+  teamName: '曼城足球俱乐部',
+  bgUrl: 'bg',
+  activeTeam: 'manlian',
+  desc: lang('曼城俱乐部是最近十年里英超最成功的俱乐部，一共赢下十几座冠军奖杯，并且最近4年拿下了3个英超冠军，统治力十足。SDY体育同曼城俱乐部签约三年，在未来SDY体育将会和曼城俱乐部在体育层面展开多元化的探索与合作，共同推出基于娱乐体育领域的线上线下活动，为广大球迷带来畅快的游戏娱乐体验！随着这份合作协议的签署，SDY体育国际化战略将再上一个新台阶；')
+})
 
-const sai = require('images/sponsor/sai.jpg')
-const nian = require('images/sponsor/nian.jpg')
-
-export default {
-  name: 'Index',
-  components: {
-    SideHeader,
-  },
-  data() {
-    return {
-      imgs: {
-        logoImg,
-        SDYLogoImg,
-        mlImg,
-        gcImg,
-        mgaImg,
-        fscImg,
-        flbImg,
-        bgImg,
-        videoImg,
-        videoNianImg,
-        sai,
-        nian,
-      },
-      persistent: true,
-      activeVideoTab: 'nian',
-      // loginBg: 'statics/sdy/sponsor/bg.jpg',
-    }
-  },
-  methods: {
-    ...mapActions('user', ['getMessageUnread']),
-    hide() {
-      this.persistent = false
-      this.$router.go(-1)
-    },
-    videoswitch(tab) {
-      this.activeVideoTab = tab
-    },
-  },
-  created() {
-    if (this.isLogin) {
-      this.getMessageUnread()
-    }
-  },
-  computed: {
-    ...mapGetters('user', ['isLogin']),
-  },
+const changeTeam = (type: string) => {
+  teamData.activeTeam = type;
+  teamData.teamName = type === 'manlian' ? '曼城足球俱乐部' : '利物浦足球俱乐部';
+  teamData.desc = type === 'manlian' ? lang('曼城俱乐部是最近十年里英超最成功的俱乐部，一共赢下十几座冠军奖杯，并且最近4年拿下了3个英超冠军，统治力十足。SDY体育同曼城俱乐部签约三年，在未来SDY体育将会和曼城俱乐部在体育层面展开多元化的探索与合作，共同推出基于娱乐体育领域的线上线下活动，为广大球迷带来畅快的游戏娱乐体验！随着这份合作协议的签署，SDY体育国际化战略将再上一个新台阶；') : lang('作为英超传统豪门的利物浦，最近几年在克洛普教练的带领下重回巅峰，先后拿下18/19赛季的欧洲冠军联赛冠军和19/20赛季的英格兰超级联赛冠军，此次与利物浦俱乐部的合作，无疑是SDY体育全球化战略布局中的关键一步，同时也展现了SDY体育雄厚的资金实力。在未来，SDY体育将同利物浦俱乐部携手，进一步推进品牌升值、拓展市场，为广大用户带来最畅快的线上体育娱乐体验；')
+  teamData.bgUrl = type === 'manlian' ? 'bg' : 'bg2';
 }
+
+
+
+const bg = computed(() => {
+  return `url(${useImgPath(`sponsor/${teamData.bgUrl}.jpg`)})`;
+}) 
 </script>
 
 <style lang="scss" scoped>
@@ -153,19 +115,95 @@ export default {
   background-repeat: no-repeat;
   overflow: hidden;
   padding-top: 44px;
+  background-image: v-bind(bg);
+
+  .sidebar {
+    position: fixed;
+    top: 143px;
+    width: 40px;
+    height: 100px;
+    border-radius: 0 10px 10px 0;
+    background-color: var(--bg9);
+    overflow: hidden;
+    z-index: 999;
+
+    .sidebar-item {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .wrapper {
+        width: 25px;
+        height: 25px;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: var(--bg1);
+      }
+
+      &.on {
+        background-color: #cfb79d;
+      }
+
+      img {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    color: var(--t5);
+    font-size: 18px;
+
+    .icon-xiangzuo1 {
+      position: absolute;
+      left: 15px;
+      font-size: 20px;
+    }
+
+    .title {
+      flex-grow: 1;
+      text-align: center;
+    }
+  }
 
   .top-logo {
-    img {
-      display: block;
-      margin: 23px auto 0 auto;
-      width: 172px;
-      height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+
+    .team-logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .line {
+      background-color: var(--t5);
+      font-size: 40px;
+      width: 1px;
+      height: 27px;
+      margin: 0 18px 0 10px;
+    }
+
+    .plat-logo {
+      width: 130px;
     }
   }
 
   .sdy-logo {
     position: absolute;
-    top: 300px;
+    top: 360px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -173,17 +211,19 @@ export default {
     justify-content: space-around;
     width: 222px;
     height: 34px;
-    background: #FFFFFF;
-    box-shadow: 0 1px 2px 0 #000000;
+    background: var(--bg1);
+    box-shadow: var(--box-shadow1);
     border-radius: 17px;
-
-    img {
-      display: inline-block;
-    }
 
     .sdy {
       width: 93px;
       height: 23px;
+    }
+
+    .line {
+      width: 1px;
+      height: 20px;
+      background-color: var(--bg7);
     }
 
     .ml {
@@ -193,41 +233,8 @@ export default {
 
   .sponsor-details {
     position: absolute;
-    top: 345px;
+    top: 440px;
     width: 100%;
-    ;
-
-    .videowrapperbanner {
-      display: flex;
-      margin: 0 auto;
-      width: 50%;
-      height: 40px;
-      background-image: url('~images/sponsor/videotab_bed.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      padding: 4px 4px 0 4px;
-      text-align: center;
-      color: #fff;
-
-      .videowrapper {
-        width: 50%;
-        height: 100%;
-      }
-
-      .active {
-        background-image: url('~images/sponsor/videotab_active.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-      }
-    }
-
-    &.no-video {
-      top: 395px;
-
-      .text {
-        margin-top: 30px;
-      }
-    }
 
     h3 {
       margin: 0 auto;
@@ -236,7 +243,7 @@ export default {
       letter-spacing: 4px;
       font-weight: bold;
       text-align: center;
-      color: #fff;
+      color: var(--t5);
     }
 
     .subtitle {
@@ -244,13 +251,37 @@ export default {
       letter-spacing: 4px;
       text-align: center;
       font-size: 12px;
-      color: #fff;
+      color: var(--t5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      span {
+        transform: translateY(-3px);
+      }
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        background: var(--bg1);
+        width: 20px;
+        height: 1px;
+        left: 82px;
+      }
+
+      &::after {
+        left: auto;
+        right: 87px;
+      }
+
     }
 
     .video-wrapper {
       position: relative;
       display: block;
-      margin: 0 auto;
+      margin: 29px auto 0;
 
       .video-img {
         display: block;
@@ -263,52 +294,47 @@ export default {
     }
 
     .text {
-      margin: 0 auto;
+      margin: 30px auto;
       width: 355px;
-      height: 172px;
-      overflow: scroll;
-      padding: 10px;
-      color: #fff;
+      padding: 15px;
+      color: var(--t5);
       border-radius: 15px;
-      background: rgba(0, 0, 0, 0.46);
+      background: var(--bg8);
+
 
       p {
         text-indent: 20px;
         margin-bottom: 0;
-        line-height: 1.2;
+        line-height: 1.3;
         letter-spacing: 0;
-        font-size: 12px;
+        font-size: 14px;
       }
     }
   }
 
   .sponsor-sub-details {
     position: absolute;
-    top: 840px;
+    top: 1000px;
     width: 100%;
-
-    .sdy-sub-logo {
-      margin: 0 auto 20px;
-      width: 143px;
-      height: 35px;
-
-      img {
-        width: 100%;
-      }
-    }
+    display: flex;
+    justify-content: center;
 
     .sub-text {
-      text-align: center;
-      font-size: 12px;
-      color: #fff;
+      width: 355px;
+      padding: 15px;
+      color: var(--t5);
+      border-radius: 15px;
+      font-size: 14px;
+      line-height: 1.2;
+
     }
   }
 
   .right-title {
     position: absolute;
-    bottom: 270px;
+    bottom: 190px;
     right: 18px;
-    color: #fff;
+    color: var(--t5);
     text-align: right;
 
     p {
