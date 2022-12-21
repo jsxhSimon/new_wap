@@ -9,5 +9,5 @@
       "components/*": ["./src/components/*"],
     },
   },
-  "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./src/types/sports.d.ts", "./src/**/*.vue"],
+  "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./src/**/*.vue"],
 }

@@ -1,21 +1,15 @@
 <template>
   <div class="guide-model-wrap" v-show="isShow" @click.stop>
     <div class="guide-model-mask" :class="{ 'guide-model-mask__show': isShow }"></div>
-    <div v-if="step === 2" @click.stop="closeStep" class="guide-model-step-popover-button"></div>
+    <div v-if="step === 2" @click.stop="closeStep" class="guide-model-step-popover-button">知道了</div>
     <div class="guide-model-step guide-model-step1 guide-model-step__show">
-      <div class="match-item">
-        <div class="header">
-          <div class="live-icon mr-4">{{$t('直播')}}</div>
-          <div class="time">{{dayjs().format('MM-DD HH:')}}00</div>
-        </div>
-      </div>
       <div v-if="step === 1" class="guide-model-step-highlightedElem">
         <i>{{$t('向左滑动，查看更多投注')}}</i>
       </div>
       <div class="guide-model-step-popover">
         <div @touchmove="changeStep" @click="changeStep" class="guide-model-step-popover-arrow" :style="styleVar">
-          <!-- <img src="./images/Mask1.png" class="step1">
-          <img src="./images/Mask2.png" class="step2"> -->
+          <img :src="mask1" class="step1">
+          <img :src="mask2" class="step2">
         </div>
         <div v-if="step === 1" class="guide-model-step-popover-desc">
           <i></i>
@@ -30,6 +24,8 @@ import { useUserStore } from 'src/stores';
 import { ref, computed, watch, nextTick } from 'vue'
 import { LocalStorage } from 'quasar'
 import dayjs from 'dayjs'
+import mask1 from 'images/sports/Swipe-left.png'
+import mask2 from 'images/sports/Swipe-right.png'
 
 interface Props {
   isShow: boolean;
@@ -113,8 +109,11 @@ const closeStep = () => {
     z-index: 9999;
     width: 159px;
     height: 34px;
+    line-height: 34px;
     background: url("images/sports/game-sport-button.png") no-repeat center center;
     background-size: 100% auto;
+    text-align: center;
+    color: var(--guide-button-color);
   }
   .guide-model-mask {
     position: fixed;

@@ -90,7 +90,9 @@
                       <div class="match-item-bx-left">
                         <div class="match-item-bx-left-top" :class="{'has-img': getIcon(item)}" >
                           <span class="_flex icon_item">
-                            <div v-if="getIcon(item)" class="game-icon" @click="showFullPlay(item, !xmStore.isZaoPan)" :class="getIcon(item)"></div>
+                            <div v-if="getIcon(item)" class="game-icon" @click="showFullPlay(item, !xmStore.isZaoPan)" :class="getIcon(item)">
+                              <span class="game-icon-name">{{ getIconName(item) }}</span>
+                            </div>
                             {{ item.mmp === '0' ? formatMgtDate(item) : $t(formatMmp(item,1))}}
                           </span>
                           <span v-if="showTime(item)" class="_flex">
@@ -125,12 +127,274 @@
                           </div>
                         </div>
                       </div>
+                      <div class="match-item-bx-right-less" v-if="item.hps.length <= 3">
+                        <div class="match-item-bx-right-top">
+                          <span v-for="hp in item.hps" :key="hp.hpn">
+                            {{ hp.hpn }}
+                          </span>
+                        </div>
+                        <div class="match-item-bx-right-bottom" v-if="item.hps.length === 0">
+                          <template v-if="item.hps.length === 0">
+                            <div class="odd-column">
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                            </div>
+                            <div class="odd-column">
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                            </div>
+                            <div class="odd-column">
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                            </div>
+                          </template>
+                        </div>
+                        <div class="match-item-bx-right-bottom" v-else>
+                          <template v-for="hp in item.hps">
+                            <div v-if="hp.hl && hp.hl.length > 0 && hp.hl[0].ol" class="odd-column"  :key="hp.hpn + hp.hpnb">
+                              <div
+                                v-for="o in hp.hl[0].ol"
+                                :key="o.oid"
+                                class="odd-column-item"
+                                :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                              >
+                                <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, match: item})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                  <div v-if="o.on != ''">{{o.on}}</div>
+                                  <div v-else>{{o.onb}}</div>
+                                  <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                  <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                  <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                </div>
+                                <template v-else>
+                                  <div>
+                                    <van-icon name="lock" />
+                                  </div>
+                                </template>
+                              </div>
+                            </div>
+                            <div v-else-if="hp.hpid === '1'" class="odd-column" :key="hp.hpn + 'odd'">
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                            </div>
+                            <div v-else class="odd-column" :key="hp.hpn + 'odd-empty'">
+                              <div class="odd-column-item">-</div>
+                              <div class="odd-column-item">-</div>
+                            </div>
+                          </template>
+                        </div>
+                      </div>
+                      <div class="match-item-bx-right-more" v-else>
+                        <van-tabs swipeable animated>
+                          <van-tab>
+                            <div class="match-item-bx-right-top">
+                              <div v-for="hp in item.hps.slice(3, 6)" :key="hp.hpn + hp.hpnb">
+                                <span v-if="hp.hpid === '1'">
+                                  {{ $t(hp.hpnb) }}
+                                </span>
+                                <span v-else>
+                                  {{ $t(hp.hpn) }}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="match-item-bx-right-bottom">
+                              <div class="match-item-list">
+                                <div class="support">{{ $t('支持率') }}</div>
+                                <template v-for="(hp, hpIndex) in item.hps.slice(3, 6)">
+                                  <div v-if="hp.hl && hp.hl.length > 0 && hp.hl[0].ol" class="odd-column"  :key="hp.hpn + hp.hpnb">
+                                    <div class="odd-column-wins" v-if="hp.hpid === '1' && hp.hl[0].ol.length === 1">
+                                      <div
+                                        v-for="o in hp.hl[0].ol"
+                                        :key="o.onb"
+                                        style="min-height: 16px;height: 7vw;margin: .5vw .5vw 0 0;"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex:0, hlIndex: 0, oIndex:hpIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                      <div
+                                        v-for="o in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        style="min-height: 16px;height: 7vw;margin: 7.8vw .5vw 0 0;"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex:0, hlIndex: 0, oIndex:hpIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <div>{{o.prob || '--'}}</div>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                    <div class="odd-column-sam" v-else-if="hp.hl[0].ol.length === 3">
+                                      <div
+                                        v-for="(o, oIndex) in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex, hlIndex: 0, oIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <div v-if="o.on != ''">{{o.on}}</div>
+                                          <div v-else>{{o.onb}}</div>
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                    <div class="odd-column-nowins" v-else>
+                                      <div
+                                        v-for="(o, oIndex) in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex, hlIndex: 0, oIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <div v-if="o.on != ''">{{o.on}}</div>
+                                          <div v-else>{{o.onb}}</div>
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div v-else-if="hp.hpid === '1'" class="odd-column" :key="hp.hpn + 'odd'">
+                                    <div class="odd-column-item">-</div>
+                                    <div class="odd-column-item">-</div>
+                                  </div>
+                                  <div v-else class="odd-column" :key="hp.hpn + 'odd1'">
+                                    <div class="odd-column-item">-</div>
+                                    <div class="odd-column-item">-</div>
+                                  </div>
+                                </template>
+                              </div>
+                            </div>
+                          </van-tab>
+                          <van-tab>
+                            <div class="match-item-bx-right-top">
+                              <div v-for="hp in item.hps.slice(0, 3)" :key="hp.hpn + hp.hpnb">
+                                <span v-if="hp.hpid === '1'">
+                                  {{ $t(hp.hpnb) }}
+                                </span>
+                                <span v-else>
+                                  {{ $t(hp.hpn) }}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="match-item-bx-right-bottom">
+                              <div class="match-item-list">
+                                <template v-for="(hp, hpIndex) in item.hps.slice(0, 3)">
+                                  <div v-if="hp.hl && hp.hl.length > 0 && hp.hl[0].ol" class="odd-column"  :key="hp.hpn + hp.hpnb">
+                                    <div class="odd-column-wins" v-if="hp.hpid === '1' && hp.hl[0].ol.length === 1">
+                                      <div
+                                        v-for="(o, oIndex) in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex, hlIndex: 0, oIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <div>{{o.prob || '--'}}</div>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                    <div class="odd-column-sam" v-else-if="hp.hl[0].ol.length === 3">
+                                      <div
+                                        v-for="(o, oIndex) in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex, hlIndex: 0, oIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <div v-if="o.on != ''">{{$t(o.on)}}</div>
+                                          <div v-else>{{o.onb}}</div>
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                    <div class="odd-column-nowins" v-else>
+                                      <div
+                                        v-for="(o, oIndex) in hp.hl[0].ol"
+                                        :key="o.oid"
+                                        class="odd-column-item"
+                                        :class="getActiveClassName(o) ? 'odd-column-item__active' : ''"
+                                      >
+                                        <div @click="doBet({ playOpts: o, market: hp.hl[0], play: hp, lb:o.on||o.onb, match: item, hpIndex, hlIndex: 0, oIndex})" v-if="hp.hl[0].hs === 0 && o.os === 1" class="odd-item" :class="o.oTitle">
+                                          <div v-if="o.on != ''">{{o.on.replace('大', $t('大')).replace('小', $t('小'))}}</div>
+                                          <div v-else>{{o.onb}}</div>
+                                          <span v-if="o.oTitle === '' || !o.oTitle">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-green" v-if="o.oTitle === 'big'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                          <span class="c-red" v-if="o.oTitle === 'small'">{{(o.ov / 100000).toFixed(2)}}</span>
+                                        </div>
+                                        <template v-else>
+                                          <div>
+                                            <van-icon name="lock" />
+                                          </div>
+                                        </template>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div v-else-if="hp.hpid === '1'" class="odd-column" :key="hp.hpn + 'odd'">
+                                    <div class="odd-column-item">-</div>
+                                    <div class="odd-column-item">-</div>
+                                    <div class="odd-column-item">-</div>
+                                  </div>
+                                  <div v-else class="odd-column" :key="hp.hpn + 'odd2'">
+                                    <div class="odd-column-item">-</div>
+                                    <div class="odd-column-item">-</div>
+                                  </div>
+                                </template>
+                              </div>
+                            </div>
+                          </van-tab>
+                        </van-tabs>
+                      </div>
                     </div>
                   </div>
                 </div>
               </template>
             </sdy-collapse>
           </div>
+        </div>
+        <div class="list-finished" v-show="!showSkeleton && finished">
+          {{ $t('没有更多赛事了') }}
         </div>
       </div>
     </div>
@@ -143,7 +407,7 @@ import dayjs from 'dayjs'
 import { SessionStorage, LocalStorage } from 'quasar';
 import { ref, computed, watch, onBeforeMount, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { XmMenu, XMMatch, ILeagueFollow, IXmResultData, XMPlay, XMPlayOpts } from 'src/types/sports';
+import { XmMenu, XMMatch, ILeagueFollow, IResultData, XMPlay, XMPlayOpts, IXmBetChoices, IXmBetData } from 'src/types/sports';
 import { MENU_MAP } from './utils/constants'
 import { useUserStore, useXmStore } from 'src/stores'
 import SportMenu from './components/SportMenu.vue'
@@ -155,6 +419,7 @@ import { groupBy, groupByKey } from 'src/utils'
 import SquareGuideModel from '../SquareGuideModel.vue'
 import SdyImage from 'components/SdyImage.vue'
 import CountDown from '../CountDown.vue';
+import { Toast, Tabs as VanTabs, Tab as VanTab } from 'vant';
 
 const { t: lang } = useI18n()
 
@@ -194,7 +459,7 @@ const searchwd = ref('')
 const modelShow = ref(true)
 const matchModel = ref<any>(null)
 const sportGroupStyle = ref('')
-const resultData = ref<IXmResultData[]>([])
+const resultData = ref<IResultData<XMMatch>[]>([])
 const page = ref(1)
 const pageSize = ref(15)
 const finished = ref(false)
@@ -202,6 +467,7 @@ const foldList = ref<string[]>([])
 const guideModelShow = ref(false)
 const loading = ref(false)
 const fullMatch = ref<null | XMMatch>(null)
+const betChoices = ref<IXmBetChoices>({})
 
 const intervalTime = 8000
 let matchTimer: any = null
@@ -555,7 +821,7 @@ const handleListChange = (dat: XMMatch[] | null, isLoad?: boolean) => {
   // 以赛事类别进行分组
   const groupArr = groupBy(val, (item: XMMatch) => item.csna, 'csna')
   const arr = groupArr.map(item => {
-    let result: Partial<IXmResultData> = {}
+    let result: Partial<IResultData<XMMatch>> = {}
     const idList = item.list.map((temp: any) => temp.mid)
     if (xmStore.isZaoPan) {
       const nList: XMMatch[] = JSON.parse(JSON.stringify(item.list))
@@ -650,7 +916,7 @@ const handleListChange = (dat: XMMatch[] | null, isLoad?: boolean) => {
       l.tid = l.list[0].tid
     })
   })
-  resultData.value = newData as IXmResultData[]
+  resultData.value = newData as IResultData<XMMatch>[]
   const showSquare = LocalStorage.getItem('showRules')
   if (showSquare !== true) {
     closeModel(false)
@@ -767,6 +1033,23 @@ const getIcon = (match: XMMatch) => {
   return play && (icons[play.slice(2, 3)] || icons[play.slice(2, 5)] || [])[+mmp > 0 ? 1 : 0]
 }
 
+const getIconName = (match: XMMatch) => {
+  const type = getIcon(match)
+  switch (type) {
+    case 'vid':
+    case 'vida':
+      return lang('直播')
+    case 'anc':
+    case 'anca':
+      return lang('主播')
+    case 'ain':
+    case 'aina':
+      return lang('动画')
+    default:
+      return ''
+  }
+}
+
 const showFullPlay = (match: XMMatch, isicon?: boolean) => {
   isicon ? (+match.mmp > 0 && saveTabInfo(match)) : saveTabInfo(match)
 }
@@ -792,7 +1075,6 @@ const showTime = (match: XMMatch) => {
   const mmp = +match.mmp
   const mst = +match.mst
   const csid = +match.csid
-  console.log(mmp, mst, csid)
   let s = [0]
   if (mst > 0) {
     switch (csid) {
@@ -867,4 +1149,492 @@ const infoOptimization = (item: string[], type: string, name = '') => {
   }
   return result
 }
+
+const getActiveClassName = (aPlayOpts: XMPlayOpts) => {
+  const choices = Object.values(betChoices.value)
+  return choices.some(item => {
+    return item.playOpts.oid === aPlayOpts.oid
+  })
+}
+
+const doBet = (data: Partial<IXmBetData>) => {
+  window.shakeApp()
+  const { market, play, match, playOpts } = data as IXmBetData
+  if (xmStore.activeBetData.length >= 10) {
+    return Toast.fail(lang('投注数量已达上限'))
+  }
+  if (xmStore.isMultiple) {
+    if (betChoices.value[match!.mid]) {
+      delete betChoices.value[match!.mid]
+    } else {
+      betChoices.value[match.mid] = data as IXmBetData
+    }
+  } else {
+    betChoices.value[match.mid] = data as IXmBetData
+  }
+  xmStore.handleBet({
+    data: Object.values(betChoices.value),
+    isMultiple: xmStore.isMultiple,
+  })
+}
 </script>
+
+<style lang="scss">
+.match-item-bx {
+  display: flex;
+  align-items: center;
+  width: 327px;
+  height: 120px;
+  margin: 0 auto;
+  padding-left: 10px;
+  font-size: 11px;
+  .match-item-bx-left {
+    width: 130px;
+    height: 120px;
+    box-sizing: border-box;
+    .match-item-bx-left-top {
+      display: flex;
+      justify-content: space-between;
+      height: 30px;
+      border-bottom:none;
+      .zaopan {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .match-item-bx-left-bottom {
+      width: 130px;
+      height: 90px;
+      box-sizing: border-box;
+      padding-right: 10px;
+    }
+  }
+  .match-item-bx-right-less {
+    .match-item-bx-right-top {
+      display: flex;
+      height: 30px;
+      border:none;
+      > span {
+        display: inline-block;
+        width: 54px;
+        margin-right: 2px;
+        text-align: center;
+        line-height: 30px;
+      }
+      justify-content: space-between;
+      .zaopan {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .match-item-bx-right-bottom {
+      display: flex;
+      height: 90px;
+      .odd-column {
+        height: 90px;
+        display: flex;
+        flex-direction: column;
+        &:first-child {
+          .odd-column-item {
+            width: 70px;
+            min-height: 20px;
+            flex-grow: 1;
+            margin-top: 4px;
+            flex-direction: row;
+            align-items: center;
+            .odd-item {
+              flex-direction: row;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              box-sizing: border-box;
+              background-size: 7px auto;
+              &.small, &.big {
+                padding-left: 4px;
+                background-position: 2px center;
+              }
+              >div {
+                margin-right: 2px;
+              }
+            }
+          }
+        }
+      }
+      .odd-column-item {
+        width: 56px;
+        height: 40px;
+        font-size: 10px;
+        text-align: center;
+        margin: 5px 2px 2px 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+  .match-item-bx-right-more {
+    overflow-x: scroll;
+    .match-item-bx-right-top {
+      height: 27px;
+      border-bottom: none;
+      display: flex;
+      > div {
+        display: flex;
+        flex-direction: column;
+        min-width: 60px;
+        line-height: 27px;
+        margin-right: 2px;
+        text-align: center;
+      }
+      justify-content: space-between;
+      .zaopan {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .match-item-bx-right-bottom {
+      .match-item-list {
+        display: flex;
+        height: 90px;
+        padding-left: 2px;
+        .support {
+          position: absolute;
+          top: 15.4vw;
+          width: 49vw;
+          text-align: center;
+          padding: .8vw 0;
+          // background:#D5D7E9;
+        }
+        .odd-column {
+          height: 90px;
+          display: flex;
+          flex-direction: column;
+          .odd-column-item {
+            width: 58px;
+            min-height: 36px;
+            font-size: 10px;
+            text-align: center;
+            margin: 5px 2px 0px 0;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          .odd-column-wins {
+            height: 100%;
+            .odd-column-item {
+              width: 60px;
+              font-size: 10px;
+              text-align: center;
+              margin: 5px 2px 2px 0;
+              border: none;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+          }
+          .odd-column-nowins {
+            .odd-column-item {
+              width: 58px;
+              min-height: 38px;
+              font-size: 10px;
+              text-align: center;
+              margin: 4px 2px 2px 0;
+              border: none;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+          }
+          .odd-column-sam {
+            .odd-column-item {
+              width: 60px;
+              min-height: 24px;
+              flex-grow: 1;
+              margin-right: 2px;
+              margin-top: 4px;
+              flex-direction: row;
+              align-items: center;
+              text-align: center;
+              .odd-item {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                box-sizing: border-box;
+                background-size: 7px auto;
+                &.small, &.big {
+                  padding-left: 4px;
+                  background-position: 2px center;
+                }
+                >div {
+                  margin-right: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.matches-wrapper {
+  ._flex {
+    display: flex;
+    align-items: center;
+  }
+  .icon_item {
+    white-space: nowrap;
+    text-indent: -6px;
+  }
+  .game-icon{
+    max-width: 50px;
+    max-height: 25px;
+    position: relative;
+    left: -10px;
+  }
+  .match-item {
+    height: 130px;
+  }
+  .van-collapse-item__content {
+    padding: 0;
+  }
+  .match-item-hd-left {
+    width: 135px;
+    display: flex;
+  }
+  .match-item-hd-right {
+    span {
+      display: inline-block;
+      text-align: center;
+      width: 56px;
+      margin-right: 2px;
+    }
+  }
+  .match-item-bd {
+    width: 327px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    border-radius: 0 0 4px 4px;
+    .match-item-bd-left {
+      width: 130px;
+      box-sizing: border-box;
+      // padding-right: 10px;
+    }
+    .match-item-bd-right {
+      display: flex;
+      .odd-column {
+        height: 78px;
+        display: flex;
+        flex-direction: column;
+        &:first-child {
+          .odd-column-item {
+            width: 70px;
+            min-height: 24px;
+            flex-grow: 1;
+            flex-direction: row;
+            align-items: center;
+            .odd-item {
+              flex-direction: row;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              box-sizing: border-box;
+              background-size: 7px auto;
+              &.small, &.big {
+                padding-left: 4px;
+                background-position: 2px center;
+              }
+              >div {
+                margin-right: 2px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .match-item-top-right {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    .jiao-qiu, .half-score{
+      color: var(--t10);
+      font-size: 12px;
+    }
+    .jiao-qiu {
+      margin-right: 3px;
+      .jiao-qiu-icon {
+        display: inline-block;
+        width: 6.5px;
+        height: 12.5px;
+        background: url("images/sports/icon-corner.png");
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-bottom: 3px;
+      }
+    }
+    .half-score {
+      .half-score-ht {
+        color: var(--t2);
+        font-size: 12px;
+      }
+    }
+  }
+  .match-item-top {
+    display: flex;
+    align-items: center;
+    width: 327px;
+    margin: 0 auto;
+    padding-left: 10px;
+    font-size: 11px;
+    height: 31px;
+    margin-top: 5px;
+    justify-content: space-between;
+  }
+  .match-item-hd {
+    display: flex;
+    align-items: center;
+    width: 327px;
+    margin: 0 auto;
+    padding-left: 18px;
+    font-size: 11px;
+    height: 31px;
+    line-height: normal;
+    &:nth-of-type(1){
+      border-radius: 4px 4px 0 0;
+    }
+  }
+  .team-info {
+    height: 26px;
+    display: flex;
+    align-items: center;
+    .img-box {
+      width: 20px;
+    }
+    .team-name {
+      font-size: 12px;
+      margin-left: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .score-value{
+      margin-right: 10px;
+    }
+  }
+  .collect {
+    height: 26px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding-left: 5px;
+    .sdy-icon {
+      width: 14px;
+      height: 14px;
+    }
+    span {
+      font-size: 10px;
+      margin-left: 3px;
+      font-size: 12px;
+    }
+  }
+  .van-collapse-item__content {
+    padding-bottom: 10px;
+  }
+  .match-header {
+    justify-content: space-between;
+    align-items: center;
+  }
+  .league-title {
+    align-items: center;
+    .league-name {
+      width: 210px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+  .not-in-view {
+    .match-item .match-item-wrapper {
+      display: none;
+    }
+  }
+}
+.sdy-spinner {
+  line-height: 40px;
+  width: 50px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  > div {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bouncedelay 1.4s infinite ease-in-out;
+    animation-fill-mode: both;
+    margin-right: 5px;
+    &:last-child {
+      margin: 0;
+    }
+  }
+  .bounce1 {
+    animation-delay: -0.32s;
+  }
+  .bounce2 {
+    animation-delay: -0.16s;
+  }
+}
+.list-finished {
+  color: var(--t2);
+  text-align: center;
+  line-height: 40px;
+  padding-bottom: 20px;
+}
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+  } 40% {
+      transform: scale(1.0);
+    }
+}
+</style>
+<style lang="scss">
+.match-item-bx-right-more {
+  width: 188px;
+  .van-tabs {
+    .van-tabs__wrap {
+      position: relative;
+      top: 117px;
+      height: 3px;
+      .van-tabs__nav {
+        background-color: transparent;
+        width: 30px;
+        margin: 0 auto;
+        .van-tab {
+          margin: 0px;
+          padding: 0px;
+          margin-right: 5px;
+          background-color: var(--t4);
+          border-radius: 1px;
+          width: 10px;
+          border-radius: 2px;
+        }
+        .van-tab--active {
+          width: 6px;
+          background-color: var((--t1));
+        }
+        .van-tabs__line {
+          display: none;
+        }
+      }
+    }
+  }
+}
+</style>

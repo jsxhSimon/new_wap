@@ -9,6 +9,7 @@ export { useEnvStore } from './env'
 export { useTaskStore } from './task'
 export { useFbtyStore } from './fbty'
 export { useXmStore } from './xm'
+export { useSbStore } from './sbty'
 
 /*
  * When adding new properties to stores, you should also
