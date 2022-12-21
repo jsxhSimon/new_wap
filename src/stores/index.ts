@@ -10,6 +10,7 @@ export { useTaskStore } from './task'
 export { useFbtyStore } from './fbty'
 export { useXmStore } from './xm'
 export { useSbStore } from './sbty'
+export { useSptvStore } from './sptv'
 
 /*
  * When adding new properties to stores, you should also
