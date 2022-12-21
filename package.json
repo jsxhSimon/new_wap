@@ -21,9 +21,11 @@
     "@quasar/extras": "^1.0.0",
     "@types/stompjs": "^2.3.3",
     "axios": "^0.21.1",
+    "cnchar": "^3.2.0",
     "crypto-js": "^4.0.0",
     "dayjs": "^1.11.7",
     "logan-web": "^1.1.0",
+    "mitt": "^3.0.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
@@ -39,7 +41,6 @@
     "vue-router": "^4.0.0",
     "vue-seamless-scroll": "^1.1.23",
     "vue3-marquee": "^3.1.2",
-    "cnchar": "^3.2.0",
     "vuelidate": "^0.7.4"
   },
   "devDependencies": {

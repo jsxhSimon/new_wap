@@ -75,7 +75,7 @@ export const useSptvStore = defineStore('sptv', {
       return axios.get('splive/app/listBetLeagueCollect', { params })
         .then(res => res.data.data)
     },
-    FollowBetLeague(params: {matchType: number;}) {
+    FollowBetLeague(params: {matchType: number; leagueName?: string; leagueId?: number;}) {
       return axios.post('splive/app/followBetLeague', params)
     },
     cancelFollowLeague(params: {matchType: number; leagueId: string | number;}) {

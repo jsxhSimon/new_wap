@@ -31,7 +31,8 @@ interface SbMatch {
   soccerInfo: SoccerInfo;
   gameInfo: GameInfo;
   teamInfo: TeamInfo;
-  markets: SbMarket[];
+  markets: ISbMarket[];
+  groupKey: string;
   tennisInfo: {
     homeGameScore: number[];
     awayGameScore: number[];
@@ -71,23 +72,6 @@ interface TeamInfo {
   homeIconUrl: string;
   homeId: number;
   homeName: string;
-}
-interface SbMarket {
-  betType: number;
-  betTypeName: string;
-  category: number;
-  combo: number;
-  eventId: number;
-  marketId: number;
-  marketStatus: EventStatus;
-  maxBet: number;
-  selections: {
-    key: string;
-    keyName: string;
-    oddsPrice: {
-      decimalPrice: number;
-    },
-  }[]
 }
 // 原生体育 tab 对象
 interface IGameType {
@@ -278,26 +262,27 @@ interface XmSubMenu {
 }
 
 interface ILeagueFollow {
-  createTime: string;
-  id: number;
+  createTime?: string;
+  id?: number;
   leagueId: number;
   leagueName: string;
   /** matchType: 10 xm 11 sb 12 fb */
-  matchType: number;
+  matchType?: number;
 }
 
 interface IResultData<T> {
-  csna: string;
+  csna?: string;
   idList: string[];
   list: {
-    collect: boolean;
+    collect?: boolean;
     groupKey: string;
     leagueId: number;
     name: string;
-    tid: string;
+    tid?: string;
     list: T[];
   }[],
   number?: number;
+  sportName?: string;
 }
 
 interface IXmBetChoices {
@@ -345,6 +330,7 @@ interface SbSubMenu {
   sportName: string;
   sportType: number;
   gameId?: number;
+  gameName?: string;
 }
 
 interface SbYsgj {
@@ -370,12 +356,14 @@ interface SbYsgjOutright {
 
 interface ISbYsgjTeam {
   maxBet: number;
+  minBet: number;
   oddsStatus: string;
   orid: number;
   price: number;
   teamId: number;
   teamName: string;
   update: boolean;
+  className?: string;
 }
 
 interface ISbYsgjBetData {
@@ -398,6 +386,8 @@ interface ISbMarket {
   marketId: number;
   marketStatus: string;
   maxBet: number;
+  minBet?: number;
+  gameMap?: number;
   selections: ISbOdd[];
 }
 
@@ -416,6 +406,7 @@ interface ISbOdd {
   };
   point?: number;
   new_point?: number;
+  active?: boolean;
 }
 
 interface ISbBetType {

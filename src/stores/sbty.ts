@@ -746,7 +746,7 @@ export const useSbStore = defineStore('sbty', {
         })
         .then(({ data }) => data.message)
     },
-    getParlayTickets(params: IParlayTicketsParams) {
+    getParlayTickets(params: any) {
       return axios
         .post('splive/sbod/sbod/getParlayTickets', {
           ...getCommonParams(),

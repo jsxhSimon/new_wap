@@ -26,7 +26,7 @@ interface ISbMatchDetailParams {
 
 interface ISbSingleTicketParams {
   sportType: number;
-  marektId: number;
+  marketId: number;
   key: string;
   oddsType: number;
 }
