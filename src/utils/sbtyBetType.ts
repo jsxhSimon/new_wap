@@ -20,7 +20,7 @@ export const getBetTypesBySportType = (sportType: number) => {
 
 // 1, 3, 5, 20, 701, 704, 1308, 1306, 9539, 9538, 9401
 
-export const betTypeNameMap = {
+export const betTypeNameMap: any = {
   1: lang('全场让球'),
   3: lang('全场大小'),
   5: lang('全场独赢'),

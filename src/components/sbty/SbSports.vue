@@ -47,7 +47,7 @@
         <div class="is-empty" v-show="canShowEmpty && !resultData.length"></div>
         <Skeleton v-show="showSkeleton" />
         <div class="sport-group-container" :style="sportGroupStyle">
-          <template v-if="isYsgj">
+          <template v-if="sbStore.isYsgj">
             <div class="sport-group is-ysgj" :class="{'is-closed': foldList.includes(ysgj.sportName)}" v-for="ysgj in ysgjList" :key="ysgj.sportType" v-show="!showSkeleton">
               <div class="sport-header">
                 <div class="left">{{$t(ysgj.sportName)}}({{ysgj.count}})</div>
@@ -114,7 +114,7 @@
                   <div class="match-item" v-for="item in t.list" :key="item.evnetId">
                     <div class="match-item-wrapper">
                       <div class="match-item-hd">
-                        <div class="match-item-hd-left" v-if="isZaoPan">
+                        <div class="match-item-hd-left" v-if="sbStore.isZaoPan">
                           <span class="m-r-10 zaopan">
                             <span v-if="item.globalShowTime2 || item.globalShowTime">{{formatMgtDate(item)}}</span>
                           </span>
@@ -228,10 +228,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import dayjs from 'dayjs'
+import { ref, computed, reactive, watch, nextTick } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { SbMenu, IResultData, SbMatch } from 'src/types/sports'
+import { SbMenu, IResultData, SbMatch, SbYsgj, ISbYsgjBetData, ILeagueFollow } from 'src/types/sports'
 import { useSbStore } from 'src/stores'
+import { useI18n } from 'vue-i18n'
+import Stomp from 'stompjs'
+import cnchar from 'cnchar'
+import { betTypeNameMap } from 'src/utils/sbtyBetType'
+
+const weekMap: any = {
+  0: '周日',
+  1: '周一',
+  2: '周二',
+  3: '周三',
+  4: '周四',
+  5: '周五',
+  6: '周六',
+}
+
+const { t: lang} = useI18n()
 
 const sbStore = useSbStore()
 const showFilter = ref(false)
@@ -242,6 +259,91 @@ const canShowEmpty = ref(false)
 const showSkeleton = ref(false)
 const resultData = ref<IResultData<SbMatch>[]>([])
 const sportGroupStyle = ref('')
+const foldList = ref<string[]>([])
+const ysgjList = ref<SbYsgj[]>([])
+const page = ref(1)
+const pageSize = ref(15)
+const loading = ref(false)
+const list = ref<SbMatch[]>([])
+const finished = ref(false)
+const showCalendar = ref(false)
+const openAll = ref(false)
+const range = ref<string[]>([])
+const betData = ref([])
+const ysgjBetData = ref<ISbYsgjBetData | null>(null)
+const orderStatus = ref('')
+const betResult = ref({})
+const showSucData = ref(false)
+const betAmount = ref('')
+const winMoney = ref('')
+const stompClient = ref<any>(null)
+const stompConnected = ref(false)
+const stompList: any = reactive({
+  sbob_event_add: null,
+  sbob_event_remove: null,
+  sbob_event_update: null,
+  sbob_market_add: null,
+  sbob_market_remove: null,
+  sbob_market_update: null,
+  sbob_selection_add: null,
+  sbob_selection_remove: null,
+  sbob_odds_update: null,
+  sbob_outright_add: null,
+  sbob_outright_update: null,
+  sbob_outright_remove: null,
+})
+const selectLeagues = ref<string[]>([])
+const checkbox = ref<string[]>([])
+const sortButtons = [
+  { label: lang('时间'), type: 0 },
+  { label: lang('联赛'), type: 1 },
+]
+const sortType = ref(0)
+const searchwd = ref('')
+const hideCount = ref(0)
+const checkboxListHeight = ref(0)
+const checkboxItemHeight = ref(0)
+const isFollow = ref(false)
+const lfList = ref<ILeagueFollow[]>([])
+const gotoLeagueId = ref('')
+const findLeagueToast = ref<any>(null)
+
+let scrollEl = null
+let btimer: any = null
+let timer: any = null
+let oddUpdateClassTimer: any = null
+
+const leagueList = computed(() => {
+  const leagues: any = {}
+  list.value.forEach(item => {
+    if (!leagues[item.leagueName] && item.leagueName.includes(searchwd.value)) {
+      leagues[item.leagueName] = {
+        name: item.leagueName,
+        index: item.leagueInitials || cnchar.spell(item.leagueName).slice(0, 1),
+        id: item.leagueId,
+      }
+    }
+  })
+  return Object.values(leagues)
+})
+
+const leagueIndexBar = computed(() => {
+  const data: any = {}
+  leagueList.value.forEach((item: any) => {
+    if (data[item.index]) {
+      data[item.index].list.push(item)
+    } else {
+      data[item.index] = {
+        list: [item],
+      }
+    }
+  })
+  return data
+})
+
+const legueIndexList = computed(() => {
+  return Object.keys(leagueIndexBar.value).sort((a, b) => a.localeCompare(b))
+})
 
 const tabs = computed(() => {
   let arr: any = menus.value
@@ -267,9 +369,165 @@ const activeMenu = computed(() => {
   return tabs.value[tabIndex.value]
 })
 
+const activeSubMenu = computed(() => {
+  return tabs.value[tabIndex.value].menuL2s[subIndex.value]
+})
+
+const marketIds = computed(() => {
+  return sbStore.betData.map(item => item.market.marketId).join(',')
+})
+
 const disabledMenu = computed(() => {
   return Object.keys(menus.value[0] || {}).length <= 2
 })
+
+const selectOddStr = computed(() => {
+  return sbStore.betData.map(item => `${item.market.eventId}-${item.market.marketId}-${item.odd.key}-`).join(',')
+})
+
+const betTypeIds = computed(() => {
+  if (sbStore.gameType === 2) {
+    if (activeMenu.value.name === '滚球') {
+      return ['9001,1', '9001,2', '9001,3', '9001,4', '9001,5', '9001,6', '9001,7', '9001,8', '9001,9', '9001,10', '9001,11', '9001,12', '9001,13', '9001,14', '9001,15', '9001,16', '9001,17', '9001,18', '9001,19', '9001,20']
+    }
+    return [20, 1, 3]
+  }
+  if (activeSubMenu.value && activeSubMenu.value.sportType) {
+    return getBetTypesBySportType(activeSubMenu.value.sportType)
+  }
+  return []
+})
+
+const betTypeNames = computed(() => {
+  if (betTypeIds.value.length) {
+    return betTypeIds.value.map((item: number) => betTypeNameMap[item])
+  }
+  return []
+})
+
+const canShowTime = computed(() => {
+  if (activeSubMenu.value && '1,2,43'.indexOf(activeSubMenu.value.sportType) !== -1) {
+    return true
+  }
+  return false
+})
+
+const dateList = computed(() => {
+  let arr: {value: string; text: string; week: string;}[] = []
+  if (sbStore.isZaoPan && activeSubMenu.value) {
+    arr = [
+      {
+        value: '',
+        text: '全部',
+        week: activeSubMenu.value.count,
+      },
+    ]
+    for (let i = 1; i < 8; i++) {
+      const date = dayjs().add(i, 'day')
+      arr[i] = {
+        value: date.format('YYYY-MM-DD'),
+        text: date.format('MM月DD日'),
+        week: weekMap[date.day()],
+      }
+    }
+  }
+  return arr
+})
+
+const leagueFollowIds = computed(() => {
+  return (lfList.value || []).map(item => item.leagueId.toString())
+})
+
+const filterData = () => {
+  let arr: SbMatch[] = list.value.concat([])
+  if (selectLeagues.value.length) {
+    arr = arr.filter(item => selectLeagues.value.includes(item.leagueName))
+  }
+  if (range.value.length) {
+    arr = arr.filter(item => range.value.includes(dayjs(item.globalShowTime2 || item.globalShowTime).format('YYYY-MM-DD')))
+  }
+  if (sortType.value === 0) {
+    arr.sort((a, b) => a.globalShowTime2 - b.globalShowTime2)
+  } else {
+    arr.sort((a, b) => b.leagueSort - a.leagueSort)
+  }
+  if (leagueFollowIds.value.length) {
+    arr.sort((a, b) => ((a.leagueId !== b.leagueId && leagueFollowIds.value.includes(a.leagueId.toString())) ? -1 : 0))
+  }
+  return arr
+}
+
+const checkboxListPaddingBottom = () => {
+  const attr = Object.keys(leagueIndexBar.value).sort((a, b) => a.localeCompare(b)).slice(-1)[0]
+  const h = checkboxItemHeight.value || 45
+      return checkboxListHeight.value - Math.ceil(h * (leagueIndexBar.value[attr] ? leagueIndexBar.value[attr].list.length : 1)) + 3
+}
+
+watch(
+  () => searchwd.value,
+  () => {
+    const el = document.querySelector('.checkbox-list')
+    if (el) el.scrollTop = 0
+  }
+)
+
+watch(
+  () => sbStore.gameType,
+  (val) => {
+    if (val) {
+      const attr = val === 2 ? 'esport' : 'shab'
+      menus.value = val === 2 ? sbStore.esportMenuCache : sbStore.shabMenuCache
+      if (!lfList.value) {
+        sbStore.getListBetLeagueCollect({
+          matchType: 11,
+        }).then((data) => {
+          this.lfList = data
+        })
+      }
+    }
+  }
+)
+
+const handleToggle = () => {
+  window.shakeApp()
+  openAll.value = !openAll.value
+}
+
+const getIcon = (item: SbMatch) => {
+  const { play } = item
+  const icons: any = { 1: ['anc', 'anca'], '0,1': ['vid', 'vida'], '0,0,1': ['ain', 'aina'] }
+  return play && (icons[play[0]] || icons[play.slice(0, 3)] || icons[play] || [])[showTime(item) ? 1 : 0]
+}
+
+const handleMatchesSortClick = (type: number, sync?: boolean) => {
+  window.shakeApp()
+  handleMatchesSort(type, sync)
+}
+
+const handleMatchesSort = (type: number, sync?: boolean) => {
+  sortType.value = type
+  if (!sync) {
+    openAll.value = true
+  }
+}
+
+const createStomp = () => {
+  const { brokerURL, login, passcode } = JSON.parse(process.env.APP_PRE_STOMP_CONFIG!)
+  const prefix = window.location.origin.startsWith('htpp:') ? 'ws:' : 'wss:'
+  stompClient.value = Stomp.client(`${prefix}${brokerURL}`)
+  stompClient.value.debug = null
+  stompClient.value.connect(login, passcode, stompOnConnect)
+}
+
+const stompOnConnect = () => {
+  stompClient.value.subscribe(`/topic/sbob${sbStore.gameType === 2 ? '_es' : ''}_menu`, handleMessage)
+  stompClient.value.subscribe(`/topic/betId_match_Result_${process.env.APP_CODE}`, handleMessage)
+  stompConnected.value = true
+  Object.keys(stompList).forEach((key) => {
+    if (sbStore.gameType === 2 && key.indexOf('sbob_es_') === -1) key = key.replace('sbob_', 'sbob_es_')
+    if (stompList[key] === 0) stompList[key] = stompClient.value.subscribe(`/topic/${key}_${tabIndex.value + 1}_${sbStore.gameType === 2 ? activeSubMenu.value.gameId : this.activeSubMenu.sportType}`, this.handleMessage)
+  })
+}
 
 const handleChangeTab = (idx: number) => {
   window.shakeApp()
@@ -282,6 +540,36 @@ const handleChangeTab = (idx: number) => {
 const handleClick = (idx: number) => {
   window.shakeApp()
   subIndex.value = idx
+}
+
+const matchFold = (leagueName: string) => {
+  const index = foldList.value.indexOf(leagueName)
+  if (index !== -1) {
+    foldList.value.splice(index, 1)
+  } else {
+    foldList.value.push(leagueName)
+    onLoad(true)
+  }
+  handleMatchesScroll()
+}
+
+const onLoad = (deep?: boolean) => {
+  setTimeout(() => {
+    page.value++
+    loading.value = false
+    if (list.value.length <= page.value * pageSize.value) finished.value = true
+    else finished.value = false
+    handleListChange(list.value, true)
+    if (deep && !finished.value) {
+      nextTick(() => {
+        const lh = (document.querySelector('.match-list-container') as HTMLDivElement).offsetHeight
+        const ch = window.screen.height - (document.querySelector('.sticky') as HTMLDivElement).offsetHeight - (document.querySelector('.balance-header') as HTMLDivElement).offsetHeight
+        if (lh <= ch) {
+          onLoad(true)
+        }
+      })
+    }
+  }, 0)
 }
 
 </script>

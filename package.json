@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@types/stompjs": "^2.3.3",
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
     "dayjs": "^1.11.7",
@@ -27,6 +28,7 @@
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "safe-area-insets": "^1.4.1",
+    "stompjs": "^2.3.3",
     "swiper": "^8.4.5",
     "tim-js-sdk": "^2.19.1",
     "ua-device": "^0.1.10",
@@ -37,6 +39,7 @@
     "vue-router": "^4.0.0",
     "vue-seamless-scroll": "^1.1.23",
     "vue3-marquee": "^3.1.2",
+    "cnchar": "^3.2.0",
     "vuelidate": "^0.7.4"
   },
   "devDependencies": {

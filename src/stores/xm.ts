@@ -3,7 +3,7 @@ import { axios, CancelToken } from 'boot/axios'
 import { Canceler } from 'axios'
 import { useUserStore, useEnvStore } from 'src/stores'
 import { LocalStorage, SessionStorage, Notify } from 'quasar'
-import { XMMatch, XmMenu, XMMarket, XMPlay, XMPlayOpts, IXmBetData, IXmBetType } from 'src/types/sports'
+import { XMMatch, XmMenu, IXmBetData, IXmBetType } from 'src/types/sports'
 import { MENU_MAP } from 'components/obty/utils/constants'
 import { i18n } from 'boot/i18n'
 

@@ -11,3 +11,34 @@ interface IIndexNoticeAndAdvParams {
   advType: number;
   evebNum: number;
 }
+
+interface ISbMatchListParams {
+  menuLevel: number;
+  parentId: number;
+  gameId?: number;
+  sportType?: number;
+}
+
+interface ISbMatchDetailParams {
+  sportType: number;
+  eventId: number;
+}
+
+interface ISbSingleTicketParams {
+  sportType: number;
+  marektId: number;
+  key: string;
+  oddsType: number;
+}
+
+interface ISbYsgjTicketParams {
+  sportType: number;
+  orid: number;
+}
+
+interface IParlayTicketsParams {
+  sportType: number;
+  marketId: number;
+  point: number;
+  key: string;
+}

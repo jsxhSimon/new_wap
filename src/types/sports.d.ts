@@ -20,6 +20,7 @@ interface SbMatch {
   eventStatus: EventStatus;
   /** 开赛时间戳 */
   globalShowTime2: number;
+  globalShowTime: number;
   /** 是否是滚球赛事 */
   isLive: boolean;
   isParlay: boolean;
@@ -343,4 +344,95 @@ interface SbSubMenu {
   parentId: number;
   sportName: string;
   sportType: number;
+  gameId?: number;
+}
+
+interface SbYsgj {
+  count: number;
+  outrights: SbYsgjOutright[];
+  sportName: string;
+  sportType: number;
+}
+
+interface SbYsgjOutright {
+  eventCode: string;
+  eventDate: string;
+  eventStatus: string;
+  isTest: boolean;
+  leagueGroup: string;
+  leagueId: number;
+  leagueName: string;
+  outrightStatus: string;
+  sportName: string;
+  sportType: number;
+  teams: ISbYsgjTeam[]
+}
+
+interface ISbYsgjTeam {
+  maxBet: number;
+  oddsStatus: string;
+  orid: number;
+  price: number;
+  teamId: number;
+  teamName: string;
+  update: boolean;
+}
+
+interface ISbYsgjBetData {
+  team: ISbYsgjTeam;
+  match: SbYsgjOutright;
+}
+
+interface ISbBetData {
+  market: ISbMarket;
+  match: SbMatch;
+  odd: ISbOdd;
+}
+
+interface ISbMarket {
+  betType: number;
+  betTypeName: string;
+  category: number;
+  combo: number;
+  eventId: number;
+  marketId: number;
+  marketStatus: string;
+  maxBet: number;
+  selections: ISbOdd[];
+}
+
+interface ISbOdd {
+  className: string;
+  key: string;
+  keyName: string;
+  oddsPrice: {
+    americanPrice: number;
+    decimalPrice: number;
+    hongKongPrice: number;
+    indoPrice: number;
+    malayPrice: number;
+    parlayPrice: number;
+
+  };
+  point?: number;
+  new_point?: number;
+}
+
+interface ISbBetType {
+  name: string;
+  betCount: number;
+  mon: number;
+  maxBet: number;
+  allMon: number;
+  winMon: number;
+  id: string;
+  isSys?: boolean;
+  price?: number;
+}
+
+interface ISbTeamInfo {
+  homeLogo: string;
+  homeName: string;
+  awayLogo: string;
+  awayName: string;
 }
