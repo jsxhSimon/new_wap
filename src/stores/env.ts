@@ -23,6 +23,7 @@ interface IEnvConfig {
   APP_HAS_OPENINSTALL: boolean;
   APP_MOBILE_AREA_CODE: string;
   APP_MAX_LEVEL: number;
+  APP_THEME: string;
 
 }
 
@@ -56,6 +57,9 @@ export const useEnvStore = defineStore('env', {
       return i18n.global.locale.value === 'zh'
         ? state.envConfig.APP_TITLE
         : state.envConfig.APP_TITLE_EN;
+    },
+    envTheme(state) {
+      return state.envConfig.APP_THEME ?? 'blue';
     },
     envAppVersion(state) {
       return (
@@ -96,7 +100,7 @@ export const useEnvStore = defineStore('env', {
       axios
         .get(`http://localhost:1337/api/app-configs?${query}`)
         .then((data) => {
-          console.log(data);
+          console.log('99行打印：============:', data)
           const config = data.data.data[0];
           if (config) {
             this.$patch((state) => {

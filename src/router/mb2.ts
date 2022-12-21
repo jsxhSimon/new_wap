@@ -64,7 +64,7 @@ const routes: RouteRecordRaw[] = [
           showKf: true,
           // hideHeader: true,
         },
-        component: () => import(/* webpackChunkName: "mineVip" */ 'pages/mine/HelpCenter.vue'),
+        component: () => import(/* webpackChunkName: "HelpCenter" */ 'pages/mine/HelpCenter.vue'),
       },
       {
         path: 'vip',
@@ -73,6 +73,14 @@ const routes: RouteRecordRaw[] = [
           // hideHeader: true,
         },
         component: () => import(/* webpackChunkName: "mineVip" */ 'pages/vip/index.vue'),
+      },
+      {
+        path: 'mySponsor',
+        meta: {
+          title: '历史赞助',
+          hideHeader: true,
+        },
+        component: () => import(/* webpackChunkName: "mySponsor" */ 'pages/mySponsor/index.vue'),
       },
       {
         path: 'vipDetails',
