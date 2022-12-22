@@ -1302,8 +1302,9 @@ const doBet = (data: Partial<IXmBetData>) => {
           position: absolute;
           top: 15.4vw;
           width: 49vw;
+          height: 24px;
+          line-height: 24px;
           text-align: center;
-          padding: .8vw 0;
           // background:#D5D7E9;
         }
         .odd-column {

@@ -627,7 +627,7 @@ export const useSbStore = defineStore('sbty', {
         } else {
           this[attr][this.activeMenu.name as string][idx] = arr
         }
-        SessionStorage.set(attr, JSON.stringify(this[attr]))
+        SessionStorage.set(attr, this[attr])
       }
     },
     saveBetLog(params: any) {

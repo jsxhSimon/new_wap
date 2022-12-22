@@ -30,7 +30,7 @@
           </span>
         </div>
         <ObSports v-if="gameType === 0" :game-type="gameType" :is-hide-change="isHideChange" @change-is-hide-change="changeIsHideChange"  />
-        <SbSports v-if="gameType === 1" :game-type="gameType" :is-hide-change="isHideChange" @change-is-hide-change="changeIsHideChange"  />
+        <SbSports v-if="gameType === 1" :game-type="gameType" :is-hide-change="isHideChange" @change-is-hide-change="changeIsHideChange" @scroll="handleScroll" :scroll-fixed="scrollFixed" :is-open-detail="isOpen" :open-match="openMatch" />
       </div>
     </div>
   </q-page>
@@ -80,6 +80,8 @@ const emptyNoticeList = ref(false)
 const topBoxLoadingFinnish = ref(false)
 const isHideChange = ref(false)
 const isMaintain = ref(false)
+const isOpen = ref(false)
+const openMatch = ref(null)
 
 const keepScrollFixed = computed(() => {
   if (swiperListEnable.value && !noticeListEnable.value) {

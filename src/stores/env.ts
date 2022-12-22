@@ -36,7 +36,7 @@ export const useEnvStore = defineStore('env', {
       return state.envConfig.APP_SITE ?? JSON.parse(process.env.SITE || '""');
     },
     appEnv(state) {
-      return state.envConfig.APP_ENV ?? JSON.parse(process.env.APP_ENV || '""');
+      return state.envConfig.APP_ENV ?? JSON.parse(process.env.APP_CODE || '""');
     },
     envCurrencySymbol(state) {
       return (

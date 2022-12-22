@@ -33,6 +33,10 @@ interface SbMatch {
   teamInfo: TeamInfo;
   markets: ISbMarket[];
   groupKey: string;
+  awayCorner?: number;
+  homeCorner?: number;
+  homeHalfScore?: number;
+  awayHalfScore?: number;
   tennisInfo: {
     homeGameScore: number[];
     awayGameScore: number[];

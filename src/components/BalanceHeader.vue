@@ -112,5 +112,50 @@ const openCustomerService = () => {
       height: 22px;
     }
   }
+  .swiper {
+    margin: 0;
+  }
+  .swiper-wrapper {
+    display: flex;
+    z-index: 1;
+  }
+  .swiper-slide {
+    width: auto;
+  }
+  .balance-header-gameType {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    .swiper-slide {
+      width: auto;
+      position: relative;
+      padding-right: 20px;
+      text-align: center;
+      font-size: 14px;
+      white-space: nowrap;
+      color: var(--t2);
+      font-weight: normal;
+      &::before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 10px;
+        background: var(--t2);
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%) scaleX(0.5);
+      }
+      &:last-child {
+        padding-right: 0;
+        &::before {
+          display: none;
+        }
+      }
+      &.active {
+        color: var(--t10);
+      }
+    }
+  }
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="shab-sports">
     <div class="sticky" v-show="!showFilter">
       <div class="match-tabs new-match-tabs sdy-border-bottom" :class="{'click-disabled': disabledMenu}">
-        <div class="tabs flex flex-center">
+        <div class="tabs flex align-center">
           <div class="tabs-wrap">
             <template v-for="(tab, idx) in tabs" :key="tab.name">
               <div
@@ -41,6 +41,35 @@
           </swiper>
         </div>
       </div>
+      <div class="utils flex justify-between" v-show="!sbStore.isYsgj">
+        <div class="flex align-center" @click="handleToggle()">
+          <span class="iconfont mr-4 icon-shuangyoujiantou-" :class="openAll ? 'sdy-icon-up' : 'sdy-icon-down'"/>
+          {{ openAll ? '收起' : '展开' }}
+        </div>
+        <div class="flex align-center sort-buttons">
+          <div
+            v-for="item in sortButtons"
+            :key="item.type"
+            class="sort-button"
+            :class="item.type === sortType ? 'active' : ''"
+            @click="handleMatchesSortClick(item.type)"
+          >
+            {{item.label}}
+          </div>
+        </div>
+        <div class="flex align-center" v-if="!sbStore.isYsgj">
+          <span class="iconfont icon-rili mr-10" v-if="sbStore.isZaoPan" @click="showCalendar = !showCalendar"/>
+          <span class="_filter flex align-center" @click="show"><i class="iconfont icon-wangdianquanxihuaxiangICON-06"></i>{{ $t('筛选') }}</span>
+        </div>
+        <div class="sdy-calendar" v-show="showCalendar">
+          <div class="sdy-calendar-item" v-for="(date, idx) in dateList" :key="date.value">
+            <div class="item" :class="{active: (idx === 0 && range.length === 0) || range.includes(date.value)}" @click="onConfirm(date.value)">
+              <span>{{date.text}}</span>
+              <span>{{date.week}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="match-list-container" v-show="!showFilter">
       <div class="matches-wrapper" ref="matchModel">
@@ -63,12 +92,12 @@
                   <template #header>
                     <div class="match-header flex" @click="matchFold(t.leagueName)">
                       <div class="league-title flex">
-                        <sdy-image class="m-r-10" src="" :height="32" />
+                        <sdy-image class="mr-10" src="" :height="32" />
                         <div class="league-name">{{ t.leagueName }}</div>
                       </div>
-                      <div class="flex flex-center">
-                        <span class="m-r-10">{{t.teams.length}}</span>
-                        <span class="sdy-icon sdy-icon-unfold"></span>
+                      <div class="flex align-center">
+                        <span class="mr-10">{{t.teams.length}}</span>
+                        <span class="iconfont icon-xiangyou1  sdy-icon-unfold"></span>
                       </div>
                     </div>
                   </template>
@@ -101,27 +130,27 @@
                 <template #header>
                   <div class="match-header flex" @click="matchFold(t.groupKey)">
                     <div class="league-title flex">
-                      <sdy-image class="m-r-10" src="" :height="32" />
+                      <sdy-image class="mr-10" src="" :height="32" />
                       <div class="league-name">{{ t.name }}</div>
                     </div>
-                    <div class="flex flex-center">
-                      <span class="m-r-10">{{t.list.length}}</span>
-                      <span class="sdy-icon sdy-icon-unfold"></span>
+                    <div class="flex align-center">
+                      <span class="mr-10">{{t.list.length}}</span>
+                      <span class="iconfont icon-xiangyou1  sdy-icon-unfold"></span>
                     </div>
                   </div>
                 </template>
                 <template #content>
-                  <div class="match-item" v-for="item in t.list" :key="item.evnetId">
+                  <div class="match-item" v-for="item in t.list" :key="item.eventId">
                     <div class="match-item-wrapper">
                       <div class="match-item-hd">
                         <div class="match-item-hd-left" v-if="sbStore.isZaoPan">
-                          <span class="m-r-10 zaopan">
+                          <span class="mr-10 zaopan">
                             <span v-if="item.globalShowTime2 || item.globalShowTime">{{formatMgtDate(item)}}</span>
                           </span>
                         </div>
-                        <div class="match-item-hd-left" :class="{'has-img': getIcon(item)}" v-if="!isZaoPan">
-                          <div class="m-r-10 item_flex icon_item">
-                            <div v-if="getIcon(item)" class="game-icon" @click="showFullPlay(item, !isZaoPan)" :class="getIcon(item)"></div>
+                        <div class="match-item-hd-left" :class="{'has-img': getIcon(item)}" v-if="!sbStore.isZaoPan">
+                          <div class="mr-10 item_flex icon_item">
+                            <div v-if="getIcon(item)" class="game-icon" @click="showFullPlay(item)" :class="getIcon(item)"></div>
                             <span>
                               {{ showTime(item) ? formatMmp(item) : formatMgtDate(item) }}
                             </span>
@@ -132,7 +161,7 @@
                             <CountDown v-else :key="`${item.eventId}-${item.gameInfo.seconds}-${hideCount}`" :reverse="item.gameInfo.clockDirection === 'dec'" :time="item.gameInfo.seconds"></CountDown>
                           </span>
                         </div>
-                        <div class="match-item-hd-right" v-if="isSbty === 2 && activeMenu.name === '滚球'">
+                        <div class="match-item-hd-right" v-if="sbStore.gameType === 2 && activeMenu.name === '滚球'">
                           <div v-for="betName in getRunnningIds(item)" :key="betName">
                             <p>{{ betName }}</p>
                           </div>
@@ -158,7 +187,7 @@
                           <div class="collect flex">
                             {{item.marketCount ? `${item.marketCount}+` : 0}}
                             <!--足球-->
-                            <div class="match-item-top-right" v-if="!isZaoPan && item.sportName === '足球' && item.awayCorner != undefined">
+                            <div class="match-item-top-right" v-if="!sbStore.isZaoPan && item.sportName === '足球' && item.awayCorner != undefined">
                               <div class="jiao-qiu" v-if="item.awayCorner != undefined">
                                 <span class="jiao-qiu-icon"></span>
                                 {{ item.homeCorner }} - {{ item.awayCorner }}
@@ -169,7 +198,7 @@
                               </div>
                             </div>
                             <!--篮球-->
-                            <div class="match-item-top-right" v-if="!isZaoPan && item.sportName === '篮球' && item.awayHalfScore != undefined">
+                            <div class="match-item-top-right" v-if="!sbStore.isZaoPan && item.sportName === '篮球' && item.awayHalfScore != undefined">
                               <div class="half-score"  v-if="item.awayHalfScore != undefined">
                                 <span class="half-score-ht">HT</span>
                                 {{ item.homeHalfScore }} - {{ item.awayHalfScore }}
@@ -193,7 +222,7 @@
                                   <div>{{getOddName(odd, market.betTypeName, item)}}</div>
                                   <span>{{odd.oddsPrice.decimalPrice}}</span>
                                 </div>
-                                <div class="odd-column-item" :key="odd.key" v-else>
+                                <div class="odd-column-item" v-else :key="odd.key">
                                   <div>
                                     <van-icon name="lock" />
                                   </div>
@@ -224,6 +253,59 @@
         </div>
       </div>
     </div>
+    <div class="sports-league-filter" v-show="showFilter || gotoLeagueId">
+      <template v-if="!isFollow">
+        <div class="title flex">
+          <span class="iconfont icon-xiangzuo1 sdy-icon-left" @click="showFilter = false"></span>
+          联赛{{checkbox.length}}/{{leagueList.length}}
+          <span class="follow-btn" @click="isFollow = true">关注</span>
+        </div>
+        <div class="search"><img src="~pages/sports/images/search.png"><input type="text" v-model="searchwd" placeholder="请输入联赛名称"><i @click="saveSelect">搜索</i></div>
+        <div class="btn-list">
+          <div>
+            <span class="mr-10" @click="selectAll">全选</span>
+            <span @click="closeAll">反选</span>
+          </div>
+          <span class="save" :class="{active: checkbox.length > 0}" @click="saveSelect">完成</span>
+        </div>
+        <div class="checkbox-list">
+          <van-index-bar :index-list="legueIndexList" :style="{paddingBottom: `${checkboxListPaddingBottom}px`}">
+            <div class="index-bar-view" v-for="key in legueIndexList" :key="key">
+              <van-index-anchor :index="key" />
+              <div class="checkbox-item" v-for="league in leagueIndexBar[key].list" :key="league.name" @click="handleCheckboxClick(league)">
+                <div class="league-name flex">
+                  <sdy-image src="" :height="32" />
+                  <span class="ml-10">{{ league.name }}</span>
+                </div>
+                <div class="action">
+                  <van-icon :name="(leagueFollowIds || []).includes(league.id.toString()) ? 'star' : 'star-o'" @click.stop="followLeague(league)" />
+                  <span class="iconfont icon-xuanze" :class="{'sdy-icon icon-xuanze1': checkbox.includes(league.name)}"></span>
+                </div>
+              </div>
+            </div>
+          </van-index-bar>
+        </div>
+      </template>
+      <template v-else>
+        <div class="follow-list">
+          <div class="title flex">
+            <span class="sdy-icon sdy-icon-left" @click="isFollow = false"></span>
+            <span class="follow-title">关注</span>
+          </div>
+          <div class="checkbox-list">
+            <div class="checkbox-item" v-for="league in lfList" :key="league.leagueName" @click="goFollowLeague(league)">
+              <div class="league-name flex">
+                <sdy-image src="" :height="32" />
+                <span class="m-l-10">{{ league.leagueName }}</span>
+              </div>
+              <div class="action">
+                <van-icon :name="leagueFollowIds.includes(league.leagueId.toString()) ? 'star' : 'star-o'" @click.stop="followLeague(league)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -240,17 +322,21 @@ import { betTypeNameMap, getBetTypesBySportType, formatMmp } from 'src/utils/sbt
 import { cloneDeep, groupBy, groupByKey } from 'src/utils'
 import { SessionStorage, Notify } from 'quasar'
 import bus from 'boot/bus'
-import { Toast } from 'vant'
+import { Toast, Icon as VanIcon } from 'vant'
 import { useRouter } from 'vue-router'
+import Skeleton from 'components/Skeleton/index.vue'
+import SdyCollapse from '../SdyCollapse.vue'
+import SdyImage from 'components/SdyImage.vue'
+import CountDown from '../CountDown.vue'
 
 interface Props {
   scrollFixed: boolean;
   isOpenDetail: boolean;
-  openMatch: SbMatch;
+  openMatch: SbMatch | null;
 }
 
 const props = defineProps<Props>()
-const emits = defineEmits(['open', 'scroll'])
+const emit = defineEmits(['open', 'scroll'])
 
 const weekMap: any = {
   0: '周日',
@@ -558,7 +644,6 @@ watch(
 watch(
   () => activeSubMenu.value,
   (val, old) => {
-    sbStore.$patch(state => state.activeSubMenu = val)
     if (val && val.parentId !== undefined) {
       SessionStorage.set('matchTabData', `${sbStore.gameType},${tabIndex.value},${subIndex.value}`)
       if (!old || (old && (val.parentId !== old.parentId || val.sportType !== old.sportType || val.gameId !== old.gameId || val.menuLevel !== old.menuLevel))) {
@@ -566,7 +651,6 @@ watch(
         range.value = []
         selectLeagues.value = []
         openAll.value = true
-        getMatches()
         Object.keys(stompList).forEach((key) => {
           if (sbStore.gameType === 2 && key.indexOf('sbob_es_') === -1) key = key.replace('sbob_', 'sbob_es_')
           if (stompList[key]) {
@@ -584,10 +668,11 @@ watch(
           }
         })
         const scrollH = Math.ceil((document.querySelector('#q-app') as HTMLDivElement).scrollTop)
-        const h = Math.ceil(window.screen.width / 375 * 207)
         const flag = props.scrollFixed
         nextTick(() => {
+          const h = (document.querySelector('.tabs-wrap') as HTMLDivElement).getBoundingClientRect().top - (document.querySelector('.balance-header') as HTMLDivElement).offsetHeight;
           (document.querySelector('#q-app') as HTMLDivElement).scrollTop = flag ? h : scrollH
+          getMatches()
         })
       }
     } else {
@@ -604,6 +689,7 @@ watch(
       canShowEmpty.value = true
       finished.value = true
     }
+    sbStore.$patch(state => state.activeSubMenu = val || {})
   },
   {
     immediate: true
@@ -666,10 +752,7 @@ watch(
 watch(
   () => filterData.value,
   (val) => {
-    handleListChange(val)
-  },
-  {
-    immediate: true
+    handleListChange(val ?? [])
   }
 )
 
@@ -683,36 +766,53 @@ onBeforeMount(() => {
     .then(() => {
       if (!sbStore.token) sbStore.getToken()
     })
-  scrollEl = document.querySelector('#q-app')
-  sbStore.getSbMenus()
+    sbStore.getSbMenus()
     .then(list => {
       menus.value = list
     })
-})
-
-onMounted(() => {
-  bus.on('clearBetData', clearBetData)
-  bus.on('sb-bet', sbBet)
-
-  bus.on('set-bet-data', handleSetBetData)
-  bus.on('full-play', handleFullPlay)
-  bus.on('cancel-bet', handleCancelBet)
-  bus.on('isHideChange', () => {
-    if (activeSubMenu.value) {
-      getMatches(true)
-    }
   })
+  
+  onMounted(() => {
+    bus.on('clearBetData', clearBetData)
+    bus.on('sb-bet', sbBet)
+    bus.on('set-bet-data', handleSetBetData)
+    bus.on('full-play', handleFullPlay)
+    bus.on('cancel-bet', handleCancelBet)
+    bus.on('isHideChange', handleIsHideChange)
+    scrollEl = document.querySelector('#q-app') as HTMLDivElement
+    scrollEl.addEventListener('scroll', handleMatchesScroll)
+    createStomp()
+    clearOddsUpdateClass()
+    setTimeout(() => {
+      setFilterHieght()
+    }, 200)
+    setSportGroupHeight()
 })
 
 onBeforeUnmount(() => {
+  bus.off('clearBetData', clearBetData)
+  bus.off('sb-bet', sbBet)
+  bus.off('set-bet-data', handleSetBetData)
+  bus.off('full-play', handleFullPlay)
   bus.off('cancel-bet', handleCancelBet)
+  bus.off('isHideChanget', handleIsHideChange)
+  clearBetData()
+  clearInterval(oddUpdateClassTimer)
+  scrollEl?.removeEventListener('scroll', handleMatchesScroll)
+  stompClient.value.disconnect()
 })
+
+const handleIsHideChange = () => {
+  if (activeSubMenu.value) {
+    getMatches(true)
+  }
+}
 
 const handleSetBetData = (data: any) => {
   betData.value = data
 }
 
-const handleFullPlay = (params: {market: ISbMarket, match: SbMatch, odd: ISbOdd}) => {
+const handleFullPlay = (params: any) => {
   const {match, market, odd} = params
   selectMatch(match, market, odd)
 }
@@ -861,7 +961,7 @@ const updateMatch = (data: SbMatch) => {
     const newData = JSON.parse(JSON.stringify(props.openMatch))
     if (data.eventStatus !== undefined) newData.eventStatus = data.eventStatus
     if (data.gameInfo) newData.gameInfo = { ...newData.gameInfo, ...data.gameInfo }
-    emits('open', newData)
+    emit('open', newData)
   }
   list.value.some((item, index) => {
     const flag = item.eventId === data.eventId
@@ -1117,7 +1217,8 @@ const getMatches = (countReload?: boolean) => {
         setPage()
       })
     }
-  }).catch(() => {
+  }).catch((err) => {
+    console.log(err)
     finished.value = true
   }).finally(() => {
     canShowEmpty.value = true
@@ -1170,8 +1271,8 @@ const matchFold = (leagueName: string) => {
 }
 
 const handleMatchesScroll = () => {
-  emits('scroll')
-  if (finished.value) {
+  emit('scroll')
+  if (!finished.value) {
     clearTimeout(btimer)
     btimer = setTimeout(() => {
       const el = document.querySelector('.sdy-spinner')
@@ -1392,7 +1493,7 @@ const getOddName = (odd: ISbOdd, betTypeName: string, match: SbMatch) => {
 }
 
 const showFullPlay = (item: SbMatch) => {
-  emits('open', item)
+  emit('open', item)
 }
 
 // 选择优胜冠军
@@ -1712,7 +1813,7 @@ const goDetail = () => {
   router.push('/mine/betting-records')
 }
 
-const handleCancelBet = (index: number) => {
+const handleCancelBet = (index: any) => {
   betData.value[index].odd.active = false
   betData.value.splice(index, 1)
   if (!betData.value.length) {
@@ -1794,7 +1895,8 @@ const setSportGroupHeight = () => {
   const h = (document.querySelector('.sticky') as HTMLDivElement).offsetHeight
   const hh = (document.querySelector('.balance-header') as HTMLDivElement).offsetHeight
   const lh = (document.querySelector('.list-finished') as HTMLDivElement).offsetHeight
-  sportGroupStyle.value = `min-height: ${pageH - h - hh - lh}px;`
+  const fh = (document.querySelector('.q-footer') as HTMLDivElement).offsetHeight
+  sportGroupStyle.value = `min-height: ${pageH - h - hh - lh - fh}px;`
 }
 const followLeague = (league: any) => {
   if (league.lock) return
